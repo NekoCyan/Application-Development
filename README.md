@@ -23,7 +23,7 @@
 
 <details>
     <summary><strong>Kế hoạch, tiến độ thực hiện công việc.</strong></summary>
-    <i>Currently empty...</i>
+    <a href="https://docs.google.com/spreadsheets/d/1aZGoO2YkFdylryIhxdnkZmy-hMETl9sH">https://docs.google.com/spreadsheets/d/1aZGoO2YkFdylryIhxdnkZmy-hMETl9sH</a>
 </details>
 
 <hr>
