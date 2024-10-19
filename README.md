@@ -1,6 +1,6 @@
 <div>
     <h1>
-        <a href="https://sv.dntu.edu.vn"><img align="left" src="https://sv.dntu.edu.vn/images/dntu-logo.png" alt="DNTU-Logo" style="width: 80px;"></a>
+        <a href="https://dntu.edu.vn"><img align="left" src="https://sinhvien.dntu.edu.vn/Images/logo-header.png" alt="DNTU-Logo" style="width: 80px;"></a>
         Phát triển ứng dụng (Application development)
         <br>
         Mã học phần: 0370206
