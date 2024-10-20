@@ -1,0 +1,102 @@
+{% case section.settings.size %}
+	{% when 'small'  %}{%- assign item_size = '268x268' -%}{%- assign item_class = 'col-sm-6 col-md-4 col-lg-3' -%}
+	{% when 'large'  %}{%- assign item_size = '370x370' -%}{%- assign item_class = 'col-sm-6 col-md-4' -%}
+{% endcase %}
+
+{%- assign img_alignment = section.settings.img_alignment -%}
+
+<div class="container">
+	<h1 class="page_heading">{{ page_title }}</h1>
+
+	<div class="row collection_listing__main collection_listing_size_{{ section.settings.size }}">
+		{% for collection in collections %}
+			{% assign collection_image = false %}
+			{% for block in section.blocks %}
+				{% if collection.handle == collections[block.settings.collection].handle %}
+					{% assign collection_image = true %}
+					{% assign collection_image_src = block.settings.image %}
+				{% endif %}
+			{% endfor %}
+
+			<div class="{{ item_class }} {{ section.settings.style }}">
+				{% include 'collection-listing-item' with item_size, img_alignment, collection_image, collection_image_src %}
+			</div>
+		{% endfor %}
+	</div>
+</div>
+
+{% schema %}
+{
+	"name": "Collection listing",
+	"class": "section_template section_template__collections-listing",
+	"settings": [
+		{
+			"type": "select",
+			"id": "size",
+			"label": "Image size",
+			"options": [
+				{
+					"value": "small",
+					"label": "Small (4 in row)"
+				},
+				{
+					"value": "large",
+					"label": "Large (3 in row)"
+				}
+			]
+		},
+		{
+			"type": "select",
+			"id": "style",
+			"label": "Item style",
+			"options": [
+				{
+					"value": "type_1",
+					"label": "Style 1"
+				},
+				{
+					"value": "type_2",
+					"label": "Style 2"
+				}
+			]
+		},
+		{
+			"type": "select",
+			"id": "img_alignment",
+			"label": "Image alignment",
+			"options": [
+				{
+					"value": "top",
+					"label": "Top"
+				},
+				{
+					"value": "center",
+					"label": "Middle"
+				},
+				{
+					"value": "bottom",
+					"label": "Bottom"
+				}
+			]
+		}
+	],
+	"blocks": [
+		{
+			"type": "image",
+			"name": "Collection Image",
+			"settings": [
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Collection image"
+				},
+				{
+					"type": "collection",
+					"id": "collection",
+					"label": "Collection name"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

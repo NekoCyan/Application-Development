@@ -1,0 +1,389 @@
+<footer class="footer_type_2"> 
+	<div class="footer_row__1"> 
+		{% if section.settings.newsletter %}
+			<div class="footer_top_pannel">
+				<div class="container">
+					<div class="footer_newsletter_caption">
+						<h4>{{ section.settings.newsletter_title }}</h4>
+						
+						{% if section.settings.newsletter_text.size > 0 %}
+							<p class="form_text">{{ section.settings.newsletter_text }}</p>
+						{% else %}	
+							<p class="form_text">{{ 'layout.footer.newsletter_tagline' | t }}</p>
+						{% endif %}
+					</div>
+					
+					{% case settings.newsletter_form_type %}
+						{% when 'newsletter_shopify' %}
+								{% capture newsletterForm %}
+									{% form 'customer', class: 'footer_newsletter_form' %}
+										{{ form.errors | default_errors }}
+
+										<p class="alert alert-success hidden">{{ 'layout.footer.newsletter_success' | t }}</p>
+									
+										<input type="hidden" name="contact[tags]" value="Newsletter subscriber">
+										<div class="form_wrapper">
+											<input type="email" name="contact[email]" class="input-group__field newsletter__input" placeholder="Enter your email">
+											<button class="btn" type="submit">{{ 'layout.footer.subscribe_button' | t }}</button>
+										</div>
+										
+									{% endform %}
+								{% endcapture %}
+
+								{% assign newsletterForm = newsletterForm | replace: "'", "&lsquo;" | replace: 'id="contact_form"', 'id="newsletter_form"' | strip_newlines %}
+
+						{% when 'newsletter_mailchimp' %}
+							{% capture newsletterForm %}
+								{% if block.settings.newsletter_text.size > 0 %}
+									<p class="form_text">{{ block.settings.newsletter_text }}</p>
+								{% else %}	
+									<p class="form_text">{{ 'layout.footer.newsletter_tagline' | t }}</p>
+								{% endif %}
+
+								<div class="newsletter_form__mailchimp">
+									<form action="{{ settings.newsletter_mailchimp_url }}" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="footer_newsletter_form">
+										<input required type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="Enter your email">
+										<button class="btn" type="submit" name="subscribe" id="mc-embedded-subscribe">{{ 'layout.footer.subscribe_button' | t }}</button>
+									</form>
+								</div>
+							{% endcapture %}
+					{% endcase %}
+
+					{{ newsletterForm }}
+				</div>
+			</div>
+		{% endif %}
+      
+      	<div class="banner container">
+          <div class="text">
+            <h3>Upgrade to a Fully-fledged Kardone!</h3>
+            <h4>Featuring a additional pages, plugins, beautiful pictures and fully functionality!</h4>
+          </div>
+          <a class="btn" href="https://www.templatemonster.com/shopify-themes-type/62439.html">Shop now!</a>
+        </div>
+
+		<div class="footer_main">
+          <div class="container">
+			{% for block in section.blocks %}
+				<div class="col-sm-3 footer_block {% cycle 'step2': 'footer_block__2_1', '' %}">
+					{% case block.type %}
+						{% when 'linklist' %}
+							{%- assign linklist = block.settings.links -%}
+
+							<div class="footer_item footer_item__links {{ item_class }}" {{ item_style }}>
+								<h6 class="linklist_menu_title">{{ linklists[linklist].title }}</h6>
+
+								<ul class="list_links">
+									{% for link in linklists[linklist].links %}
+										<li>
+											<a {% if link.active %}class="active"{% endif %} href="{{ link.url }}">{{ link.title }}</a>
+										</li>
+									{% endfor %}
+								</ul>
+							</div>
+
+					
+						{% when 'contacts' %}
+							<div class="footer_item footer_item__contacts">
+								<h6 class="linklist_menu_title">{{ block.settings.contacts_title }}</h6>
+								<ul class="list_links">
+									<li>
+										{% if block.settings.contacts_address.size > 0 %}
+											<div class="contact_address">{{ block.settings.contacts_address }}</div>
+										{% endif %}
+									</li>
+									<li>
+										{% if block.settings.contacts_phone.size > 0 %}
+											<a class="contact_phone tel_ltr" href="tel:{{ block.settings.contacts_phone }}">
+											{{ block.settings.contacts_phone }}</a>
+										{% endif %}
+									</li>
+									<li>
+										{% if block.settings.contacts_email.size > 0 %}
+											<a class="contact_email" href="mailto:{{ block.settings.contacts_email }}">{{ block.settings.contacts_email }}</a>
+										{% endif %}
+									</li>
+								</ul>
+							</div>
+					{% endcase %} 
+				</div>
+			{% endfor %}
+          </div>  
+		</div>
+	</div>
+
+	{% if section.settings.powered_toggle or section.settings.payment_icons_toggle %}
+		
+
+		<div class="footer_row__2"> 
+			<div class="footer_bottom_pannel container_big">
+				{% if section.settings.powered_toggle %}
+					{% assign copyright_year = "now" | date: "%Y" %}
+					<div class="footer_wrap_2 footer_copyright">
+						© {{ copyright_year }}. {{ powered_by_link }}
+					</div>
+				{% endif %}
+
+				{% if section.settings.payment_icons_toggle %}
+					{% assign payment_icons = 'amazon_payments|apple_pay|american_express|bitcoin|dankort|diners_club|discover|dogecoin|dwolla|forbrugsforeningen|jcb|litecoin|maestro|master|paypal|visa|google_pay|shopify_pay' | split: '|' %}
+
+					<div class="footer_wrap_2">
+						<div class="footer_payments">
+							{% for i in payment_icons %}
+								{% if section.settings[i] %}
+									<img src="{{ i | payment_type_img_url }}" height="18" alt="{{ i }}">
+								{% endif %}
+							{% endfor %}
+						</div>
+					</div>
+				{% endif %}
+
+				{% if section.settings.social_menu %}
+					<ul class="footer_wrap_2 social_menu">
+						{% if section.settings.social_fb.size > 0 %}
+							<li><a href="{{ section.settings.social_fb }}"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+						{% endif %}
+
+						{% if section.settings.social_tw.size > 0 %}
+							<li><a href="{{ section.settings.social_tw }}"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+						{% endif %}
+
+						{% if section.settings.social_inst.size > 0 %}
+							<li><a href="{{ section.settings.social_inst }}"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+						{% endif %}
+
+						{% if section.settings.social_pin.size > 0 %}
+							<li><a href="{{ section.settings.social_pin }}"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+						{% endif %}
+
+						{% if section.settings.social_yt.size > 0 %}
+							<li><a href="{{ section.settings.social_yt }}"><i class="fa fa-youtube" aria-hidden="true"></i></a></li>
+						{% endif %}
+					</ul>
+				{% endif %}
+			</div>
+		</div>
+	{% endif %}
+</footer>
+
+	
+{% schema %}
+{
+	"name": "Footer type 2",
+	"max_blocks": 4,
+	"settings": [
+		
+		{
+			"type": "checkbox",
+			"id": "newsletter",
+			"label": "Show Newsletter",
+			"default": false
+		},
+		{
+			"type": "text",
+			"id": "newsletter_title",
+			"label": "Block title",
+			"default": "Newsletter title"
+		},
+		{
+			"type": "text",
+			"id": "newsletter_text",
+			"label": "Newsletter text"
+		},
+
+		// POWERED BY /////////////////////////////////////////////////////////////////////////////
+		{
+			"type": "header",
+			"content": "'Powered by Shopify' link"
+		},
+		{
+			"type": "checkbox",
+			"id": "powered_toggle",
+			"label": "Show 'Powered by Shopify'",
+			"default": true
+		},
+
+		// PAYMENT ICONS //////////////////////////////////////////////////////////////////////////
+		{
+			"type": "header",
+			"content": "Payment icons"
+		},
+		{
+			"type": "checkbox",
+			"id": "payment_icons_toggle",
+			"label": "Show payment icons",
+			"default": true
+		},
+		{
+			"type": "checkbox",
+			"id": "amazon_payments",
+			"label": "Amazon Payments"
+		},
+		{
+			"type": "checkbox",
+			"id": "apple_pay",
+			"label": "Apple Pay"
+		},
+		{
+			"type": "checkbox",
+			"id": "american_express",
+			"label": "American Express"
+		},
+		{
+			"type": "checkbox",
+			"id": "bitcoin",
+			"label": "Bitcoin"
+		},
+		{
+			"type": "checkbox",
+			"id": "dankort",
+			"label": "Dankort"
+		},
+		{
+			"type": "checkbox",
+			"id": "diners_club",
+			"label": "Diners Club"
+		},
+		{
+			"type": "checkbox",
+			"id": "discover",
+			"label": "Discover"
+		},
+		{
+			"type": "checkbox",
+			"id": "dogecoin",
+			"label": "Dodgecoin"
+		},
+		{
+			"type": "checkbox",
+			"id": "dwolla",
+			"label": "Dwolla"
+		},
+		{
+			"type": "checkbox",
+			"id": "jcb",
+			"label": "JCB"
+		},
+		{
+			"type": "checkbox",
+			"id": "litecoin",
+			"label": "Litecoin"
+		},
+		{
+			"type": "checkbox",
+			"id": "maestro",
+			"label": "Maestro"
+		},
+		{
+			"type": "checkbox",
+			"id": "master",
+			"label": "Mastercard"
+		},
+		{
+			"type": "checkbox",
+			"id": "paypal",
+			"label": "Paypal"
+		},
+		{
+			"type": "checkbox",
+			"id": "visa",
+			"label": "Visa"
+		},
+		{
+			"type": "checkbox",
+			"id": "google-wallet",
+			"label": "Google Wallet"
+		},
+		{
+			"type": "checkbox",
+			"id": "google_pay",
+			"label": "Google pay"
+		},
+		{
+			"type": "checkbox",
+			"id": "shopify_pay",
+			"label": "Shopify pay"
+		},
+
+		// SOCIAL MENU //////////////////////////////////////////////////////////////////////////
+		{
+			"type": "header",
+			"content": "Social Menu"
+		},
+		{
+			"type": "checkbox",
+			"id": "social_menu",
+			"label": "Show Social Menu",
+			"default": true
+		},
+		{
+			"type": "text",
+			"id": "social_fb",
+			"label": "Facebook"
+		},
+		{
+			"type": "text",
+			"id": "social_tw",
+			"label": "Twitter"
+		},
+		{
+			"type": "text",
+			"id": "social_inst",
+			"label": "Instagram"
+		},
+		{
+			"type": "text",
+			"id": "social_pin",
+			"label": "Pinterest"
+		},
+		{
+			"type": "text",
+			"id": "social_yt",
+			"label": "Youtube"
+		}
+	],
+	"blocks": [
+		// LINKLIST ///////////////////////////////////////////////////////////////////////////////////////
+		{
+			"type": "linklist",
+			"name": "Linklist",
+			"settings": [
+				{
+					"type": "link_list",
+					"id": "links",
+					"label": "Choose linklist"
+				}
+			]
+		},
+
+
+		// CONTACTS BLOCK /////////////////////////////////////////////////////////////////////////////////
+		{
+			"type": "contacts",
+			"name": "Contacts block",
+			"settings": [
+				{
+					"type": "text",
+					"id": "contacts_title",
+					"label": "Block title"
+				},
+				{
+					"type": "richtext",
+					"id": "contacts_address",
+					"label": "Contacts address"
+				},
+				{
+					"type": "text",
+					"id": "contacts_phone",
+					"label": "Contacts phone"
+				},
+				{
+					"type": "text",
+					"id": "contacts_email",
+					"label": "Contacts email"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

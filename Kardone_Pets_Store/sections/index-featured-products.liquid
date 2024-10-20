@@ -1,0 +1,94 @@
+<div class="container layout_boxed">
+	{% if section.settings.section_title.size > 0 %}
+		<h4 class="section_heading">{{ section.settings.section_title | escape }}</h4>
+	{% endif %}
+
+	{%- assign collection = collections[section.settings.section_collection] -%}
+
+	<div class="row product_listing__main product_limit_{{ section.settings.products_limit }}">
+		{% for product in collection.products limit: section.settings.products_limit %}
+			<div class="col-12 col-sm-6 col-md-3">
+				{% include 'product-listing-item' img_size: section.settings.img_size, img_min_size: '100x100', img_alignment: section.settings.img_alignment %}
+			</div>
+		{% endfor %}
+	</div>
+</div>
+
+{% schema %}
+{
+	"name": "Featured products",
+	"class": "section section_homepage section_featured-products",
+	"settings": [
+		{
+			"type": "text",
+			"id": "section_title",
+			"label": "Heading",
+			"default": "Featured products"
+		},
+		{
+			"type": "collection",
+			"id": "section_collection",
+			"label": "Collection"
+		},
+		{
+			"type": "select",
+			"id": "products_limit",
+			"label": "Show products",
+			"options": [
+				{
+					"value": "4",
+					"label": "4"
+				},
+				{
+					"value": "8",
+					"label": "8"
+				},
+				{
+					"value": "12",
+					"label": "12"
+				}
+			]
+		},
+		{
+			"type": "select",
+			"id": "img_size",
+			"label": "Image size",
+			"options": [
+				{
+					"value": "280x280",
+					"label": "Medium"
+				},
+				{
+					"value": "280x420",
+					"label": "Large"
+				}
+			]
+		},
+		{
+			"type": "select",
+			"id": "img_alignment",
+			"label": "Image alignment",
+			"options": [
+				{
+					"value": "top",
+					"label": "Top"
+				},
+				{
+					"value": "center",
+					"label": "Middle"
+				},
+				{
+					"value": "bottom",
+					"label": "Bottom"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Featured products",
+			"category": "Products"
+		}
+	]
+}
+{% endschema %}

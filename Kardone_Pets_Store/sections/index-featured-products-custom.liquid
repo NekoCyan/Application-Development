@@ -1,0 +1,157 @@
+<div class="container layout_boxed">
+	
+
+	{%- assign collection = collections[section.settings.section_collection] -%}
+	<div class="container">
+		{% if section.settings.section_title.size > 0 %}
+			<h4 class="section_heading"><span>{{ section.settings.section_title | escape }}</span></h4>
+		{% endif %}
+	</div>
+	<div class="row">
+		
+		<div class="col-sm-4 banner_menu">
+			{%- assign ban_img_size = '380x602' -%}
+			<div class="banner_item">
+				<div class="banner_caption">
+					{% if section.settings.banner_link.size > 0 and section.settings.banner_link_text.size == 0 %}
+						<a class="caption_text" href="{{ section.settings.banner_link }}">
+					{% else %}
+						<div class="caption_text">
+					{% endif %}
+	
+						{% if section.settings.banner_title.size > 0 %}
+							<div class="title">{{ section.settings.banner_title }}</div>
+						{% endif %}
+
+						{% if section.settings.banner_link.size > 0 and section.settings.banner_link_text.size > 0 %}
+							<a class="btn banner_btn" href="{{ section.settings.banner_link }}">{{ section.settings.banner_link_text }}</a>
+						{% endif %}
+	
+					{% if section.settings.banner_link.size > 0 and section.settings.banner_link_text.size == 0 %}
+						</a>
+					{% else %}
+						</div>
+					{% endif %}
+				</div>
+				{% if section.settings.banner_image.size > 0 %}
+					<div class="img_placeholder__wrap img_placeholder__medium" style="background-image: url( {{ section.settings.banner_image | img_url: ban_img_size, crop: 'center' }} );"></div>
+				{% else %}
+					<div class="img_placeholder__wrap  img_placeholder__medium">
+						{{ 'image' | placeholder_svg_tag: 'img_placeholder' }}
+					</div>
+				{% endif %}
+			</div>
+		</div>
+
+		<div class="col-sm-8 product_listing_wrapper">
+			
+			<div class="row product_listing__main product_limit_{{ section.settings.products_limit }}">
+				{% for product in collection.products limit: section.settings.products_limit %}
+					<div class="col-sm-6 col-lg-3">
+						{% include 'product-listing-item' img_size: section.settings.img_size, img_min_size: '100x100', img_alignment: section.settings.img_alignment %}
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+
+{% schema %}
+{
+	"name": "Featured products custom",
+	"class": "section section_homepage section_featured-products-custom",
+	"settings": [
+		{
+			"type": "text",
+			"id": "section_title",
+			"label": "Heading",
+			"default": "Featured products"
+		},
+		{
+			"type": "collection",
+			"id": "section_collection",
+			"label": "Collection"
+		},
+		{
+			"type": "select",
+			"id": "products_limit",
+			"label": "Show products",
+			"options": [
+				{
+					"value": "4",
+					"label": "4"
+				},
+				{
+					"value": "8",
+					"label": "8"
+				},
+				{
+					"value": "12",
+					"label": "12"
+				}
+			]
+		},
+		{
+			"type": "select",
+			"id": "img_size",
+			"label": "Image size",
+			"options": [
+				{
+					"value": "280x280",
+					"label": "Medium"
+				},
+				{
+					"value": "280x420",
+					"label": "Large"
+				}
+			]
+		},
+		{
+			"type": "select",
+			"id": "img_alignment",
+			"label": "Image alignment",
+			"options": [
+				{
+					"value": "top",
+					"label": "Top"
+				},
+				{
+					"value": "center",
+					"label": "Middle"
+				},
+				{
+					"value": "bottom",
+					"label": "Bottom"
+				}
+			]
+		},
+
+		{
+			"type": "image_picker",
+			"id": "banner_image",
+			"label": "Banner image"
+		},
+		{
+			"type": "richtext",
+			"id": "banner_title",
+			"label": "Banner heading"
+		},
+		{
+			"type": "url",
+			"id": "banner_link",
+			"label": "Banner link"
+		},
+		{
+			"type": "text",
+			"id": "banner_link_text",
+			"label": "Button text"
+		}
+	],
+	"presets": [
+		{
+			"name": "Featured products custom",
+			"category": "Products"
+		}
+	]
+}
+{% endschema %}

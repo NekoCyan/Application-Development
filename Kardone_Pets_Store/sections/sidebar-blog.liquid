@@ -1,0 +1,315 @@
+<div class="sidebar">
+	{% for block in section.blocks %}
+		{% case block.type %}
+			{% when 'blog_search' %}
+				<div class="sidebar_widget sidebar_blog sidebar_widget__search">
+					<form action="/search" method="get">
+						<input type="hidden" name="type" value="article" />
+						<input id="blog-search-field" name="q" type="text" placeholder="{{ block.settings.placeholder }}" class="hint" />
+						<button id="blog-search-submit" type="submit" class="btn">
+							<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+								<path d="M20 18.5787L16.2437 14.8223C17.4619 13.2995 18.2741 11.269 18.2741 9.13706C18.2741 4.06091 14.2132 0 9.13706 0C4.06091 0 0 4.06091 0 9.13706C0 14.2132 4.06091 18.2741 9.13706 18.2741C11.269 18.2741 13.2995 17.5635 14.8223 16.2437L18.5787 20L20 18.5787ZM2.03046 9.13706C2.03046 5.17766 5.17766 2.03046 9.13706 2.03046C13.0964 2.03046 16.2437 5.17766 16.2437 9.13706C16.2437 13.0964 13.0964 16.2437 9.13706 16.2437C5.17766 16.2437 2.03046 13.0964 2.03046 9.13706Z"/>
+							</svg>
+						</button>
+					</form>
+				</div>
+
+			{% when 'link-list' %}
+				<div class="sidebar_widget sidebar_blog sidebar_widget__link-list">
+					<h6 class="widget_header">{{ block.settings.block_title | escape }}</h6>
+					{%- assign links = block.settings.links -%}
+
+					<div class="widget_content">
+						{% if links.size > 0 %}
+							<ul class="sidebar_menu list_links">
+								{% for link in linklists[links].links %}
+									<li class="sidebar_menu_item">
+										<a class="sidebar_menu_links" href="{{ link.url }}">{{ link.title }}</a>
+									</li>
+								{% endfor %}
+							</ul>
+						{% endif %}
+					</div>
+				</div>
+
+			{% when 'resent_articles' %}
+				<div class="sidebar_widget sidebar_blog sidebar_widget__articles">
+					<h6 class="widget_header">{{ block.settings.title | escape }}</h6>
+
+					<div class="widget_content">
+						<ul class="list_articles">
+							{% for article in blog.articles limit:4 %}
+								<li>
+									<div class="article_content {% if article.image %}article_content__img{% endif %}">
+										
+										<h4 class="article_title">
+											<a href="{{ article.url }}">{{ article.title | truncatewords:7 }}</a>
+										</h4>
+										<span class="article_author">by {{ article.author }} on</span>
+										<span>
+											<time class="article_time" datetime="{{ article.published_at | date: '%Y-%m-%dT%H:%M' }}">{{ article.published_at | date: '%B %d, %Y' }}</time>
+										</span>
+										<div class="clearfix"></div>
+									</div>
+								</li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+
+			{% when 'blog_tags' %}
+				<div class="sidebar_widget sidebar_blog sidebar_widget__tags">
+					<h6 class="widget_header">{{ block.settings.title | escape }}</h6>
+
+					<div class="widget_content">
+						{% if blog.all_tags.size == 0 %}
+							<p class="alert alert-warning">{{ 'blog.articles.no_tags' | t }}</p>
+						{% else %}
+							<div class="blog_tags">
+								{% for tag in blog.all_tags %}
+									<a{% if current_tags contains tag %} class="tag_active"{% endif %} href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>
+								{% endfor %}
+							</div>
+						{% endif %}
+					</div>
+				</div>
+				
+
+			{% when 'blog_comments' %}
+				{% if blog.comments_enabled? %}
+					<div class="sidebar_widget sidebar_blog sidebar_widget__comments">
+						<h6 class="widget_header">{{ block.settings.title | escape }}</h6>
+
+						<div class="widget_content">
+							<ul class="list_comments">
+								{% if blog.comments_count == 0 %}
+									<li>
+										<p class="alert alert-warning">{{ 'blog.articles.no_comments' | t }}</p>
+									</li>
+								{% else %}
+									{% for comment in blog.comments limit:3 %}
+										<li>
+											<a href="{{ comment.url }}">
+												<i class="fa fa-comment-o item_icon"></i>
+												<span class="item_content">{{ comment.content | strip_html | truncatewords:20 }}</span>
+												<span class="clearfix"></span>
+												<span class="item_info">
+													<span class="item_author">{{ comment.author }}</span>
+													<time datetime="{{ comment.created_at | date: '%Y-%m-%d' }}">
+														<span class="item_date">{{ comment.created_at | date: '%d %B %Y' }}</span>
+														<span class="item_time">{{ comment.created_at | date: '%I:%M %p' }}</span>
+													</time>
+												</span>
+											</a>
+										</li>
+									{% endfor %}
+								{% endif %}
+							</ul>
+						</div>
+					</div>
+
+				{% else %}
+					<p class="alert alert-warning">Turn on comments in the store settings!</p>
+				{% endif %}
+
+			{% when 'widget_banner' %}
+				{% case block.settings.banner_height %}
+					{% when 'small'  %}{%- assign img_size = '280x151' -%}
+					{% when 'medium' %}{%- assign img_size = '280x280' -%}
+					{% when 'large'  %}{%- assign img_size = '280x340' -%}
+				{% endcase %}
+				
+				<div class="sidebar_widget sidebar_blog sidebar_widget__banner">
+					{% if block.settings.image.size > 0 %}
+						<div class="img_placeholder__wrap img_placeholder__{{ block.settings.banner_height }}" style="background-image: url( {{ block.settings.image | img_url: img_size, crop: 'center' }} );"></div>
+					{% else %}
+						<div class="img_placeholder__wrap  img_placeholder__{{ block.settings.banner_height }}">
+							{{ 'image' | placeholder_svg_tag: 'img_placeholder' }}
+						</div>
+					{% endif %}
+
+					<div class="sidebar_banner_caption position_{{ block.settings.caption_position }}">
+						{% if block.settings.link.size > 0 %}
+							<a href="{{ block.settings.link }}">
+						{% endif %}
+
+							{% if block.settings.title.size > 0 %}
+								<h6>{{ block.settings.title | escape }}</h6>
+							{% endif %}
+
+							{% if block.settings.text.size > 0 %}
+								<p>{{ block.settings.text | strip_html }}</p>
+							{% endif %}
+
+						{% if block.settings.link.size > 0 %}
+							</a>
+						{% endif %}
+					</div>
+				</div>
+
+		{% endcase %}
+	{% endfor %}
+</div>
+
+
+
+{% schema %}
+{
+	"name": "Sidebar",
+	"class": "page_sidebar",
+	"max_blocks": 6,
+	"settings": [
+		{
+			"type": "header",
+			"content": "Sidebar widgets"
+		}
+	],
+	"blocks": [
+		// BLOG SEARCH //////////////////////////////////////////////////////////////////////////////////////////
+		{
+			"type": "blog_search",
+			"name": "Blog search",
+			"settings": [
+				{
+					"type": "text",
+					"id": "placeholder",
+					"label": "Widget placeholder",
+					"default": "Search blog"
+				}
+			]
+		},
+		
+		// LINK LISTS ///////////////////////////////////////////////////////////////////////////////////////////
+		{
+			"type": "link-list",
+			"name": "Link lists",
+			"settings": [
+				{
+					"type": "text",
+					"id": "block_title",
+					"label": "Widget title",
+					"default": "Link lists"
+				},
+				{
+					"type": "link_list",
+					"id": "links",
+					"label": "Choose linklist"
+				}
+			]
+		},
+
+		// RECENT ARTICLES ///////////////////////////////////////////////////////////////////////////////////////
+		{
+			"type": "resent_articles",
+			"name": "Resent articles",
+			"settings": [
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Widget title",
+					"default": "Resent articles"
+				}
+			]
+		},
+
+		// TAGS //////////////////////////////////////////////////////////////////////////////////////////////////
+		{
+			"type": "blog_tags",
+			"name": "Blog tags",
+			"settings": [
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Widget title",
+					"default": "Blog tags"
+				}
+			]
+		},
+
+		// COMMENTS ///////////////////////////////////////////////////////////////////////////////////////
+		{
+			"type": "blog_comments",
+			"name": "Blog comments",
+			"settings": [
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Widget title",
+					"default": "Blog comments"
+				}
+			]
+		},
+
+		// BANNER ///////////////////////////////////////////////////////////////////////////////////////
+		{
+			"type": "widget_banner",
+			"name": "Banner",
+			"settings": [
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image",
+					"info": "The image should be more than 280px wide to resize and crop properly"
+				},
+				{
+					"type": "select",
+					"id": "banner_height",
+					"label": "Banner height",
+					"default": "medium",
+					"options": [
+						{
+							"label": "Small (280x151)",
+							"value": "small"
+						},
+						{
+							"label": "Medium (280x280)",
+							"value": "medium"
+						},
+						{
+							"label": "Large (280x340)",
+							"value": "large"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Heading",
+					"default": "Title"
+				},
+				{
+					"type": "text",
+					"id": "text",
+					"label": "Text",
+					"default": "Banner text"
+				},
+				{
+					"type": "url",
+					"id": "link",
+					"label": "Link"
+				},
+				{
+				    "type": "select",
+				    "id": "caption_position",
+				    "label": "Caption position",
+				    "options": [
+				      {
+				        "label": "Top",
+				        "value": "top"
+				      },
+				      {
+				        "label": "Bottom",
+				        "value": "bottom"
+				      },
+				      {
+				        "label": "Center",
+				        "value": "center"
+				      }
+				    ]
+				}
+			]
+		}
+	]
+}
+{% endschema %}
+

@@ -1,0 +1,27 @@
+<div class="template_contact">
+	<div class="container">
+		<div class="row">
+
+			<div class="col-sm-4">
+				{% section 'template-contact' %}
+			</div>
+			
+			<div class="col-sm-8">
+				{% if settings.contact_map %}
+					{% section 'index-map' %}
+				{% endif %}
+
+				{% if page.content.size > 0 %}
+					<div class="rte">
+						{{ page.content }}
+					</div>
+				{% endif %}
+
+				{% section 'template-contact-form' %}
+			</div>
+		
+		</div>
+
+	</div>
+
+</div>

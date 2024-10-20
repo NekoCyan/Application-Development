@@ -1,0 +1,189 @@
+{% paginate search.results by 10 %}
+	<div class="template_page_search">
+		<div {% unless settings.sidebar_toggle %}class="container"{% endunless %}>
+			{% if search.terms.size > 0 %}
+				<h1 class="page_heading">{{ 'pages.search.search' | t }}: "{{ search.terms | escape }}" — {{ search.results_count }} {{ 'pages.search.results' | t }}</h1>
+			{% else %}
+				<h1 class="page_heading">{{ page_title }}</h1>
+			{% endif %}
+
+			<form action="/search" method="get" class="search_form" role="search">
+				<input type="text" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'pages.search.search' | t }}">
+				
+				<input type="submit" id="search_page_form">
+				<label for="search_page_form">
+					<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+						<path d="M20 18.5787L16.2437 14.8223C17.4619 13.2995 18.2741 11.269 18.2741 9.13706C18.2741 4.06091 14.2132 0 9.13706 0C4.06091 0 0 4.06091 0 9.13706C0 14.2132 4.06091 18.2741 9.13706 18.2741C11.269 18.2741 13.2995 17.5635 14.8223 16.2437L18.5787 20L20 18.5787ZM2.03046 9.13706C2.03046 5.17766 5.17766 2.03046 9.13706 2.03046C13.0964 2.03046 16.2437 5.17766 16.2437 9.13706C16.2437 13.0964 13.0964 16.2437 9.13706 16.2437C5.17766 16.2437 2.03046 13.0964 2.03046 9.13706Z"/>
+					</svg>
+				</label>
+			</form>
+
+			<div class="button_filters">
+				<ul>
+					<li {% unless canonical_url contains 'type' %}class="active"{% endunless %}><a href="/search?q={{ search.terms }}">{{ 'pages.search.results_all' | t }}</a></li>
+					<li {% if canonical_url contains 'type=article' %}class="active"{% endif %}><a href="/search?type=article&q={{ search.terms }}">{{ 'pages.search.results_blog' | t }}</a></li>
+					<li {% if canonical_url contains 'type=page' %}class="active"{% endif %}><a href="/search?type=page&q={{ search.terms }}">{{ 'pages.search.results_pages' | t }}</a></li>
+					<li {% if canonical_url contains 'type=product' %}class="active"{% endif %}><a href="/search?type=product&q={{ search.terms }}">{{ 'pages.search.results_products' | t }}</a></li>
+				</ul>
+			</div>
+
+			{% if search.results_count == 0 %}
+				{% if search.terms %}
+					<p class="alert alert-warning">{{ 'pages.search.no_results' | t }}</p>
+				{% endif %}
+			{% else %}
+				{% assign search_results = search.results | sort: 'object_type' %}
+				<ul class="search_results">
+					{% for item in search_results %}
+						<li>
+							{% if item.object_type == 'product' and item.featured_image %}
+								<a class="search_results__img" href="{{ item.url }}">
+									<img src="{{ item.featured_image.src | img_url: '150x150', crop: 'center' }}" alt="{{ item.featured_image.alt | escape }}">
+								</a>
+							{% elsif item.object_type == 'page' %}
+								<div class="search_results__img">
+									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="150px" height="150px" viewBox="0 0 100 100" version="1.1">
+										<g id="surface1">
+										<rect x="0" y="0" width="100" height="100" style="fill:rgb(89.411765%,89.411765%,89.411765%);fill-opacity:1;stroke:none;"/>
+										<path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" d="M 15 16.667969 L 85 16.667969 C 87.761719 16.667969 90 18.90625 90 21.667969 L 90 33.332031 C 90 36.09375 87.761719 38.332031 85 38.332031 L 15 38.332031 C 12.238281 38.332031 10 36.09375 10 33.332031 L 10 21.667969 C 10 18.90625 12.238281 16.667969 15 16.667969 Z M 15 16.667969 "/>
+										<path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" d="M 12.5 45 L 87.5 45 C 88.878906 45 90 46.121094 90 47.5 C 90 48.878906 88.878906 50 87.5 50 L 12.5 50 C 11.121094 50 10 48.878906 10 47.5 C 10 46.121094 11.121094 45 12.5 45 Z M 12.5 45 "/>
+										<path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" d="M 12.5 56.667969 L 87.5 56.667969 C 88.878906 56.667969 90 57.785156 90 59.167969 C 90 60.546875 88.878906 61.667969 87.5 61.667969 L 12.5 61.667969 C 11.121094 61.667969 10 60.546875 10 59.167969 C 10 57.785156 11.121094 56.667969 12.5 56.667969 Z M 12.5 56.667969 "/>
+										<path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" d="M 58.332031 68.332031 L 85 68.332031 C 87.761719 68.332031 90 70.570312 90 73.332031 L 90 80 C 90 82.761719 87.761719 85 85 85 L 58.332031 85 C 55.570312 85 53.332031 82.761719 53.332031 80 L 53.332031 73.332031 C 53.332031 70.570312 55.570312 68.332031 58.332031 68.332031 Z M 58.332031 68.332031 "/>
+										<path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" d="M 12.5 68.332031 L 44.167969 68.332031 C 45.546875 68.332031 46.667969 69.453125 46.667969 70.832031 C 46.667969 72.214844 45.546875 73.332031 44.167969 73.332031 L 12.5 73.332031 C 11.121094 73.332031 10 72.214844 10 70.832031 C 10 69.453125 11.121094 68.332031 12.5 68.332031 Z M 12.5 68.332031 "/>
+										<path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" d="M 12.5 80 L 44.167969 80 C 45.546875 80 46.667969 81.121094 46.667969 82.5 C 46.667969 83.878906 45.546875 85 44.167969 85 L 12.5 85 C 11.121094 85 10 83.878906 10 82.5 C 10 81.121094 11.121094 80 12.5 80 Z M 12.5 80 "/>
+										</g>
+									</svg>
+								</div>
+							{% elsif item.object_type != 'product' %}
+								<a class="search_results__img" href="{{ item.url }}">
+									{% if item.image %}
+										<img src="{{ item.image.src | img_url: '150x150', crop: 'center' }}" alt="{{ item.image.alt | escape }}">
+									{% else %}
+										<img src="{{ 'no_image.png' | asset_img_url: '150x150', crop: 'center' }}" alt="no image">
+									{% endif %}
+								</a>
+							{% endif %}
+
+
+							<div class="search_results__info">
+								{% case item.object_type %}
+									{% when 'product' %}
+										<p class="search_results__name"><a href="{{ item.url }}">{{ item.title | highlight: search.terms }}</a></p>
+										<p class="search_results__desc">{{ item.description | strip_html | truncatewords:50 | highlight: search.terms }}</p>
+										<p class="search_results__price">
+											<span class="money">{{ item.price | money }}</span>
+
+											{% if item.compare_at_price > item.price %}
+												<span class="money money_sale">{{ item.compare_at_price | money }}</span>
+												<span class="sale_percent">Save{{ item.compare_at_price | minus: item.price | divided_by: 100.0 | remove: '.0' }}%</span>
+											{% endif %}
+										</p>
+									{% when 'article' %}
+										<p class="search_results__name"><a href="{{ item.url }}">{{ item.title }}</a></p>
+										<p class="search_results__desc">{{ item.content | strip_html | truncatewords:50 | highlight: search.terms }}</p>
+										<p class="article_info"><span class="article_author">{{ item.author }}</span> | <time class="article_time" datetime="{{ item.published_at | date: '%Y-%m-%dT%H:%M' }}">{{ item.published_at | date: '%b. %d. %Y' }}</time></p>
+
+									{% else %}
+										<p class="search_results__name"><a href="{{ item.url }}">{{ item.title | highlight: search.terms }}</a></p>
+										<p class="search_results__desc">{{ pages[item.handle].content | strip_html | truncatewords:50 | highlight: search.terms }}</p>
+								{% endcase %}
+							</div>
+						</li>
+					{% endfor %}
+				</ul>
+
+				{% if paginate.pages > 1 %}
+					{% assign pagination_items = 'layout.pagination.items' | t %}
+					{% include 'snippet-pagination' with pagination_items %}
+				{% endif %}
+			{% endif %}
+		</div>
+	</div>
+{% endpaginate %}
+
+<div class="hidden">
+	<div id="hidden_search_result">
+		{% if search.results_count == 0 %}
+			{% if search.terms %}
+				<p class="alert alert-warning">{{ 'pages.search.no_results' | t }}</p>
+			{% endif %}
+		{% else %}
+			{% assign search_results = search.results | sort: 'object_type' %}
+			<ul class="search_results" data-count_result="{{ search.results_count }}" data-caption="{{ 'blog.articles.view_all' | t }}">
+				{% for item in search_results limit:6 %}
+					<li>
+						{% if item.object_type == 'product' and item.featured_image %}
+							<a class="search_results__img" href="{{ item.url }}">
+								<img src="{{ item.featured_image.src | img_url: '60x60', crop: 'center' }}" alt="{{ item.featured_image.alt | escape }}">
+							</a>
+						{% elsif item.object_type == 'page' %}
+								<div class="search_results__img">
+									<svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<rect width="60" height="60" fill="#E5E5E5"/>
+									<g id="Menu and popups">
+									<rect width="1460" height="1110" transform="translate(-369 -446)" fill="white"/>
+									<rect id="Rectangle" opacity="0.7" x="-369" y="-446" width="1460" height="1110" fill="#222222"/>
+									<g id="search">
+									<g id="Rectangle 2" filter="url(#filter0_d)">
+									<rect x="-43" y="-343" width="500" height="805" fill="white"/>
+									</g>
+									<rect id="image" width="60" height="60" fill="#E4E4E4"/>
+									<g id="Group 2">
+									<rect id="Rectangle 2_2" x="6" y="10" width="48" height="13" rx="3" fill="white"/>
+									<rect id="Rectangle 2.1" x="6" y="27" width="48" height="3" rx="1.5" fill="white"/>
+									<rect id="Rectangle 2.2" x="6" y="34" width="48" height="3" rx="1.5" fill="white"/>
+									<rect id="Rectangle 2.3" x="32" y="41" width="22" height="10" rx="3" fill="white"/>
+									<rect id="Rectangle 2.4" x="6" y="41" width="22" height="3" rx="1.5" fill="white"/>
+									<rect id="Rectangle 2.5" x="6" y="48" width="22" height="3" rx="1.5" fill="white"/>
+									</g>
+									</g>
+									</g>
+									<defs>
+									<filter id="filter0_d" x="-47" y="-343" width="508" height="813" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+									<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+									<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+									<feOffset dy="4"/>
+									<feGaussianBlur stdDeviation="2"/>
+									<feColorMatrix type="matrix" values="0 0 0 0 0.133333 0 0 0 0 0.133333 0 0 0 0 0.133333 0 0 0 0.05 0"/>
+									<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+									<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+									</filter>
+									</defs>
+									</svg>
+								</div>
+						{% elsif item.object_type != 'product' %}
+							<a class="search_results__img" href="{{ item.url }}">
+								{% if item.image %}
+									<img src="{{ item.image.src | img_url: '60x60', crop: 'center' }}" alt="{{ item.image.alt | escape }}">
+								{% else %}
+									<img src="{{ 'no_image.png' | asset_img_url: '60x60', crop: 'center' }}" alt="no image">
+								{% endif %}
+							</a>
+						{% endif %}
+
+						<div class="desk">
+							{% case item.object_type %}
+								{% when 'product' %}
+									<p class="search_results__name"><a href="{{ item.url }}">{{ item.title }}</a></p>
+									<p class="search_results__price">
+										<span class="money">{{ item.price | money }}</span>
+										
+										{% if item.compare_at_price > item.price %}
+											<span class="money money_sale">{{ item.compare_at_price | money }}</span>
+											<span class="sale_percent">Save{{ item.compare_at_price | minus: item.price | divided_by: 100.0 | remove: '.0' }}%</span>
+										{% endif %}
+									</p>
+								{% when 'article' %}
+									<p class="search_results__name"><a href="{{ item.url }}">{{ item.title }}</a></p>
+									<p class="article_info"><span class="article_author">{{ item.author }}</span> | <time class="article_time" datetime="{{ item.published_at | date: '%Y-%m-%dT%H:%M' }}">{{ item.published_at | date: '%b. %d. %Y' }}</time></p>
+								{% else %}
+									<p class="search_results__name"><a href="{{ item.url }}">{{ item.title }}</a></p>
+							{% endcase %}
+						</div>
+					</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+	</div>
+</div>
+

@@ -1,0 +1,24 @@
+{% if template.name == 'index' %}
+	<h1>
+	{% else %}
+	<div>
+	{% endif %}	
+		{% case logo_t %}
+			{% when 'txt' %}
+				<a class="header_logo" href="{{ shop.url }}">{{ shop.name }} {{ slogan }}</a>
+			{% when 'img' %}
+				{% if logo_image.size > 0 %}
+					<a class="header_logo" href="{{ shop.url }}">
+						<img src="{{ src }}" alt="{{ section.settings.logo_main.alt | default: shop.name }}" style="max-width: {{ max_w }}px">
+						{{ slogan }}
+					</a>
+				{% else %}
+					<a class="header_logo" href="{{ shop.url }}">{{ shop.name }} {{ slogan }}</a>
+				{% endif %}
+
+		{% endcase %}
+	{% if template.name == 'index' %}
+	</h1>
+	{% else %}
+	</div>
+{% endif %}

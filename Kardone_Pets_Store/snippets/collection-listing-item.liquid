@@ -1,0 +1,38 @@
+{% if collection_image %}
+	{% capture collection_img_url %}{{ collection_image_src | img_url: item_size, crop: img_alignment }}{% endcapture %}
+	{% capture collection_img_min_url %}{{ collection_image_src | img_url: '100x100', crop: img_alignment }}{% endcapture %}
+{% elsif collection.image %}
+	{% capture collection_img_url %}{{ collection | img_url: item_size, crop: img_alignment }}{% endcapture %}
+	{% capture collection_img_min_url %}{{ collection | img_url: '100x100', crop: img_alignment }}{% endcapture %}
+{% elsif collection.products.first %}
+	{% assign iteration_count = collection.products_count | minus:1 %}
+
+	{% for i in (0..iteration_count) %}
+		{% if collection.products[i].images.size > 0 %}
+			{% capture collection_img_url %}{{ collection.products[i].images.first | img_url: item_size, crop: img_alignment }}{% endcapture %}
+			{% capture collection_img_min_url %}{{ collection.products[i].images.first | img_url: '100x100', crop: img_alignment }}{% endcapture %}
+
+			{% break %}
+		{% else %}
+			{% assign collection_img_url = 0 %}
+		{% endif %}
+	{% endfor %}
+{% else %}
+	{% assign collection_img_url = 0 %}
+{% endif %}
+
+<a class="collection_item" href="{{ collection.url }}">
+	<div class="collection_img">
+		{% if collection_img_url == 0 %}
+			<div class="img_placeholder__wrap">{{ 'collection-1' | placeholder_svg_tag }}</div>
+		{% else %}
+			<img style="width: 100%" class="blur-up lazyload" src="{{ collection_img_min_url }}" data-src="{{ collection_img_url }}" alt="{{ collection.title }}">
+		{% endif %}
+	</div>
+
+	<div class="collection_caption">
+		<div>
+			<h2 class="collection_title">{{ collection.title }}</h2>
+		</div>
+	</div>
+</a>

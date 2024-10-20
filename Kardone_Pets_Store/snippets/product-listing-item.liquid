@@ -1,0 +1,227 @@
+{% comment %}Is this product on sale?{% endcomment %}
+{%- assign on_sale = false -%}
+{%- if product.compare_at_price > product.price -%}
+	{%- assign on_sale = true -%}
+{%- endif -%}
+
+{%- if settings.badge_toggle and settings.new_products_period.size > 0 -%}
+	{% comment %}Is this product new?{% endcomment %}
+	{%- assign date_pub_y = product.published_at | date:'%Y' -%}
+	{%- assign date_pub_d = product.published_at | date:'%j' -%}
+	{%- assign date_now_y = 'now' | date:'%Y' -%}
+	{%- assign date_now_d = 'now' | date:'%j' -%}
+	{%- assign dates_diff_y = date_now_y | minus: date_pub_y | times: 365 -%}
+	{%- assign dates_diff_d = date_now_d | minus: date_pub_d -%}
+	{%- assign dates_diff = dates_diff_y | plus: dates_diff_d -%}
+	{%- assign new_products_period = settings.new_products_period | plus: 0 -%}
+{%- endif -%}
+
+{%- assign product_color_option = settings.color_option | downcase -%}
+
+{% unless img_min_size.size > 0 %}
+	{%- assign img_min_size = '100x' -%}
+{% endunless %}
+
+
+{% comment %}{% for tag in product.tags %}
+	{% if tag == settings.custom_badge_1 %}
+		{% assign custom_badge_1 = true %}
+	{% elsif tag == settings.custom_badge_2 %}
+		{% assign custom_badge_2 = true %}
+	{% endif %}
+{% endfor %}{% endcomment %}
+
+<div class="product_item" id="product__{{ product.handle }}">
+	<div class="product_img_wrap">
+		<div class="product_img">
+			<a class="img_change" href="{{ product.url | within: collection }}">
+			{% if product.featured_image %}
+				<img class="lazyload" src="{{ product.featured_image.src | product_img_url: img_min_size, crop: img_alignment }}" data-src="{{ product.featured_image.src | product_img_url: img_size, crop: img_alignment }}"  alt="{{ product.featured_image.alt | escape }}">
+				{% if second_img %}
+					<img class="lazyload image_2" src="{{ product.featured_image.src | product_img_url: '90x100', crop: img_alignment }}" data-src="{{ product.featured_image.src | product_img_url: '279x300', crop: img_alignment }}"  alt="{{ product.featured_image.alt | escape }}">
+				{% endif %}
+			{% else %}	
+				<img class="lazyload" src="{{ 'no_image.png' | asset_url: img_size, crop: 'center' }}" data-src="{{ 'no_image.png' | asset_url: img_min_size, crop: 'center' }}" alt="{{ product.featured_image.alt | escape }}">
+			{% endif %}
+			
+			{% if settings.badge_toggle %}
+				<div class="bade_wrap">
+
+					{% if settings.badge_sale_percent_toggle %}
+						{% if on_sale %}
+							<span class="product_badge sale_percent">–{{ product.compare_at_price_max | minus: product.price | times: 100.0 | divided_by: product.compare_at_price_max | money_without_currency | times: 100 | remove: '.0' }}%</span>
+						{% endif %}
+					{% endif %}
+
+
+					{% if settings.badge_new_toggle %}
+						{% if settings.new_products_period.size > 0 %}
+							{% if dates_diff <= new_products_period %}<span class="product_badge new">{{ 'layout.product.new_products' | t }}</span>{% endif %}
+						{% endif %}
+					{% endif %}
+
+
+					{% unless product.available %}
+						{% if settings.badge_ourstock_toggle %}
+							<span class="product_badge sale_out">{{ 'layout.product.outstock' | t }}</span>
+						{% endif %}
+					{% endunless %}
+					
+					{% if settings.badge_sale_toggle %}
+						{% if on_sale %}
+							<span class="product_badge sale">{{ 'layout.product.sale' | t }}</span>	
+						{% endif %}
+					{% endif %}
+
+					{% for tag in product.tags %}
+                        {% if tag == settings.custom_badge_1 %}
+                            <span class="product_badge custom_badge_1">{{ settings.custom_badge_1_text }}</span>	
+                        {% elsif tag == settings.custom_badge_2 %}
+                            <span class="product_badge custom_badge_2">{{ settings.custom_badge_2_text }}</span>
+                        {% endif %}
+                    {% endfor %}
+
+					
+				</div>
+			{% endif %}
+			</a>
+		</div>
+
+		
+		<div class="product_links">
+			<form method="post" action="/cart/add" class="add_to_cart_form">
+				{% if product.available %}
+					{% if product.variants.size == 1 %}
+						<input type="hidden" name="id" value="{{ product.variants.first.id }}" />
+						<button class="btn btn-cart" type="submit">
+							<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M20 20H0V6H20V20ZM2 18H18V8H2V18Z"/>
+								<path d="M14 3.99995H12C12 3.49995 11.8 2.99995 11.4 2.59995C10.7 1.89995 9.3 1.89995 8.6 2.59995C8.2 2.89995 8 3.39995 8 3.99995H6C6 2.89995 6.4 1.89995 7.2 1.19995C8.7 -0.300049 11.3 -0.300049 12.9 1.19995C13.6 1.89995 14 2.89995 14 3.99995Z"/>
+							</svg>
+							<span>{{ 'layout.product.add_to_cart' | t }}</span>
+						</button>
+					{% else %}
+						<a class="btn btn_options" href="{{ product.url }}">
+							<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M20 20H0V6H20V20ZM2 18H18V8H2V18Z"/>
+								<path d="M14 3.99995H12C12 3.49995 11.8 2.99995 11.4 2.59995C10.7 1.89995 9.3 1.89995 8.6 2.59995C8.2 2.89995 8 3.39995 8 3.99995H6C6 2.89995 6.4 1.89995 7.2 1.19995C8.7 -0.300049 11.3 -0.300049 12.9 1.19995C13.6 1.89995 14 2.89995 14 3.99995Z"/>
+							</svg>
+							<span>{{ 'layout.product.choose_variant_button' | t }}</span>
+						</a>
+					{% endif %}
+				{% else %}
+					<button class="btn btn-cart" disabled>
+						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M20 20H0V6H20V20ZM2 18H18V8H2V18Z"/>
+							<path d="M14 3.99995H12C12 3.49995 11.8 2.99995 11.4 2.59995C10.7 1.89995 9.3 1.89995 8.6 2.59995C8.2 2.89995 8 3.39995 8 3.99995H6C6 2.89995 6.4 1.89995 7.2 1.19995C8.7 -0.300049 11.3 -0.300049 12.9 1.19995C13.6 1.89995 14 2.89995 14 3.99995Z"/>
+						</svg>
+						<span>{{ 'layout.product.unavailable' | t }}</span>
+					</button>
+				{% endif %}
+			</form>
+			
+			<div class="product_links__subbutton">
+				<a class="quick_view_btn" href="{{ product.url }}" title="{{ 'layout.product.quick_view_button' | t }}"><span>{{ 'layout.product.quick_view_button' | t }}</span>
+					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M8 6H10V8H12V10H10V12H8V10H6V8H8V6Z"/>
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M20 18.5787L16.2437 14.8223C17.4619 13.2995 18.2741 11.269 18.2741 9.13706C18.2741 4.06091 14.2132 0 9.13706 0C4.06091 0 0 4.06091 0 9.13706C0 14.2132 4.06091 18.2741 9.13706 18.2741C11.269 18.2741 13.2995 17.5635 14.8223 16.2437L18.5787 20L20 18.5787ZM2.03046 9.13706C2.03046 5.17766 5.17766 2.03046 9.13706 2.03046C13.0964 2.03046 16.2437 5.17766 16.2437 9.13706C16.2437 13.0964 13.0964 16.2437 9.13706 16.2437C5.17766 16.2437 2.03046 13.0964 2.03046 9.13706Z"/>
+					</svg>
+				</a>
+
+				{% if shop.customer_accounts_enabled %}
+					{% if customer %}
+						{% if settings.wishlist_toggle == true and settings.wishlist_page != '' %}
+							{% if customer.metafields.zemez_modules.wishlist contains product.handle %}
+								<a class="wishlist_btn" href="{{ pages[settings.zemez_wishlist_page].url }}" data-product="{{ product.handle }}" data-customer="{{ customer.id }}" data-action="remove" onclick="zemezWishlist(this); return false;">
+									<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M10 18L8.74 16.7826C4.06 12.7826 1 10.087 1 6.78261C1 4.08696 3.16 2 5.95 2C7.48 2 9.01 2.69565 10 3.82609C10.99 2.69565 12.52 2 14.05 2C16.84 2 19 4.08696 19 6.78261C19 10.087 15.94 12.7826 11.26 16.7826L10 18Z" stroke-width="2" stroke-linecap="round"></path>
+									</svg>
+									<span>{{ 'layout.wishlist.add_to_wishlist' | t }}</span>
+								</a>
+							{% else %}
+								<a class="wishlist_btn" href="{{ pages[settings.zemez_wishlist_page].url }}" data-product="{{ product.handle }}" data-customer="{{ customer.id }}" data-action="add" onclick="zemezWishlist(this); return false;">
+									<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M10 18L8.74 16.7826C4.06 12.7826 1 10.087 1 6.78261C1 4.08696 3.16 2 5.95 2C7.48 2 9.01 2.69565 10 3.82609C10.99 2.69565 12.52 2 14.05 2C16.84 2 19 4.08696 19 6.78261C19 10.087 15.94 12.7826 11.26 16.7826L10 18Z" stroke-width="2" stroke-linecap="round"></path>
+									</svg>
+									<span>{{ 'layout.wishlist.add_to_wishlist' | t }}</span>
+								</a>
+							{% endif %}
+						{% endif %}
+
+					{% else %}
+						<a href="{{ routes.account_login_url }}" class="wishlist_btn wishlist_login">
+              				<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 18L8.74 16.7826C4.06 12.7826 1 10.087 1 6.78261C1 4.08696 3.16 2 5.95 2C7.48 2 9.01 2.69565 10 3.82609C10.99 2.69565 12.52 2 14.05 2C16.84 2 19 4.08696 19 6.78261C19 10.087 15.94 12.7826 11.26 16.7826L10 18Z" stroke-width="2" stroke-linecap="round"></path>
+                            </svg>
+              			</a>
+					{% endif %}
+				{% endif %}
+			</div>
+		</div>
+	</div>
+
+	<div class="product_info">
+		<div class="product_color">
+			{%- for option in product.options_with_values -%}
+				{%- assign current_product_option = option.name | downcase -%}
+
+				{%- if current_product_option == product_color_option -%}
+					{%- for value in option.values limit: 5 -%}
+
+						{% assign color_link = '' %}
+						{% for variant in product.variants %}
+							{% if variant.options contains value and variant.featured_image %}
+								{% assign color_link = variant.featured_image.src | product_img_url: img_size, crop: img_alignment %}
+							{% endif %}
+						{% endfor %}
+
+
+						<span data-image="{{ color_link }}" class="color_options color_options_clickable" style="background-color: {{ value }};" title="{{ value }}"></span>
+					{%- endfor -%}
+
+					{% if option.values.size > 5 %}
+						<span class="color_options_info">+ {{ option.values.size | minus: 5 }}</span>
+					{% endif %}
+				{%- endif -%}
+			{%- endfor -%}
+		</div>
+
+		<p class="product_vendor">{{ product.vendor }}</p>
+
+		<p class="product_name">
+			{% if template == 'index' %}
+				<a href="{{ product.url }}">{{ product.title | truncate:50 }}</a>
+			{% else %}
+				<a href="{{ product.url | within: collection }}">{{ product.title | truncate:50 }}</a>
+			{% endif %}
+		</p>
+		
+		<p class="product_price">
+			{% if product.available and settings.variants_money_toggle %}
+				{% if product.variants.size == 1 %}
+					<span class="money main_price">{{ product.price | money }}</span>
+
+					{% if on_sale %}
+						<span class="money money_sale">{{ product.compare_at_price | money }}</span>
+					{% endif %}
+				{% else %}
+					{% assign prices_sorted = product.variants | sort: 'price' %}
+					<span class="money main_price">{{ prices_sorted.first.price | money }}</span>{% unless prices_sorted.first.price == prices_sorted.last.price %} <span class="money_like main_price">–</span> <span class="money main_price">{{ prices_sorted.last.price | money }}</span>{% endunless %}
+					{% comment %}<span class="money_variants">({{ product.variants | size }} {{ 'layout.product.variants' | t }})</span>{% endcomment %}
+				{% endif %}
+			{% else %}
+          		{% if on_sale %}
+					<span class="money money_sale">{{ product.compare_at_price | money }}</span>
+				{% endif %} 
+          
+				<span class="money main_price">{{ product.price | money }}</span>
+            
+			{% endif %}
+		</p>
+
+		{% if product.description.size > 0 %}
+			<p class="product_desc">{{ product.description | strip_html | truncate: 200 }}</p>
+		{% endif %}
+
+	</div>
+</div>
