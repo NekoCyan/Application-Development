@@ -1,0 +1,94 @@
+<div class="contact_item item_address">
+	          
+    {% if section.settings.phone_title.size > 0 and section.settings.phone_text.size > 0 %}
+	   
+		<div class="contact_phone contact_element">
+			 <h4>{{ section.settings.phone_title }}</h4>
+			<svg width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M13.9 20C6.2 19.899 0.1 13.5354 0 5.65657V5.15152C0 3.53535 2.2 0.808081 3.4 0L4.9 0.40404L8 6.86869L7.6 8.18182L6.8 8.68687C6.6 8.78788 6.6 8.9899 6.7 9.19192C7.1 9.89899 7.5 10.6061 8.1 11.3131C8.7 11.8182 9.3 12.3232 10.1 12.7273C10.2 12.8283 10.4 12.7273 10.5 12.6263L11 11.7172L12.3 11.3131L18.6 14.4444L19 15.8586C17.2 18.5859 15.7 20 14.5 20H13.9ZM3.7 2.52525C2.8 3.43434 2 4.74748 2 5.15152V5.55556C2.1 12.4242 7.4 17.8788 13.9 17.9798H14.3C14.6 17.8788 15.5 17.0707 16.5 15.6566L12.1 13.4343V13.5354C11.5 14.5455 10.2 14.9495 9.1 14.4444C8.2 13.9394 7.4 13.3333 6.6 12.6263C5.9 11.8182 5.3 10.9091 4.8 10C4.3 8.88889 4.6 7.57576 5.6 6.9697L5.7 6.86869L3.7 2.52525Z" fill="#222222"/>
+			</svg>
+			<a class="tel_ltr" href="tel:{{ section.settings.phone_text | replace: ' ','' }}">{{ section.settings.phone_text }}</a>
+			<p>{{ section.settings.phone_text_info }}</p>
+		</div>
+	{% endif %}
+
+	{% if section.settings.phone_title_2.size > 0 and section.settings.phone_text_2.size > 0 %}
+	   
+		<div class="contact_phone contact_element">
+			 <h4>{{ section.settings.phone_title_2 }}</h4>
+			<svg width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M13.9 20C6.2 19.899 0.1 13.5354 0 5.65657V5.15152C0 3.53535 2.2 0.808081 3.4 0L4.9 0.40404L8 6.86869L7.6 8.18182L6.8 8.68687C6.6 8.78788 6.6 8.9899 6.7 9.19192C7.1 9.89899 7.5 10.6061 8.1 11.3131C8.7 11.8182 9.3 12.3232 10.1 12.7273C10.2 12.8283 10.4 12.7273 10.5 12.6263L11 11.7172L12.3 11.3131L18.6 14.4444L19 15.8586C17.2 18.5859 15.7 20 14.5 20H13.9ZM3.7 2.52525C2.8 3.43434 2 4.74748 2 5.15152V5.55556C2.1 12.4242 7.4 17.8788 13.9 17.9798H14.3C14.6 17.8788 15.5 17.0707 16.5 15.6566L12.1 13.4343V13.5354C11.5 14.5455 10.2 14.9495 9.1 14.4444C8.2 13.9394 7.4 13.3333 6.6 12.6263C5.9 11.8182 5.3 10.9091 4.8 10C4.3 8.88889 4.6 7.57576 5.6 6.9697L5.7 6.86869L3.7 2.52525Z" fill="#222222"/>
+			</svg>
+			<a class="tel_ltr" href="tel:{{ section.settings.phone_text_2 | replace: ' ','' }}">{{ section.settings.phone_text_2 }}</a>
+			<p>{{ section.settings.phone_text_info_2 }}</p>
+		</div>
+	{% endif %}
+
+	{% if section.settings.location_title.size > 0 and section.settings.location_text.size > 0 %}
+	  
+		<div class="contact_element">
+			  <h4>{{ section.settings.location_title }}</h4>
+			<p>{{ section.settings.location_text }}</p>
+		</div>
+	{% endif %}
+
+   
+</div>
+	
+
+
+{% schema %}
+{
+	"name": "Contact",
+	"class": "section section_template__contact",
+	"settings": [
+		{
+			"type": "header",
+			"content": "Contact info"
+		},
+		
+		{
+			"type": "text",
+			"id": "phone_title",
+			"label": "Phone title"
+		},
+		{
+			"type": "text",
+			"id": "phone_text",
+			"label": "Phone text"
+		},
+		{
+			"type": "richtext",
+			"id": "phone_text_info",
+			"label": "Phone info text"
+		},
+		{
+			"type": "text",
+			"id": "phone_title_2",
+			"label": "Phone title"
+		},
+		{
+			"type": "text",
+			"id": "phone_text_2",
+			"label": "Phone text"
+		},
+		{
+			"type": "richtext",
+			"id": "phone_text_info_2",
+			"label": "Phone info text"
+		},
+		{
+			"type": "text",
+			"id": "location_title",
+			"label": "Location title"
+		},
+		{
+			"type": "textarea",
+			"id": "location_text",
+			"label": "Location text"
+		}
+
+		
+	]
+}
+{% endschema %}

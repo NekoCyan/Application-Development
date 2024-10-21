@@ -1,0 +1,58 @@
+
+		
+		<div class="contact_item item_form">
+			<h3 class="item_title">{{ section.settings.item_form_title }}</h3>
+			<p>{{ section.settings.item_form_text }}</p>
+
+			{% form 'contact' %}
+				{% if form.posted_successfully? %}
+					<p class="alert alert-success">{{ 'pages.contact_page_form.submit_success' | t }}</p>
+				{% endif %}
+
+				{{ form.errors | default_errors }}
+				
+				<div class="form-group">
+					<label for="contact_form__name">{{ 'pages.contact_page_form.name' | t }}</label>
+					<input required type="text" id="contact_form__name" name="contact[name]" value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}" placeholder="{{ 'pages.contact_page_form.name' | t }}">
+				</div>
+
+				<div class="form-group">
+					<label for="contact_form__email">{{ 'pages.contact_page_form.email' | t }}</label>
+					<input required type="email" id="contact_form__email" name="contact[email]" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ csustomer.email }}{% endif %}" placeholder="{{ 'pages.contact_page_form.email' | t }}">
+				</div>
+
+				<div class="form-group">
+					<label for="contact_form__message">{{ 'pages.contact_page_form.message' | t }}</label>
+					<textarea required id="contact_form__message" name="contact[body]" placeholder="{{ 'pages.contact_page_form.message' | t }}">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+				</div>
+
+				<div class="form-group-btn">
+					<button class="btn" type="submit">{{ 'pages.contact_page_form.submit' | t }}</button>
+				</div>
+			{% endform %}
+		</div>
+
+
+{% schema %}
+{
+	"name": "Contact form",
+	"class": "section section_template__contact_form",
+	"settings": [
+		
+		{
+			"type": "header",
+			"content": "Contact form"
+		},
+		{
+			"type": "text",
+			"id": "item_form_title",
+			"label": "Contact form title"
+		},
+		{
+			"type": "textarea",
+			"id": "item_form_text",
+			"label": "Contact form text"
+		}
+	]
+}
+{% endschema %}

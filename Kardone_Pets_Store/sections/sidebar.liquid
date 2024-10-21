@@ -1,0 +1,233 @@
+<div class="sidebar">
+	{% for block in section.blocks %}
+		{% case block.type %}
+			{% when 'widget_collections' %}
+				<div class="sidebar_widget sidebar_widget__collections">
+						<h6 class="widget_header linklist_menu_title">{{ block.settings.title | escape }}</h6>
+
+						<div class="widget_content">
+							<ul class="list_links">
+								{% assign tmp_col_size = collection.id | size | plus:0 %}
+
+								{% for collection in collections %}
+
+									{% if tmp_col_size > 0 %}
+										{% assign tmp_col = collection.title | escape | handleize | replace: '-amp-', '-' %}
+									{% endif %}
+
+									<li>
+										<a {% if tmp_col_size > 0 and tmp_col == handle %}class="active"{% endif %} href="{{ collection.url }}">{{ collection.title | escape }}</a>
+									</li>
+
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+
+			{% when 'widget_linklist' %}
+				<div class="sidebar_widget sidebar_widget__linklist">
+						<h6 class="widget_header linklist_menu_title">{{ block.settings.title | escape }}</h6>
+
+						<div class="widget_content">
+							{%- assign links_small = block.settings.links -%}
+
+							<ul class="list_links">
+
+								{% for link in linklists[links_small].links %}
+									{%- assign child_list_handle = link.title | handleize -%}
+
+									{%- assign link_count = 0 -%}
+									{% for childlink in linklists[child_list_handle].links %}
+										{%- assign link_count = link_count | plus: 1 -%}
+									{% endfor %}
+								
+									<li class="level_1__item {% if link_count > 0 %}with_ul{% endif %}">
+										<a class="level_1__link" href="{{ link.url }}">{{ link.title }}</a>
+
+										{% if link_count > 0 %}
+											<i class="level_1__trigger menu_trigger fa fa-angle-down" data-submenu="submenu_{{ link.handle }}-{{ forloop.index }}"></i>
+											<ul class="level_1_2 droped_linklist" id="submenu_{{ link.handle }}-{{ forloop.index }}">
+												{% for childlink in linklists[child_list_handle].links %}
+													{%- assign child_list_2_handle = childlink.title | handleize -%}
+
+													{%- assign link_count = 0 -%}
+													{% for childlink in linklists[child_list_2_handle].links %}
+														{%- assign link_count = link_count | plus: 1 -%}
+													{% endfor %}
+														
+													<li class="level_1_2_item {% if link_count > 2 %}with_ul{% endif %}">
+														<a class="level_1_2_link" href="{{ childlink.url }}">{{ childlink.title }}</a>
+
+														{% if link_count > 0 %}
+															<i class="level_1__trigger menu_trigger fa fa-angle-down" data-submenu="subsubmenu_{{ link.handle }}-{{ forloop.index }}"></i>
+															<ul class="level_1_3 droped_linklist" id="subsubmenu_{{ link.handle }}-{{ forloop.index }}">
+																{% for childlink in linklists[child_list_2_handle].links %}
+																	<li class="level_1_3_item">
+																		<a class="level_1_3_link" href="{{ childlink.url }}">{{ childlink.title }}</a>
+																	</li>
+																{% endfor %}
+															</ul>
+														{% endif %}
+													</li>
+												{% endfor %}
+											</ul>
+										{% endif %}
+									</li>
+	
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+
+			{% when 'widget_types' %}
+				<div class="sidebar_widget sidebar_widget__types">
+					<h6 class="widget_header linklist_menu_title">{{ block.settings.title | escape }}</h6>
+
+					<div class="widget_content">
+						<ul class="list_links">
+							{% for product_type in shop.types %}
+								{% if product_type.size > 0 %}
+
+									{% if canonical_url contains 'types' %}
+										{% assign tmp_title = page_title | escape | handleize  %}
+										{% assign tmp_type = product_type | escape | handleize  %}
+									{% endif %}
+
+									<li><a {% if tmp_title and tmp_title == tmp_type  %}class="active"{% endif %} href="{{ product_type | url_for_type }}">{{ product_type }}</a></li>
+
+								{% endif %}
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+
+			{% when 'widget_vendors' %}
+				<div class="sidebar_widget sidebar_widget__vendors">
+					<h6 class="widget_header linklist_menu_title">{{ block.settings.title | escape }}</h6>
+
+					<div class="widget_content">
+						<ul class="list_links">
+							{% for vendor in shop.vendors %}
+
+								{% if canonical_url contains 'vendors' %}
+									{% assign tmp_title = page_title | escape | handleize %}
+									{% assign tmp_vendor = vendor | escape | handleize %}
+								{% endif %}
+
+								<li><a {% if tmp_title and tmp_title == tmp_vendor %}class="active"{% endif %} href="{{ vendor | url_for_vendor }}">{{ vendor }}</a></li>
+
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+
+
+		{% endcase %}
+	{% endfor %}
+</div>
+
+
+
+{% schema %}
+{
+	"name": "Sidebar",
+	"class": "page_sidebar",
+	"max_blocks": 6,
+	"settings": [
+		{
+			"type": "header",
+			"content": "Sidebar widgets"
+		}
+	],
+	"blocks": [
+		// COLLECTIONS ///////////////////////////////////////////////////////////////////////////////////////
+		{
+			"type": "widget_collections",
+			"name": "Collections",
+			"settings": [
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Widget title",
+					"default": "Collections"
+				}
+			]
+		},
+
+		// PRODUCT TYPES ///////////////////////////////////////////////////////////////////////////////////////
+		{
+			"type": "widget_types",
+			"name": "Product types",
+			"settings": [
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Widget title",
+					"default": "Product types"
+				}
+			]
+		},
+
+		// PRODUCT VENDORS ///////////////////////////////////////////////////////////////////////////////////////
+		{
+			"type": "widget_vendors",
+			"name": "Product vendors",
+			"settings": [
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Widget title",
+					"default": "Product vendors"
+				}
+			]
+		},
+
+
+
+		// LINKLIST ///////////////////////////////////////////////////////////////////////////////////////
+		{
+			"type": "widget_linklist",
+			"name": "Linklist",
+			"settings": [
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Widget title",
+					"default": "Linklist"
+				},
+				{
+					"type": "link_list",
+					"id": "links",
+					"label": "Choose linklist"
+				}
+			]
+		}
+	]
+}
+{% endschema %}
+
+
+{% javascript %}
+(function($) {
+
+	// LINKLIST ITEM SHOW/HIDE ELEMENT
+	$(window).on('load', function() {
+		$('.sidebar_widget__linklist .menu_trigger').each(function(i) {
+			var targetMenu = '#' + $(this).data('submenu');
+
+			$(this).on('click', function(e){
+				if ($(this).hasClass('active')){
+					$(targetMenu).hide(300);
+					$(this).removeClass('active');
+				} else {
+					$(targetMenu).show(300);
+					$(this).addClass('active');
+				};
+			});
+		});
+	
+	});
+
+
+})(jQuery);
+{% endjavascript %}

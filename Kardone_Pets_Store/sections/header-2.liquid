@@ -1,0 +1,1047 @@
+<div id="pseudo_sticky_block"></div>
+{% capture logo_size %}{{ section.settings.logo_width }}x{{ section.settings.logo_height }}{% endcapture %}
+
+{% if settings.password_link_view %}
+	<a class="btn password_page_btn" href="/password">View password page</a>
+{% endif %}
+
+<header id="page_header" class="header_layout_2">
+	<div class="page_container">
+      	<div class="header_banner">
+          <div class="container_big">
+            <img class="logo img-fluid" src=" {{ 'logo.png' | asset_url }}">
+            <h3>UPGRADE to a Fully-fledged Kardone!</h3>
+            <h4>Featuring a additional pages, plugins, beautiful pictures and fully functionality!</h4>
+            <a class="btn btn_alt" href="https://www.templatemonster.com/shopify-themes-type/62439.html">Shop now!</a>
+          </div>
+        </div>
+		<div class="top_pannel">
+			<div class="container">
+				{% if section.settings.social_menu %}
+					<ul class="social_menu">
+						{% if section.settings.social_fb.size > 0 %}
+							<li><a href="{{ section.settings.social_fb }}"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+						{% endif %}
+
+						{% if section.settings.social_tw.size > 0 %}
+							<li><a href="{{ section.settings.social_tw }}"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+						{% endif %}
+
+						{% if section.settings.social_inst.size > 0 %}
+							<li><a href="{{ section.settings.social_inst }}"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+						{% endif %}
+
+						{% if section.settings.social_pin.size > 0 %}
+							<li><a href="{{ section.settings.social_pin }}"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+						{% endif %}
+
+						{% if section.settings.social_yt.size > 0 %}
+							<li><a href="{{ section.settings.social_yt }}"><i class="fa fa-youtube" aria-hidden="true"></i></a></li>
+						{% endif %}
+					</ul>
+				{% endif %}
+
+				<div class="header_currency">
+					{% if section.settings.currency_selector %}
+						{% include 'header-currency' %}
+					{% endif %}
+
+					<script>
+						theme.shopCurrency = {{ shop.currency | json }};
+						theme.moneyFormat = {{ shop.money_format | json }};
+						theme.moneyFormatCurrency = {{ shop.money_with_currency_format | json }};
+					</script>
+
+					<script src="//cdn.shopify.com/s/javascripts/currencies.js"></script>
+					<script src="{{ 'currency-tools.js' | asset_url }}"></script>
+				</div>
+			</div>
+		</div>
+
+		<div class="header_row_1"> 
+			<div class="container">
+				<div class="header_item_left">
+		
+					{% if section.settings.logo_slogan.size > 0 %}
+						{% assign logo_slogan = section.settings.logo_slogan | prepend:'<span class="logo_slogan">' | append:'</span>' %}
+					{% endif %}
+					{% assign logo_width = section.settings.logo_width %}
+					{% assign logo_type = section.settings.logo_type %}
+					{% assign logo_i = section.settings.logo_main %}
+					{% assign logo_src = section.settings.logo_main | img_url: logo_size, crop:'center', scale: 2 %}
+
+					{% include 'logo' slogan: logo_slogan, logo_t: logo_type, logo_image: section.settings.logo_main, max_w: logo_width, src: logo_src %}
+				</div>
+
+				<div class="header_item_center">
+					{% comment %}   MEGAMENU   {% endcomment %}
+					{% if section.settings.megamenu_toggle %}
+						<nav id="megamenu" class="megamenu">
+							<h2 id="megamenu_mobile_toggle" style="display: none;" title="{{ 'layout.header.menu' | t }}">
+								<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<rect y="3" width="20" height="2" fill="#222222"/>
+									<rect y="9" width="20" height="2" fill="#222222"/>
+									<rect y="15" width="20" height="2" fill="#222222"/>
+								</svg>
+							</h2>
+
+							<div id="megamenu_mobile_close" style="display: none;">
+								<div class="close_icon"></div>
+							</div>
+
+							<ul id="megamenu_level__1" class="level_1">
+								{% for block in section.blocks %}
+									{% assign canonical_url_trim = canonical_url | replace: shop.url %}
+									{% assign block_url_trim = block.settings.link | replace: shop.url %}
+									{% if canonical_url_trim == "/" %}{% assign canonical_url_trim = "" %}{% endif %}
+
+									<li class="level_1__item {% case block.type %}{% when 'link-linklist' %}level_2__small{% when '3link-2ban', '2link-2ban', '2link-3ban' %}level_2__links{% endcase %}" style="display: inline-block;">
+										<a class="level_1__link {% if block_url_trim == canonical_url_trim %}active{% endif %}" href="{{ block.settings.link }}">{{ block.settings.title }}
+											{% if block.settings.links.size > 0 or block.settings.links_1.size > 0 or block.settings.links_2.size > 0 or block.settings.links_3.size > 0 or block.settings.links_4.size > 0 or block.settings.products.size > 0 or block.settings.blog.size > 0 or block.settings.banner_1_link.size > 0 %}<i class="level_1__trigger megamenu_trigger" data-submenu="menu_{{ block.id }}"></i>{% endif  %}
+											{% if block.settings.badge_text.size > 0 %}<span class="menu_badge" style="background-color: {{ block.settings.bg_color }}">{{ block.settings.badge_text }}</span>{% endif %}
+										</a>
+
+										{% case block.type %}
+											{% when 'link-linklist' %}
+												{% if block.settings.links.size > 0 %}
+													<ul class="level_2" id="menu_{{ block.id }}" style="display: none;">
+														<li class="item_{{ block.type }}">
+															<div>
+																{%- assign links_small = block.settings.links -%}
+																<ul class="level_3">
+																	{% for link in linklists[links_small].links %}
+																		{%- assign child_list_handle = link.title | handleize -%}
+
+																		{%- assign link_count = 0 -%}
+																		{% for childlink in linklists[child_list_handle].links %}
+																			{%- assign link_count = link_count | plus: 1 -%}
+																		{% endfor %}
+
+																		<li class="level_3__item {% if link_count > 0 %}with_ul{% endif %}">
+																			<a class="level_3__link" href="{{ link.url }}">{{ link.title }}{% if link_count > 0 %}<i class="level_3__trigger megamenu_trigger" data-submenu="submenu_{{ block.id }}-{{ forloop.index }}"></i>{% endif %}</a>
+
+																			{% if link_count > 0 %}
+																				<ul class="level_3_2 droped_linklist" id="submenu_{{ block.id }}-{{ forloop.index }}">
+																					{% for childlink in linklists[child_list_handle].links %}
+																						{%- assign child_list_2_handle = childlink.title | handleize -%}
+
+																						{%- assign link_count = 0 -%}
+																						{% for childlink in linklists[child_list_2_handle].links %}
+																							{%- assign link_count = link_count | plus: 1 -%}
+																						{% endfor %}
+																							
+																						<li class="level_3_2_item {% if link_count > 0 %}with_ul{% endif %}">
+																							<a class="level_3_2_link" href="{{ childlink.url }}">{{ childlink.title }}{% if link_count > 2 %}<i class="level_3__trigger megamenu_trigger" data-submenu="subsubmenu_{{ block.id }}-{{ forloop.index }}"></i>{% endif %}</a>
+
+																							{% if link_count > 0 %}
+																								<ul class="level_3_3 droped_linklist" id="subsubmenu_{{ block.id }}-{{ forloop.index }}">
+																									{% for childlink in linklists[child_list_2_handle].links %}
+																										<li class="level_3_3_item">
+																											<a class="level_3_3_link" href="{{ childlink.url }}">{{ childlink.title }}</a>
+																										</li>
+																									{% endfor %}
+																								</ul>
+																							{% endif %}
+																						</li>
+																					{% endfor %}
+																				</ul>
+																			{% endif %}
+																		</li>
+																	{% endfor %}
+																</ul>
+															</div>
+														</li>
+													</ul>
+												{% endif %}
+
+											{% when '3link-2ban' %}
+												{% if block.settings.links_1.size > 0 or block.settings.links_2.size > 0 or block.settings.links_3.size > 0 %}
+													<ul class="level_2" id="menu_{{ block.id }}" style="display: none;">
+														<li class="container item_{{ block.type }}">
+															<div class="row">
+																{% for i in (1..3) %}
+																	{% capture list %}links_{{ i }}{% endcapture %}
+																	{% capture item_image %}image_{{ i }}{% endcapture %}
+																	{%- assign list = block.settings[list] -%}
+																	{%- assign item_image = block.settings[item_image] -%}
+
+																	<div class="megamenu_col__item megamenu_linklist">
+																		
+																		<h3 {% if block.settings.show_title %} class="visible"{% endif %}>{{ linklists[list].title }} <i class="level_2__trigger megamenu_trigger" data-submenu="menu_{{ block.id }}-{{ i }}"></i></h3>
+																		
+																		{% if item_image %}
+																			<img src="{{ item_image | img_url: '255x180', crop:'center' }}" alt="{{ linklists[list].title }}">
+																		{% endif %}
+
+																		<ul class="level_3" id="menu_{{ block.id }}-{{ i }}">
+																			{% for link in linklists[list].links %}
+																				<li class="level_3__item">
+																					{% if link.title contains '[new]' %}
+																						{%- assign link_text = link.title | replace: '[new]', '' -%}
+																						{%- assign link_badge = 'new' -%}
+																					{% elsif link.title contains '[hot]' %} 
+																						{%- assign link_text = link.title | replace: '[hot]', '' -%}
+																						{%- assign link_badge = 'hot' -%}	
+																					{% else %}
+																						{%- assign link_text = link.title -%}
+																						{%- assign link_badge = false -%}	
+																					{% endif %}
+
+																					<a class="level_3__link" href="{{ link.url }}">{{ link_text }}{% if link_badge %}<span class="badge badge_{{ link_badge }}">{{ link_badge }}</span>{% endif %}</a>
+																				</li>
+																			{% endfor %}
+																		</ul>
+																	</div>
+																{% endfor %}
+
+																{% for i in (1..2) %}
+																	{% capture banner_link %}banner_link_{{ i }}{% endcapture %}
+																	{% capture banner_image %}banner_image_{{ i }}{% endcapture %}
+																	{% capture banner_title %}banner_title_{{ i }}{% endcapture %}
+																	{% capture banner_text %}banner_text_{{ i }}{% endcapture %}
+																	<div class="megamenu_col__item megamenu_col__banner">
+																		{% if block.settings[banner_link].size > 0 and block.settings[banner_image] %}
+																			<a class="megamenu_banner" id="banner_catalog_{{forloop.index}}" href="{{ block.settings[banner_link] }}">
+																				<img src="{{ block.settings[banner_image] | img_url: '280x380', crop:'center' }}" alt="{{ block.settings[banner_image].alt }}">
+																				<div class="caption_text">
+																					{% if block.settings[banner_title].size > 0 %}
+																						<h4>{{ block.settings[banner_title] }}</h4>
+																					{% endif %}
+																					{% if block.settings[banner_text].size > 0 %}
+																						<h5>{{ block.settings[banner_text] }}</h5>
+																					{% endif %}
+																				</div>
+																			</a>
+																		{% endif %}
+																	</div>
+																{% endfor %}
+															</div>
+														</li>
+													</ul>
+												{% endif %}
+
+
+											{% when '2link-3ban' %}
+												{% if block.settings.links_1.size > 0 or block.settings.links_2.size > 0 or block.settings.links_3.size > 0 %}
+													<ul class="level_2" id="menu_{{ block.id }}" style="display: none;">
+														<li class="container item_{{ block.type }}">
+															<div class="row">
+																
+																<div class="megamenu_col__item megamenu_col__banner">
+																	{% if block.settings.banner_link_1.size > 0 and block.settings.banner_image_1 %}
+																		<a class="megamenu_banner" href="{{ block.settings.banner_link_1 }}">
+																			<img src="{{ block.settings.banner_image_1 | img_url: '380x367', crop:'center' }}" alt="{{ block.settings.banner_image_1.alt }}">
+																			<div class="caption_text">
+																				{% if block.settings.title_bn_1.size > 0 %}
+																					<h4>{{ block.settings.title_bn_1 }}</h4>
+																				{% endif %}
+																			</div>
+																		</a>
+																	{% endif %}
+																</div>
+
+																<div class="megamenu_col__item item_main">
+																	<div class="megamenu_linklist">
+																		<h3>{{ linklists[block.settings.links_1].title }} <i class="level_2__trigger megamenu_trigger" data-submenu="menu_{{ block.id }}-1"></i></h3>
+																		
+																		<ul class="level_3" id="menu_{{ block.id }}-1">
+																			{% for link in linklists[block.settings.links_1].links %}
+																				<li class="level_3__item">
+																					{% if link.title contains '[new]' %}
+																						{%- assign link_text = link.title | replace: '[new]', '' -%}
+																						{%- assign link_badge = 'new' -%}
+																					{% elsif link.title contains '[hot]' %} 
+																						{%- assign link_text = link.title | replace: '[hot]', '' -%}
+																						{%- assign link_badge = 'hot' -%}	
+																					{% else %}
+																						{%- assign link_text = link.title -%}
+																						{%- assign link_badge = false -%}	
+																					{% endif %}
+
+																					<a class="level_3__link" href="{{ link.url }}">{{ link_text }}{% if link_badge %}<span class="badge badge_{{ link_badge }}">{{ link_badge }}</span>{% endif %}</a>
+																				</li>
+																			{% endfor %}
+																		</ul>
+																	</div>
+
+																	<div class="megamenu_linklist">
+																		<h3>{{ linklists[block.settings.links_2].title }} <i class="level_2__trigger megamenu_trigger" data-submenu="menu_{{ block.id }}-2"></i></h3>
+																		
+																		<ul class="level_3" id="menu_{{ block.id }}-2">
+																			{% for link in linklists[block.settings.links_2].links %}
+																				<li class="level_3__item">
+																					{% if link.title contains '[new]' %}
+																						{%- assign link_text = link.title | replace: '[new]', '' -%}
+																						{%- assign link_badge = 'new' -%}
+																					{% elsif link.title contains '[hot]' %} 
+																						{%- assign link_text = link.title | replace: '[hot]', '' -%}
+																						{%- assign link_badge = 'hot' -%}	
+																					{% else %}
+																						{%- assign link_text = link.title -%}
+																						{%- assign link_badge = false -%}	
+																					{% endif %}
+
+																					<a class="level_3__link" href="{{ link.url }}">{{ link_text }}{% if link_badge %}<span class="badge badge_{{ link_badge }}">{{ link_badge }}</span>{% endif %}</a>
+																				</li>
+																			{% endfor %}
+																		</ul>
+																	</div>
+
+																	{% if block.settings.banner_link_2.size > 0 and block.settings.banner_image_2 %}
+																	<div class="megamenu_banner_wrapper">
+																		<a class="megamenu_banner" href="{{ block.settings.banner_link_2 }}">
+																			<img src="{{ block.settings.banner_image_2 | img_url: '380x98', crop:'center' }}" alt="{{ block.settings.banner_image_2.alt }}">
+																			<div class="caption_text">
+																				{% if block.settings.title_bn_2.size > 0 %}
+																					<h4>{{ block.settings.title_bn_2 }}</h4>
+																				{% endif %}
+																			</div>
+																		</a>
+																	</div>
+																	{% endif %}
+																</div>
+
+																<div class="megamenu_col__item megamenu_col__banner">
+																	{% if block.settings.banner_link_3.size > 0 and block.settings.banner_image_3 %}
+																		<a class="megamenu_banner" href="{{ block.settings.banner_link_3 }}">
+																			<img src="{{ block.settings.banner_image_3 | img_url: '380x367', crop:'center' }}" alt="{{ block.settings.banner_image_3.alt }}">
+																			<div class="caption_text">
+																				{% if block.settings.title_bn_3.size > 0 %}
+																					<h4>{{ block.settings.title_bn_3 }}</h4>
+																				{% endif %}
+																			</div>
+																		</a>
+																	{% endif %}
+																</div>
+															</div>
+														</li>
+													</ul>
+												{% endif %}
+
+											
+
+											{% when '2link-2ban' %}
+												{% if block.settings.links_1.size > 0 or block.settings.links_2.size > 0 %}
+													<ul class="level_2" id="menu_{{ block.id }}" style="display: none;">
+														<li class="container item_{{ block.type }}">
+															<div class="row">
+																{% for i in (1..2) %}
+																	{% capture list %}links_{{ i }}{% endcapture %}
+																	{%- assign list = block.settings[list] -%}
+																	{%- assign item_image = block.settings[item_image] -%}
+
+																	<div class="megamenu_col__item megamenu_linklist">
+																		
+																		<h3 {% if block.settings.show_title %} class="visible"{% endif %}>{{ linklists[list].title }} <i class="level_2__trigger megamenu_trigger" data-submenu="menu_{{ block.id }}-{{ i }}"></i></h3>
+																		
+																		<ul class="level_3" id="menu_{{ block.id }}-{{ i }}">
+																			{% for link in linklists[list].links %}
+																				<li class="level_3__item">
+																					{% if link.title contains '[new]' %}
+																						{%- assign link_text = link.title | replace: '[new]', '' -%}
+																						{%- assign link_badge = 'new' -%}
+																					{% elsif link.title contains '[hot]' %} 
+																						{%- assign link_text = link.title | replace: '[hot]', '' -%}
+																						{%- assign link_badge = 'hot' -%}	
+																					{% else %}
+																						{%- assign link_text = link.title -%}
+																						{%- assign link_badge = false -%}	
+																					{% endif %}
+
+																					<a class="level_3__link" href="{{ link.url }}">{{ link_text }}{% if link_badge %}<span class="badge badge_{{ link_badge }}">{{ link_badge }}</span>{% endif %}</a>
+																				</li>
+																			{% endfor %}
+																		</ul>
+																	</div>
+																{% endfor %}
+
+																{% for i in (1..2) %}
+																	{% capture banner_link %}banner_link_{{ i }}{% endcapture %}
+																	{% capture banner_image %}banner_image_{{ i }}{% endcapture %}
+																	{% capture item_title %}item_title_{{ i }}{% endcapture %}
+																	<div class="megamenu_col__item megamenu_col__banner">
+																		{% if block.settings[banner_link].size > 0 and block.settings[banner_image] %}
+																			<a class="megamenu_banner" href="{{ block.settings[banner_link] }}">
+																				<img src="{{ block.settings[banner_image] | img_url: '380x240', crop:'center' }}" alt="{{ block.settings[banner_image].alt }}">
+																				<div class="caption_text">
+																					{% if block.settings[item_title].size > 0 %}
+																					<h4>{{ block.settings[item_title] }}</h4>
+																					{% endif %}
+																				</div>
+																			</a>
+																		{% endif %}
+																	</div>
+																{% endfor %}
+															</div>
+														</li>
+													</ul>
+												{% endif %}
+										{% endcase %}
+									</li>
+								{% endfor %}
+
+								<li class="megamenu_footer">
+									{% if shop.customer_accounts_enabled and settings.wishlist_toggle == true and settings.wishlist_page != '' %}
+										{% assign zemez_wishlist = customer.metafields.zemez_modules.wishlist %}
+										<div class="menu_header_wishlist">
+											<a href="{{ pages[settings.wishlist_page].url }}">
+												<span class="menu_header_wishlist_text">{{ 'layout.wishlist.wishlist' | t }}</span>
+												<span class="zemez_wishlist_total">{% if zemez_wishlist.size > 0 %}<span class="zemez_wishlist_total_wrap">{{ zemez_wishlist.size }}</span>{% endif %}</span>
+											</a>
+										</div>
+									{% endif %}
+
+									{% if shop.customer_accounts_enabled and section.settings.header_user %}
+										<div class="menu_header_account">
+											<span>{{ 'layout.header.my_account' | t }}</span>
+											{% if customer %}
+												<a href="/account" title="{{ 'layout.header.my_account' | t }}">{{ 'layout.header.my_account' | t }}</a>
+												<a href="/account/logout">{{ 'layout.header.logout' | t }}</a>
+											{% else %}
+												<a href="/account">{{ 'layout.header.my_account' | t }}</a>
+											{% endif %}
+										</div>
+									{% endif %}
+
+									{% if section.settings.currency_selector %}
+										{% assign codes = ',USD,EUR,GBP,CAD,ARS,AUD,BBD,BDT,BSD,BHD,BRL,BOB,BND,BGN,MMK,KYD,CLP,CNY,COP,CRC,HRK,CZK,DKK,DOP,XCD,EGP,XPF,FJD,GHS,GTQ,GYD,GEL,HKD,HUF,ISK,INR,IDR,NIS,JMD,JPY,JOD,KZT,KES,KWD,LVL,LTL,MXN,MYR,MUR,MDL,MAD,MNT,MZN,ANG,NZD,NGN,NOK,OMR,PKR,PYG,PEN,PHP,PLN,QAR,RON,RUB,SAR,RSD,SCR,SGD,SYP,ZAR,KRW,LKR,SEK,CHF,TWD,THB,TZS,TTD,TRY,UAH,AED,UYU,VEB,VND,ZMK,' %}
+										{% assign supported_codes = section.settings.supported_currencies | split: ' ' %}
+
+										<div class="menu_currency_selector__wrap">
+											<span>{{ 'layout.header.currency' | t }}</span>
+											<div id="menu_currency_selector">
+													<label id="menu_currency_selected">
+														<input class="menu_currency_selector__item" type="radio" name="menu_currency" value="{{ shop.currency }}" data-value="{{ shop.currency }}">
+														{{ shop.currency }}
+													</label>
+
+												{% for code in supported_codes %}
+													{% if code != shop.currency and codes contains code %}
+														<label >
+															<input class="menu_currency_selector__item" type="radio" name="menu_currency" value="{{ code }}" data-value="{{ code }}">
+															{{ code }}
+														</label>
+													{% endif %}
+												{% endfor %}
+											</div>
+										</div>
+									{% endif %}
+								</li>
+							</ul>
+						</nav>
+					{% endif %}
+				</div>
+				
+				<div class="header_item_right">
+					
+					{% if section.settings.header_search %}
+						{% assign ajax_search = section.settings.header_search_ajax %}
+						{% include 'header-search' ajax: ajax_search, style: 'type_2' %}
+					{% endif %}
+					
+					{% if shop.customer_accounts_enabled and section.settings.header_user %}
+						<div class="header_account">
+
+							{% if customer %}
+								<a href="/account" title="{{ 'layout.header.my_account' | t }}">
+									<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+										<path d="M19.9005 18.8945C19.801 17.9899 19.602 17.0854 19.204 16.1809C18.7065 14.9749 18.01 13.8693 17.0149 12.9648C16.1194 12.0603 15.0249 11.2563 13.8308 10.7538C11.4428 9.74874 8.65672 9.74874 6.16915 10.7538C4.97512 11.2563 3.8806 11.9598 2.98507 12.8643C2.08955 13.7688 1.29353 14.8744 0.79602 16.0804C0.497512 16.9849 0.199005 17.9899 0.0995025 18.8945L0 20H20L19.9005 18.8945ZM2.28856 17.9899C2.38806 17.5879 2.48756 17.2864 2.68657 16.8844C3.08458 15.8794 3.68159 15.0754 4.37811 14.2714C5.17413 13.5678 5.97015 12.9648 6.96517 12.5628C8.95522 11.7588 11.1443 11.7588 13.0348 12.5628C14.0299 12.9648 14.9254 13.5678 15.6219 14.2714C16.3184 14.9749 16.9154 15.8794 17.3134 16.8844C17.4129 17.1859 17.6119 17.5879 17.7114 17.9899H2.28856Z"/>
+										<path d="M12.9 6.88199C13.6 6.18634 14 5.19255 14 4C14 2.80745 13.6 1.91304 12.9 1.11801C11.3 -0.372671 8.7 -0.372671 7.2 1.11801C6.4 1.91304 6 2.90683 6 4C6 5.09317 6.4 6.08696 7.2 6.88199C8.7 8.37267 11.3 8.37267 12.9 6.88199ZM8.6 2.6087C9.3 1.91304 10.7 1.91304 11.4 2.6087C11.8 3.00621 12 3.50311 12 4C12 4.49689 11.8 4.99379 11.4 5.3913C10.7 6.08696 9.3 6.08696 8.6 5.3913C8.2 5.09317 8 4.59627 8 4C8 3.40373 8.2 2.90683 8.6 2.6087Z"/>
+									</svg>
+								</a>
+								
+							{% else %}
+								<a href="/account" title="{{ 'layout.header.my_account' | t }}">
+									<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+										<path d="M19.9005 18.8945C19.801 17.9899 19.602 17.0854 19.204 16.1809C18.7065 14.9749 18.01 13.8693 17.0149 12.9648C16.1194 12.0603 15.0249 11.2563 13.8308 10.7538C11.4428 9.74874 8.65672 9.74874 6.16915 10.7538C4.97512 11.2563 3.8806 11.9598 2.98507 12.8643C2.08955 13.7688 1.29353 14.8744 0.79602 16.0804C0.497512 16.9849 0.199005 17.9899 0.0995025 18.8945L0 20H20L19.9005 18.8945ZM2.28856 17.9899C2.38806 17.5879 2.48756 17.2864 2.68657 16.8844C3.08458 15.8794 3.68159 15.0754 4.37811 14.2714C5.17413 13.5678 5.97015 12.9648 6.96517 12.5628C8.95522 11.7588 11.1443 11.7588 13.0348 12.5628C14.0299 12.9648 14.9254 13.5678 15.6219 14.2714C16.3184 14.9749 16.9154 15.8794 17.3134 16.8844C17.4129 17.1859 17.6119 17.5879 17.7114 17.9899H2.28856Z"/>
+										<path d="M12.9 6.88199C13.6 6.18634 14 5.19255 14 4C14 2.80745 13.6 1.91304 12.9 1.11801C11.3 -0.372671 8.7 -0.372671 7.2 1.11801C6.4 1.91304 6 2.90683 6 4C6 5.09317 6.4 6.08696 7.2 6.88199C8.7 8.37267 11.3 8.37267 12.9 6.88199ZM8.6 2.6087C9.3 1.91304 10.7 1.91304 11.4 2.6087C11.8 3.00621 12 3.50311 12 4C12 4.49689 11.8 4.99379 11.4 5.3913C10.7 6.08696 9.3 6.08696 8.6 5.3913C8.2 5.09317 8 4.59627 8 4C8 3.40373 8.2 2.90683 8.6 2.6087Z"/>
+									</svg>
+								</a>
+							{% endif %}
+						</div>
+					{% endif %}
+					
+					{% if shop.customer_accounts_enabled and settings.wishlist_toggle == true and settings.wishlist_page != '' %}
+						{% assign zemez_wishlist = customer.metafields.zemez_modules.wishlist %}
+						<div class="header_wishlist">
+							<a href="{{ pages[settings.wishlist_page].url }}" title="{{ 'layout.wishlist.wishlist' | t }}">
+							<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M10 18L8.74 16.7826C4.06 12.7826 1 10.087 1 6.78261C1 4.08696 3.16 2 5.95 2C7.48 2 9.01 2.69565 10 3.82609C10.99 2.69565 12.52 2 14.05 2C16.84 2 19 4.08696 19 6.78261C19 10.087 15.94 12.7826 11.26 16.7826L10 18Z" stroke-width="2" stroke-linecap="round"/>
+								<span class="zemez_wishlist_total {% unless zemez_wishlist.size > 0 %} hidden{% endunless %}">{{ zemez_wishlist.size }}</span>
+							</svg>
+							</a>
+						</div>
+					{% endif %}
+
+					{% if section.settings.header_cart %}
+						{%- assign ajax_cart = section.settings.ajax_cart -%}
+						{% include 'header-cart' ajax: ajax_cart, style: 'type_2' %}
+					{% endif %}
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+</header>
+
+
+{% schema %}
+{
+	"name": "Header type 2",
+	"max_blocks": 6,
+	"settings": [
+
+		// MAIN LOGO ========================================================================================
+		{
+			"type": "header",
+			"content": "Main Logo"
+		},
+		{
+			"type": "radio",
+			"id": "logo_type",
+			"label": "Logo type",
+			"options": [
+				{
+					"value": "txt",
+					"label": "Text logo"
+				},
+				{
+					"value": "img",
+					"label": "Image logo"
+				}
+			]
+		},
+		{
+	        "type":      "range",
+	        "id":        "logo_width",
+	        "min":       100,
+	        "max":        200,
+	        "step":       10,
+	        "unit":       "px",
+	        "label":     "Logo width",
+	        "default":   160
+		},
+		{
+	        "type":      "range",
+	        "id":        "logo_height",
+	        "min":       30,
+	        "max":        80,
+	        "step":       10,
+	        "unit":       "px",
+	        "label":     "Logo height",
+	        "default":   40
+		},
+		{
+			"type": "header",
+			"content": "Retina logo information",
+			"info": "For a better display of the logo for retina display devices, load the logo twice as large as the required"
+		},
+		{
+			"type": "image_picker",
+			"id": "logo_main",
+			"label": "Logo image"
+		},
+		{
+			"type": "text",
+			"id": "logo_slogan",
+			"label": "Logo slogan"
+		},
+
+		// SOCIAL MENU ===================================================================================
+		{
+			"type": "header",
+			"content": "Social Menu"
+		},
+		{
+			"type": "checkbox",
+			"id": "social_menu",
+			"label": "Show Social Menu"
+		},
+		{
+			"type": "text",
+			"id": "social_fb",
+			"label": "Facebook"
+		},
+		{
+			"type": "text",
+			"id": "social_tw",
+			"label": "Twitter"
+		},
+		{
+			"type": "text",
+			"id": "social_inst",
+			"label": "Instagram"
+		},
+		{
+			"type": "text",
+			"id": "social_pin",
+			"label": "Pinterest"
+		},
+		{
+			"type": "text",
+			"id": "social_yt",
+			"label": "Youtube"
+		},
+
+		// SEARCH ==========================================================================================
+		{
+			"type": "header",
+			"content": "Search form"
+		},
+		{
+			"type": "checkbox",
+			"id": "header_search",
+			"label": "Show search form"
+		},
+		{
+			"type": "checkbox",
+			"id": "header_search_ajax",
+			"label": "Use ajax search"
+		},
+
+		// CURRENCY SELECTOR ===============================================================================
+		{
+			"type": "header",
+			"content": "Currency selector"
+		},
+		{
+			"type": "checkbox",
+			"id": "currency_selector",
+			"label": "Show currency selector"
+		},
+		{
+			"type": "text",
+			"id": "supported_currencies",
+			"label": "Currencies you wish to support",
+			"info": "Separate your currency codes with a space. Use the ISO 4217 3-letter currency code. [CLICK HERE](http:\/\/www.xe.com\/iso4217.php) for a complete list of currency codes. Example: CAD USD."
+		},
+
+		// ACCOUNT LINKS ==================================================================================
+		{
+			"type": "header",
+			"content": "Account links"
+		},
+		{
+			"type": "checkbox",
+			"id": "header_user",
+			"label": "Account links",
+			"info": "Customer Accounts must be enabled at \"Settings → Checkout\""
+		},
+
+
+		// SHOPPING CART =================================================================================
+		{
+			"type": "header",
+			"content": "Shopping cart"
+		},
+		{
+			"type": "checkbox",
+			"id": "header_cart",
+			"label": "Show cart"
+		},
+		{
+			"type": "checkbox",
+			"id": "ajax_cart",
+			"label": "Use ajax cart"
+		},
+
+
+		// MEGAMENU ======================================================================================
+		{
+			"type": "header",
+			"content": "Megamenu"
+		},
+		{
+			"type": "checkbox",
+			"id": "megamenu_toggle",
+			"label": "Show megamenu"
+		}
+	],
+	"blocks": [
+
+
+		// LINK =========================================================================================
+		{
+			"type": "link-simple",
+			"name": "Simple link",
+			"settings": [
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Title",
+					"default": "Item"
+				},
+				{
+					"type": "url",
+					"id": "link",
+					"label": "Link"
+				},
+				{
+					"type": "text",
+					"id": "badge_text",
+					"label": "Badge text"
+				},
+				{
+					"type": "color",
+					"id": "bg_color",
+					"label": "Background badge color",
+					"default": "#159EC9"
+				}
+			]
+		},
+
+
+		// LINK + LINKLIST ==============================================================================
+		{
+			"type": "link-linklist",
+			"name": "Link + linklist",
+			"settings": [
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Title",
+					"default": "Item"
+				},
+				{
+					"type": "url",
+					"id": "link",
+					"label": "Link"
+				},
+				{
+					"type": "text",
+					"id": "badge_text",
+					"label": "Badge text"
+				},
+				{
+					"type": "color",
+					"id": "bg_color",
+					"label": "Background badge color",
+					"default": "#159EC9"
+				},
+				{
+					"type": "link_list",
+					"id": "links",
+					"label": "Choose linklist"
+				}
+			]
+		},
+
+
+		// 3 LINKLISTS + 3 BANNERS ========================================================================
+		{
+			"type": "3link-2ban",
+			"name": "3 linklists + 2 banners",
+			"settings": [
+				{
+					"type": "header",
+					"content": "3 linklists + 2 banners"
+				},
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Item Title",
+					"default": "Item"
+				},
+				{
+					"type": "url",
+					"id": "link",
+					"label": "Link"
+				},
+				{
+					"type": "text",
+					"id": "badge_text",
+					"label": "Badge text"
+				},
+				{
+					"type": "color",
+					"id": "bg_color",
+					"label": "Background badge color",
+					"default": "#159EC9"
+				},
+				{
+					"type": "paragraph",
+					"content": "Linklists"
+				},
+				{
+					"type": "checkbox",
+					"id": "show_title",
+					"label": "Show linklists title",
+					"default": false
+				},
+				{
+					"type": "image_picker",
+					"id": "image_1",
+					"label": "Image 1"
+				},
+				{
+					"type": "link_list",
+					"id": "links_1",
+					"label": "Linklist #1"
+				},
+				{
+					"type": "image_picker",
+					"id": "image_2",
+					"label": "Image 2"
+				},
+				{
+					"type": "link_list",
+					"id": "links_2",
+					"label": "Linklist #2"
+				},
+				{
+					"type": "image_picker",
+					"id": "image_3",
+					"label": "Image 3"
+				},
+				{
+					"type": "link_list",
+					"id": "links_3",
+					"label": "Linklist #3"
+				},
+				{
+					"type": "paragraph",
+					"content": "Banners"
+				},
+				{
+					"type": "url",
+					"id": "banner_link_1",
+					"label": "Banner Link 1"
+				},
+				{
+					"type": "image_picker",
+					"id": "banner_image_1",
+					"label": "Banner Image 1"
+				},
+				{
+					"type": "text",
+					"id": "banner_title_1",
+					"label": "Banner title 1"
+				},
+				{
+					"type": "text",
+					"id": "banner_text_1",
+					"label": "Banner text 1"
+				},
+				{
+					"type": "url",
+					"id": "banner_link_2",
+					"label": "Banner Link 2"
+				},
+				{
+					"type": "image_picker",
+					"id": "banner_image_2",
+					"label": "Banner Image 2"
+				},
+				{
+					"type": "text",
+					"id": "banner_title_2",
+					"label": "Banner title 2"
+				},
+				{
+					"type": "text",
+					"id": "banner_text_2",
+					"label": "Banner text 2"
+				}
+			]
+		},
+
+		// 2 LINKLISTS + 2 BANNERS ========================================================================
+		{
+			"type": "2link-2ban",
+			"name": "2 linklists + 2 banners",
+			"settings": [
+				{
+					"type": "header",
+					"content": "2 linklists + 2 banners"
+				},
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Item Title",
+					"default": "Item"
+				},
+				{
+					"type": "url",
+					"id": "link",
+					"label": "Link"
+				},
+				{
+					"type": "text",
+					"id": "badge_text",
+					"label": "Badge text"
+				},
+				{
+					"type": "color",
+					"id": "bg_color",
+					"label": "Background badge color",
+					"default": "#159EC9"
+				},
+				{
+					"type": "paragraph",
+					"content": "Linklists (max length 9 links)"
+				},
+				{
+					"type": "link_list",
+					"id": "links_1",
+					"label": "Linklist #1"
+				},
+				{
+					"type": "link_list",
+					"id": "links_2",
+					"label": "Linklist #2"
+				},
+				{
+					"type": "paragraph",
+					"content": "Banners"
+				},
+				{
+					"type": "url",
+					"id": "banner_link_1",
+					"label": "Banner Link 1"
+				},
+				{
+					"type": "image_picker",
+					"id": "banner_image_1",
+					"label": "Banner Image 1"
+				},
+				{
+					"type": "text",
+					"id": "item_title_1",
+					"label": "Caption title 1"
+				},
+				{
+					"type": "url",
+					"id": "banner_link_2",
+					"label": "Banner Link 2"
+				},
+				{
+					"type": "image_picker",
+					"id": "banner_image_2",
+					"label": "Banner Image 2"
+				},
+				{
+					"type": "text",
+					"id": "item_title_2",
+					"label": "Caption title 2"
+				}
+			]
+		},
+
+
+		// 2 LINKLISTS + 3 BANNERS ========================================================================
+		{
+			"type": "2link-3ban",
+			"name": "2 linklists + 3 banners",
+			"settings": [
+				{
+					"type": "header",
+					"content": "2 linklists + 3 banners"
+				},
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Item Title",
+					"default": "Item"
+				},
+				{
+					"type": "url",
+					"id": "link",
+					"label": "Link"
+				},
+				{
+					"type": "text",
+					"id": "badge_text",
+					"label": "Badge text"
+				},
+				{
+					"type": "color",
+					"id": "bg_color",
+					"label": "Background badge color",
+					"default": "#159EC9"
+				},
+				{
+					"type": "paragraph",
+					"content": "Linklists (max length 9 links)"
+				},
+				{
+					"type": "checkbox",
+					"id": "show_title",
+					"label": "Show linklists title",
+					"default": false
+				},
+				{
+					"type": "link_list",
+					"id": "links_1",
+					"label": "Linklist #1"
+				},
+				{
+					"type": "link_list",
+					"id": "links_2",
+					"label": "Linklist #2"
+				},
+				{
+					"type": "paragraph",
+					"content": "Banners"
+				},
+				{
+					"type": "url",
+					"id": "banner_link_1",
+					"label": "Banner Link 1"
+				},
+				{
+					"type": "image_picker",
+					"id": "banner_image_1",
+					"label": "Banner Image 1"
+				},
+				{
+					"type": "text",
+					"id": "title_bn_1",
+					"label": "Banner title 1"
+				},
+				{
+					"type": "url",
+					"id": "banner_link_2",
+					"label": "Banner Link 2"
+				},
+				{
+					"type": "image_picker",
+					"id": "banner_image_2",
+					"label": "Banner Image 2"
+				},
+				{
+					"type": "text",
+					"id": "title_bn_2",
+					"label": "Banner title 2"
+				},
+				{
+					"type": "url",
+					"id": "banner_link_3",
+					"label": "Banner Link 3"
+				},
+				{
+					"type": "image_picker",
+					"id": "banner_image_3",
+					"label": "Banner Image 3"
+				},
+				{
+					"type": "text",
+					"id": "title_bn_3",
+					"label": "Banner title 3"
+				}
+			]
+		}
+		
+	]
+}
+{% endschema %}
+
+{% javascript %} 
+jQuery(document).ready(function($) {
+
+	$(window).on('load resize', function() {
+		megamenuToggle();
+	});
+	
+});
+{% endjavascript %}

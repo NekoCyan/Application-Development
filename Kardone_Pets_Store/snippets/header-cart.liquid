@@ -1,0 +1,65 @@
+<div class="header_cart" id="main__cart_item">
+	<a class="cart_link" href="/cart">
+	{% unless style == 'type_2' %}
+		<span class="link_text">{{ 'layout.header.cart' | t }}</span>	
+	{% endunless %}
+	<span id="cart_items" class="header_cart_items {% if cart.item_count == 0 %}hidden{% endif %}"> {{ cart.item_count }} </span>
+	<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+	<path d="M20 20H0V6H20V20ZM2 18H18V8H2V18Z"/>
+	<path d="M14 3.99995H12C12 3.49995 11.8 2.99995 11.4 2.59995C10.7 1.89995 9.3 1.89995 8.6 2.59995C8.2 2.89995 8 3.39995 8 3.99995H6C6 2.89995 6.4 1.89995 7.2 1.19995C8.7 -0.300049 11.3 -0.300049 12.9 1.19995C13.6 1.89995 14 2.89995 14 3.99995Z"/>
+	</svg>
+	</a>
+
+	{% if ajax %}
+		<script>
+			theme.cartAjaxOn = true;
+			theme.cartAjaxTextEmpty = '{{ 'pages.cart.empty_cart_1' | t }}';
+			theme.cartAjaxTextTotalPrice = '{{ 'pages.cart.total_price' | t }}';
+			theme.cartAjaxTextGoCart = '{{ 'pages.cart.go_to_cart' | t }}';
+			theme.cartAjaxTextClearCart = '{{ 'pages.cart.clear_cart' | t }}';
+		</script>
+		<div class="cart_content_wrap">
+			<div class="cart_content_preloader off">
+				<div class="global_loader"></div>
+			</div>
+			<div id="cart_content_box">
+				{% if cart.item_count > 0 %}
+					<ul class="cart_list_items">
+						{% for item in cart.items  %}
+							<li class="cart_items" data-id="{{ forloop.index }}">
+								<img class="item_img" src="{{ item | img_url: '140x140', crop: 'center' }}"  alt="{{ item.title | escape }}" />
+								<div class="item_desc">
+									<a class="product_title" href="{{ item.product.url }}">{{ item.product.title | truncate:25 }}</a>
+									<span class="money">{{ item.price | money }}</span>
+									<p class="product_quantity">Quantity: {{ item.quantity }}</p>
+									<a class="item_remove_btn" href="#" item-id="{{ item.id }}">
+										<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M7 0H13V2H18V4H2V2H7V0Z"/>
+											<path fill-rule="evenodd" clip-rule="evenodd" d="M4 20H16V6H4V20ZM14 18H6V8H14V18Z" />
+										</svg>
+									</a>
+								</div>
+							</li>
+						{% endfor %} 
+					</ul>
+
+					<div class="box_footer">
+						<a id="clear_cart_all_items" class="cart_clear" href="/cart/clear">{{ 'pages.cart.clear_cart' | t }}</a>
+						<p class="cart_total"><b>{{ 'pages.cart.total_price' | t }}: </b><span class="money">{{ cart.total_price | money }}</span></p>
+						<a class="btn btn_inverted" href="/checkout">Checkout</a>
+						<a class="btn" href="/cart">{{ 'pages.cart.go_to_cart' | t }}</a>
+					</div>
+
+				{% else %}
+					<p class="alert alert-warning">{{ 'pages.cart.empty_cart_1' | t }}</p>
+
+				{% endif %}
+			</div>
+		</div>
+	{% else %}
+		<script>
+			theme.cartAjaxOn = false;
+		</script>
+	{% endif %}
+</div>
+

@@ -1,0 +1,207 @@
+<div class="template_cart">
+	<div class="container">
+		<h1 class="page_heading">{{ page_title }}</h1>
+
+		{% if cart.item_count > 0 %}
+			<form action="/cart" method="post" novalidate class="cart">
+				<div class="row">
+					<div class="col-12 col-lg-9 cart_items_main">
+						<table class="table cart_items">
+							{% comment %}<thead>
+								<tr>
+									<th class="column_product" colspan="2">{{ 'pages.cart.product' | t }}</th>
+									<th class="column_price">{{ 'pages.cart.product_price' | t }}</th>
+									<th class="column_quantity">{{ 'pages.cart.product_quantity' | t }}</th>
+									<th class="column_total">{{ 'pages.cart.product_total' | t }}</th>
+								</tr>
+							</thead>{% endcomment %}
+
+							<tbody>
+								{% for item in cart.items %}
+									<tr>
+										<td class="column_product_img">
+											<a href="{{ item.url | within: collections.all }}">
+												<img class="cart__image" src="{{ item | img_url: '140x140', crop: 'center' }}" alt="{{ item.title | escape }}">
+											</a>
+										</td>
+
+										<td class="column_product_info">
+											<p class="cart_item__name product_name">
+												<a href="{{ item.url }}">{{ item.product.title }}</a>
+											</p>
+
+											<div class="cart_item__name">
+												<span class="money">{{ item.price | money }}</span>
+											</div>
+										</td>
+
+										<td class="column_quantity">
+											<div class="quantity_box">
+												<label>{{ 'pages.cart.product_quantity' | t }}</label>
+												<input id="updates_{{ item.key }}" name="updates[]" value="{{ item.quantity }}" class="quantity_input quantity_input_cart_page" min="0" type="number" data-price="{{ item.price }}">
+											</div>
+										</td>
+
+										<td class="column_total_sum">
+											<span class="money">{{ item.line_price | money }}</span>
+										</td>
+
+										<td class="column_remove">
+											<a class="cart_item__remove" href="/cart/change?line={{ forloop.index }}&amp;quantity=0" title="{{ 'pages.cart.product_remove' | t }}">
+												<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path d="M7 0H13V2H18V4H2V2H7V0Z" fill="#222222"/>
+												<path fill-rule="evenodd" clip-rule="evenodd" d="M4 20H16V6H4V20ZM14 18H6V8H14V18Z" fill="#222222"/>
+												</svg>
+											
+											</a>
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+
+						</table>
+					</div>
+					
+					<div class="col-12 col-lg-3 cart_sidebar">
+						<div class="cart_footer">
+							<p class="cart_total cart_total_items">{{ 'pages.cart.product_total' | t }} <span>{{ cart.item_count }}</span> {{ 'layout.header.cart_items' | t }}</p>
+
+							<p class="cart_total cart_total_weight">{{ 'pages.cart.total_weight' | t }} <span>{{ cart.total_weight | weight_with_unit }}</span></p>
+
+							<hr>
+							
+							<p class="cart_total cart_total_price">{{ 'pages.cart.total_price' | t }} <span class="money">{{ cart.total_price | money }}</span></p>
+								
+
+							{% if additional_checkout_buttons %}
+								{% comment %}Paypal and Google checkout buttons{% endcomment %}
+								<p class="btn">{{ content_for_additional_checkout_buttons }}</p>
+							{% endif %}
+
+							{% if cart.total_discounts > 0 %}
+								<p>{{ 'cart.general.savings' | t }}<span class="cart__savings-amount">{{ cart.total_discounts | money }}</span></p>
+							{% endif %}
+
+							<p>
+								<button type="submit" name="update" class="btn btn_inverted">{{ 'pages.cart.product_update' | t }}</button>
+								<button type="submit" name="checkout" class="btn checkout_btn">{{ 'pages.cart.proceed_to_checkout' | t }}</button>
+							</p>
+						</div>
+
+						{% assign shop_name = shop.name | capitalize %}
+						<p class="cart_info_block">{{ 'pages.cart.currency_notification' | t: shop_name: shop_name, shop_currency: shop.currency }}</p>
+
+
+						{% if section.settings.show_policy %}
+							<div class="cart__policy">
+								{% if section.settings.security_page.size > 0 %}
+									<a class="item_policy__link" href="{{ section.settings.security_page }}">
+										<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path fill-rule="evenodd" clip-rule="evenodd" d="M10 0L18 3.1V8.9C18 11.4 17.5 13.5 16.6 15.2C15.3 17.4 13.2 19 10.3 19.9L10 20L9.7 19.9C6.8 19 4.7 17.4 3.4 15.2C2.5 13.5 2 11.4 2 8.9V3.1L10 0ZM5.2 14.2C6.2 16 7.7 17.2 10 17.9C12.3 17.2 13.8 16 14.8 14.2C15.6 12.8 16 11.1 16 8.9V4.5L10 2.2L4 4.5V8.9C4 11.1 4.4 12.8 5.2 14.2Z"/>
+										</svg>
+										{{ section.settings.security_text }}
+									</a>
+								{% endif %}
+								{% if section.settings.delivery_page.size > 0 %}
+									<a class="item_policy__link" href="{{ section.settings.delivery_page }}">
+										<svg width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M20 9H18L15.4 4H13V0H0V9V11V15H2.2C2.1 15.3 2 15.6 2 16C2 17.7 3.3 19 5 19C6.7 19 8 17.7 8 16C8 15.6 7.9 15.3 7.8 15H12.2C12.1 15.3 12 15.6 12 16C12 17.7 13.3 19 15 19C16.7 19 18 17.7 18 16C18 15.6 17.9 15.3 17.8 15H20V9ZM14.1 6L15.7 9H13V6H14.1ZM2 2H11V4V9H2V2ZM6 16C6 16.6 5.6 17 5 17C4.4 17 4 16.6 4 16C4 15.4 4.4 15 5 15C5.6 15 6 15.4 6 16ZM16 16C16 16.6 15.6 17 15 17C14.4 17 14 16.6 14 16C14 15.4 14.4 15 15 15C15.6 15 16 15.4 16 16ZM18 13H2V11H11H13H18V13Z"/>
+										</svg>
+										{{ section.settings.delivery_text }}
+									</a>
+								{% endif %}
+								{% if section.settings.return_page.size > 0 %}
+									<a class="item_policy__link" href="{{ section.settings.return_page }}">
+										<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M9.46342 19L0 10.3L9.46342 2V6.9C17.8537 7.6 19.9024 16.9 20 17L18.2439 17.7C16.1951 14.2 13.4634 13.7 9.56098 13.6V19H9.46342ZM2.92683 10.4L7.5122 14.6V11.6H8.48781C11.2195 11.6 13.8537 11.7 16 12.9C14.5366 10.9 12.1951 8.9 8.48781 8.9H7.5122V6.3L2.92683 10.4Z" />
+										</svg>
+										{{ section.settings.return_text }}
+									</a>
+								{% endif %}
+							</div>
+						{% endif %}
+
+					</div>
+					
+					<div class="col-12 cart_note_wrap">
+						<label for="cart_note">{{ 'pages.cart.add_note' | t }}</label>
+						<textarea name="note" id="cart_note">{{ cart.note }}</textarea>
+						
+						<a class="btn_return" href="/collections">
+							<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M14.5 0L16 1.42857L7 10L16 18.5714L14.5 20L4 10L14.5 0Z"/>
+							</svg>
+							{{ 'pages.cart.continue_shopping' | t }}
+						</a>
+
+					</div>
+				</div>
+			</form>
+
+		{% else %}
+			<div class="cart_empty">
+				<p class="alert alert-warning">{{ 'pages.cart.empty_cart_1' | t }}. <a href="/collections">{{ 'pages.cart.empty_cart_2' | t }}</a>.</p>
+			</div>
+
+		{% endif %}
+	</div>
+</div>
+
+{% schema %}
+{
+	"name": "Cart template",
+	"class": "section section_cart",
+	"settings": [
+		{
+			"type": "header",
+			"content": "Policy block"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_policy",
+			"label": "Show Policy"
+		},
+		{
+			"type": "url",
+			"id": "security_page",
+			"label": "Security policy page"
+		},
+		{
+			"type": "text",
+			"id": "security_text",
+			"label": "Security policy link text",
+			"default": "Security policy"
+		},
+		{
+			"type": "url",
+			"id": "delivery_page",
+			"label": "Delivery policy page"
+		},
+		{
+			"type": "text",
+			"id": "delivery_text",
+			"label": "Delivery policy link text",
+			"default": "Delivery policy"
+		},
+		{
+			"type": "url",
+			"id": "return_page",
+			"label": "Return policy page"
+		},
+		{
+			"type": "text",
+			"id": "return_text",
+			"label": "Return policy link text",
+			"default": "Return policy"
+		}
+	]
+}
+{% endschema %}
+
+{% javascript %}
+jQuery(document).ready(function($) {
+
+
+});
+{% endjavascript %}
+

@@ -1,0 +1,799 @@
+<div class="section_wrap" {% if section.settings.background_toggle %} style="background-color: {{ section.settings.bg_color }}"{% endif %}>
+
+{% if section.settings.section_title.size > 0 %}
+	<div class="container">
+		<h4 class="section_heading"><span>{{ section.settings.section_title }}</span></h4>
+	</div>
+{% endif %}
+
+{% case section.settings.sect_view %}
+	{% when 'full_width' %}
+
+	{% when 'container_big' %}
+		<div class="container_big">
+
+	{% when 'container_custom' %}
+		<div class="container_custom">
+
+	{% when 'container' %}
+		<div class="container">
+
+{% endcase %}
+
+<div class="row {% if section.settings.sect_view == 'full_width' %}full_w_row{% endif %}">
+	{% for block in section.blocks %}
+		{% case block.type %}
+			{% when 'banner_100' %}{%- assign item_class = 'col-sm-12' -%}{%- assign img_min_size = '300x116' -%}{%- assign img_size = '1920x700' -%}
+			{% when 'banner_66' %}{%- assign item_class = 'col-sm-8' -%}{%- assign img_min_size = '200x117' -%}{%- assign img_size = '1197x700' -%}
+			{% when 'banner_50' %}{%- assign item_class = 'col-sm-6' -%}{%- assign img_min_size = '150x80' -%}{%- assign img_size = '945x500' -%}
+			{% when 'banner_66_2' %}{%- assign item_class = 'col-sm-8' -%}{%- assign img_min_size = '150x62' -%}{%- assign img_size = '895x372' -%}
+			{% when 'banner_33' %}{%- assign item_class = 'col-sm-4' -%}{%- assign img_min_size = '100x120' -%}{%- assign img_size = '590x789' -%}
+		{% endcase %}
+
+		{% if block.settings.item_link.size > 0 and block.settings.button_text.size > 0 %}
+			{%- assign without_button = false -%}			
+		{% else %}
+			{%- assign without_button = true -%}				
+		{% endif %}
+
+		{% if block.settings.item_link_2.size > 0 and block.settings.button_text_2.size > 0 %}
+			{%- assign without_button_2 = false -%}			
+		{% else %}
+			{%- assign without_button_2 = true -%}				
+		{% endif %}
+
+		{% if block.settings.item_link_3.size > 0 and block.settings.button_text_3.size > 0 %}
+			{%- assign without_button_3 = false -%}			
+		{% else %}
+			{%- assign without_button_3 = true -%}				
+		{% endif %}
+
+		<div class="{{ item_class }} {{ block.type }}">
+			<div class="banner_item {% if without_button %}hover_image{% endif %} {% if block.settings.revert and block.settings.banner_style == 'relative' %}revert_ban{% endif %}">
+				{% if block.settings.item_img.size > 0 %}
+					{% comment %}<div class="img_placeholder__wrap img_placeholder__{{ section.settings.section_height }}" style="background-image: url( {{ block.settings.item_img | img_url: img_size, crop: 'center' }} );">
+						
+					</div>{% endcomment %}
+					<img style="width: 100%" class="banner_image lazyload blur-up" src="{{ block.settings.item_img | img_url: img_min_size, crop: 'center' }}" alt="{{ block.settings.image.alt }}"
+						data-src="{{ block.settings.item_img | img_url: img_size, crop: 'center' }}" 
+                     	data-widths="[360, 540, 720, 900, 1080, 1296, 1512, 1728, 1810]" 
+						>
+				{% else %}
+					<div class="img_placeholder__wrap">
+						{{ 'image' | placeholder_svg_tag: 'img_placeholder' }}
+					</div>
+				{% endif %}
+				
+				<div class="banner_caption style_{{ block.settings.banner_style }}">  
+					{% if block.settings.banner_style == 'minimal' %}
+						{% if without_button %}
+							<a class="caption_text {% if block.settings.position_bottom %} position_bottom{% endif %} {% if block.settings.inverted %} inverted{% endif %}" href="{{ block.settings.item_link }}">
+						{% else %}
+							<div class="caption_text {% if block.settings.position_bottom %} position_bottom{% endif %}  {% if block.settings.inverted %} inverted{% endif %}">
+						{% endif %}
+
+							{% if block.settings.item_text.size > 0 %}
+								<p class="banner_text">{{ block.settings.item_text }}</p>
+							{% endif %}
+
+						{% if without_button %}
+							</a>
+						{% else %}
+								<a class="btn {% if block.settings.inverted %} btn_inverted{% endif %}" href="{{ block.settings.item_link }}" href="{{ block.settings.item_link }}">{{ block.settings.button_text }}</a>
+							</div>
+						{% endif %}
+
+					{% elsif block.settings.banner_style == 'telling' %}
+						<div class="caption_text {% if block.settings.inverted %} inverted{% endif %}">
+							{% if block.settings.item_subtitle.size > 0 %}
+								<h4>{{ block.settings.item_subtitle }}</h4>
+							{% endif %}
+
+							{% if block.settings.item_title.size > 0 %}
+								<h2>{{ block.settings.item_title }}</h2>
+							{% endif %}
+
+							{% if block.settings.item_text.size > 0 %}
+								<p class="banner_text">{{ block.settings.item_text }}</p>
+							{% endif %}
+
+							{% if block.settings.item_link.size > 0 and block.settings.button_text.size > 0 %}
+								<a class="btn" href="{{ block.settings.item_link }}">{{ block.settings.button_text }}</a>
+							{% endif %}
+
+							{% if block.settings.item_2_link.size > 0 and block.settings.button_2_text.size > 0 %}
+								<a class="btn" href="{{ block.settings.item_2_link }}">{{ block.settings.button_2_text }}</a>
+							{% endif %}
+						</div>
+
+					{% elsif block.settings.banner_style == 'relative' %}
+						<div class="caption_text">
+							{% if block.settings.item_subtitle.size > 0 %}
+								<h4>{{ block.settings.item_subtitle }}</h4>
+							{% endif %}
+
+							{% if block.settings.item_title.size > 0 %}
+								<h2>{{ block.settings.item_title }}</h2>
+							{% endif %}
+
+							{% if block.settings.item_text.size > 0 %}
+								<p class="banner_text">{{ block.settings.item_text }}</p>
+							{% endif %}
+
+							{% if block.settings.item_link.size > 0 and block.settings.button_text.size > 0 %}
+								<a class="btn" href="{{ block.settings.item_link }}">{{ block.settings.button_text }}</a>
+							{% endif %}
+
+							{% if block.settings.item_2_link.size > 0 and block.settings.button_2_text.size > 0 %}
+								<a class="btn" href="{{ block.settings.item_2_link }}">{{ block.settings.button_2_text }}</a>
+							{% endif %}
+						</div>
+
+					{% endif %}
+				</div>
+			</div>
+			{% if block.type == 'banner_66_2' %}
+				<div class="second_row">
+					
+						<div class="banner_item {% if without_button_2 %}hover_image{% endif %} ">
+							{% if block.settings.item_img.size > 0 %}
+								{% comment %}<div class="img_placeholder__wrap img_placeholder__{{ section.settings.section_height }}" style="background-image: url( {{ block.settings.item_img | img_url: img_size, crop: 'center' }} );">
+									
+								</div>{% endcomment %}
+								<img style="width: 100%" class="banner_image lazyload blur-up" src="{{ block.settings.item_img_2 | img_url: img_min_size, crop: 'center' }}" alt="{{ block.settings.item_img_2.alt }}"
+									data-src="{{ block.settings.item_img_2 | img_url: img_size, crop: 'center' }}" 
+	            		         	data-widths="[360, 540, 720, 900, 1080, 1296, 1512, 1728, 1810]" 
+									>
+							{% else %}
+								<div class="img_placeholder__wrap">
+									{{ 'image' | placeholder_svg_tag: 'img_placeholder' }}
+								</div>
+							{% endif %}
+							
+							<div class="banner_caption style_{{ block.settings.banner_style }}">  
+								{% if block.settings.banner_style == 'minimal' %}
+									{% if without_button %}
+										<a class="caption_text {% if block.settings.item_inverted_2 %} inverted{% endif %}" href="{{ block.settings.item_link_2 }}">
+									{% else %}
+										<div class="caption_text {% if block.settings.item_inverted_2 %} inverted{% endif %}">
+									{% endif %}
+		
+										{% if block.settings.item_text_2.size > 0 %}
+											<p class="banner_text">{{ block.settings.item_text_2 }}</p>
+										{% endif %}
+		
+									{% if without_button %}
+										</a>
+									{% else %}
+											<a class="btn {% if block.settings.item_inverted_2 %} btn_inverted{% endif %}" href="{{ block.settings.item_link_2 }}" href="{{ block.settings.item_link_2 }}">{{ block.settings.button_text_2 }}</a>
+										</div>
+									{% endif %}
+		
+								{% elsif block.settings.banner_style == 'telling' %}
+									<div class="caption_text {% if block.settings.item_inverted_2 %} inverted{% endif %}">
+										{% if block.settings.item_subtitle_2.size > 0 %}
+											<h4>{{ block.settings.item_subtitle_2 }}</h4>
+										{% endif %}
+		
+										{% if block.settings.item_title_2.size > 0 %}
+											<h2>{{ block.settings.item_title_2 }}</h2>
+										{% endif %}
+		
+										{% if block.settings.item_text_2.size > 0 %}
+											<p class="banner_text">{{ block.settings.item_text_2 }}</p>
+										{% endif %}
+		
+										{% if block.settings.item_link_2.size > 0 and block.settings.button_text_2.size > 0 %}
+											<a class="btn" href="{{ block.settings.item_link_2 }}">{{ block.settings.button_text_2 }}</a>
+										{% endif %}
+		
+										{% if block.settings.item_2_link_2.size > 0 and block.settings.button_2_text_2.size > 0 %}
+											<a class="btn" href="{{ block.settings.item_2_link_2 }}">{{ block.settings.button_2_text_2 }}</a>
+										{% endif %}
+									</div>
+		
+								{% elsif block.settings.banner_style == 'relative' %}
+									<div class="caption_text">
+										{% if block.settings.item_subtitle_2.size > 0 %}
+											<h4>{{ block.settings.item_subtitle_2 }}</h4>
+										{% endif %}
+		
+										{% if block.settings.item_title_2.size > 0 %}
+											<h2>{{ block.settings.item_title_2 }}</h2>
+										{% endif %}
+		
+										{% if block.settings.item_text_2.size > 0 %}
+											<p class="banner_text">{{ block.settings.item_text_2 }}</p>
+										{% endif %}
+		
+										{% if block.settings.item_link_2.size > 0 and block.settings.button_text_2.size > 0 %}
+											<a class="btn" href="{{ block.settings.item_link_2 }}">{{ block.settings.button_text_2 }}</a>
+										{% endif %}
+		
+										{% if block.settings.item_2_link_2.size > 0 and block.settings.button_2_text_2.size > 0 %}
+											<a class="btn" href="{{ block.settings.item_2_link_2 }}">{{ block.settings.button_2_text_2 }}</a>
+										{% endif %}
+									</div>
+		
+								{% endif %}
+							</div>
+						</div>
+				</div>
+			{% endif %}
+		</div>
+
+	{% endfor %}
+</div>
+
+{% case section.settings.sect_view %}
+	{% when 'full_width' %}
+
+	{% when 'container_big' %}
+		</div>
+
+	{% when 'container_custom' %}
+		</div>
+
+	{% when 'container' %}
+		</div>
+
+{% endcase %}
+</div>
+
+{% schema %}
+{
+	"name": "Banners",
+	"class": "section section_homepage section_banners",
+	"max_blocks": 4,
+	"settings": [
+		{
+			"type": "header",
+			"content": "Banners"
+		},
+		{
+			"type": "text",
+			"id": "section_title",
+			"label": "Section Title"
+		},
+		{
+			"type": "select",
+			"id": "sect_view",
+			"label": "Section view",
+			"default": "full_width",
+			"options": [
+				{
+					"label": "Full width",
+					"value": "full_width"
+				},
+				{
+					"label": "Container big",
+					"value": "container_big"
+				},
+				{
+					"label": "Container custom",
+					"value": "container_custom"
+				},
+				{
+					"label": "Container",
+					"value": "container"
+				}
+			]
+		},
+		{
+			"type": "checkbox",
+			"id": "background_toggle",
+			"label": "Show background color",
+			"default": true
+		},
+		{
+			"type": "color",
+			"id": "bg_color",
+			"label": "Background color",
+			"default": "#ffffff"
+		}
+	],
+	"blocks": [
+
+		// BANNER 100% ===================================================================================
+		{
+			"type": "banner_100",
+			"name": "Banner (100%)",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "select",
+					"id": "banner_style",
+					"label": "Banner style",
+					"default": "minimal",
+					"options": [
+						{
+							"label": "Minimal",
+							"value": "minimal"
+						},
+						{
+							"label": "Telling",
+							"value": "telling"
+						}
+					]
+				},
+				{
+					"type": "image_picker",
+					"id": "item_img",
+					"label": "Banner image"
+				},
+				{
+					"type": "text",
+					"id": "item_subtitle",
+					"label": "Caption subtitle",
+					"info": "Only in 'Telling' style"
+				},
+				{
+					"type": "text",
+					"id": "item_title",
+					"label": "Caption title",
+					"info": "Only in 'Telling' style"
+				},
+				
+				{
+					"type": "text",
+					"id": "item_text",
+					"label": "Caption text",
+					"info": "Only in 'Minimal' style"
+				},
+				{
+					"type": "checkbox",
+					"id": "inverted",
+					"label": "Inverted style",
+					"default": false
+				},
+				{
+					"type": "url",
+					"id": "item_link",
+					"label": "Link",
+					"info": "Optional"
+				},
+				{
+					"type": "text",
+					"id": "button_text",
+					"label": "Button text",
+					"info": "Both styles"
+				},
+				{
+					"type": "url",
+					"id": "item_2_link",
+					"label": "Button 2 Link",
+					"info": "Only in 'Telling' style"
+				},
+				{
+					"type": "text",
+					"id": "button_2_text",
+					"label": "Button 2 text",
+					"info": "Only in 'Telling' style"
+				}
+			]
+		},
+
+
+		// BANNER 66% ====================================================================================
+		{
+			"type": "banner_66",
+			"name": "Banner (66%)",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "select",
+					"id": "banner_style",
+					"label": "Banner style",
+					"default": "minimal",
+					"options": [
+						{
+							"label": "Minimal",
+							"value": "minimal"
+						},
+						{
+							"label": "Telling",
+							"value": "telling"
+						}
+					]
+				},
+				{
+					"type": "image_picker",
+					"id": "item_img",
+					"label": "Banner image"
+				},
+				{
+					"type": "text",
+					"id": "item_subtitle",
+					"label": "Caption subtitle",
+					"info": "Only in 'Telling' style"
+				},
+				{
+					"type": "text",
+					"id": "item_title",
+					"label": "Caption title",
+					"info": "Only in 'Telling' style"
+				},
+				
+				{
+					"type": "text",
+					"id": "item_text",
+					"label": "Caption text",
+					"info": "Only in 'Minimal' style"
+				},
+				{
+					"type": "checkbox",
+					"id": "inverted",
+					"label": "Inverted style",
+					"default": false
+				},
+				{
+					"type": "url",
+					"id": "item_link",
+					"label": "Link",
+					"info": "Optional"
+				},
+				{
+					"type": "text",
+					"id": "button_text",
+					"label": "Button text",
+					"info": "Only in 'Telling' style"
+				},
+				{
+					"type": "url",
+					"id": "item_2_link",
+					"label": "Button 2 Link",
+					"info": "Only in 'Telling' style"
+				},
+				{
+					"type": "text",
+					"id": "button_2_text",
+					"label": "Button 2 text",
+					"info": "Only in 'Telling' style"
+				}
+			]
+		},
+
+
+		// BANNER 50% ====================================================================================
+		{
+			"type": "banner_50",
+			"name": "Banner (50%)",
+			"limit": 2,
+			"settings": [
+				{
+					"type": "select",
+					"id": "banner_style",
+					"label": "Banner style",
+					"default": "minimal",
+					"options": [
+						{
+							"label": "Minimal",
+							"value": "minimal"
+						},
+						{
+							"label": "Telling",
+							"value": "telling"
+						},
+						{
+							"label": "Relative",
+							"value": "relative"
+						}
+					]
+				},
+				{
+					"type": "image_picker",
+					"id": "item_img",
+					"label": "Banner image"
+				},
+				{
+					"type": "text",
+					"id": "item_subtitle",
+					"label": "Caption subtitle",
+					"info": "Only in 'Telling' style"
+				},
+				{
+					"type": "text",
+					"id": "item_title",
+					"label": "Caption title",
+					"info": "Only in 'Telling' style"
+				},
+				
+				{
+					"type": "text",
+					"id": "item_text",
+					"label": "Caption text",
+					"info": "Only in 'Minimal' style"
+				},
+				{
+					"type": "checkbox",
+					"id": "inverted",
+					"label": "Inverted style",
+					"default": false
+				},
+				{
+					"type": "url",
+					"id": "item_link",
+					"label": "Link",
+					"info": "Optional"
+				},
+				{
+					"type": "text",
+					"id": "button_text",
+					"label": "Button text",
+					"info": "Only in 'Telling' style"
+				},
+				{
+					"type": "url",
+					"id": "item_2_link",
+					"label": "Button 2 Link",
+					"info": "Only in 'Telling' style"
+				},
+				{
+					"type": "text",
+					"id": "button_2_text",
+					"label": "Button 2 text",
+					"info": "Only in 'Telling' style"
+				}
+			]
+		},
+
+		// BANNER 50% 3 items ====================================================================================
+		{
+			"type": "banner_66_2",
+			"name": "Banner (66%) 2 items",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "select",
+					"id": "banner_style",
+					"label": "Banner style (for all items)",
+					"default": "minimal",
+					"options": [
+						{
+							"label": "Minimal",
+							"value": "minimal"
+						},
+						{
+							"label": "Telling",
+							"value": "telling"
+						},
+						{
+							"label": "Relative",
+							"value": "relative"
+						}
+					]
+				},
+				{
+					"type": "header",
+					"content": "1 banner item"
+				},
+				{
+					"type": "image_picker",
+					"id": "item_img",
+					"label": "Banner image"
+				},
+				{
+					"type": "text",
+					"id": "item_subtitle",
+					"label": "Caption subtitle",
+					"info": "Only in 'Telling' style"
+				},
+				{
+					"type": "text",
+					"id": "item_title",
+					"label": "Caption title",
+					"info": "Only in 'Telling' style"
+				},
+				
+				{
+					"type": "text",
+					"id": "item_text",
+					"label": "Caption text",
+					"info": "Only in 'Minimal' style"
+				},
+				{
+					"type": "checkbox",
+					"id": "inverted",
+					"label": "Inverted style",
+					"default": false
+				},
+				{
+					"type": "url",
+					"id": "item_link",
+					"label": "Link",
+					"info": "Optional"
+				},
+				{
+					"type": "text",
+					"id": "button_text",
+					"label": "Button text",
+					"info": "Only in 'Telling' style"
+				},
+				{
+					"type": "url",
+					"id": "item_2_link",
+					"label": "Button 2 Link",
+					"info": "Only in 'Telling' style"
+				},
+				{
+					"type": "text",
+					"id": "button_2_text",
+					"label": "Button 2 text",
+					"info": "Only in 'Telling' style"
+				},
+
+				////////////////////// 2 item ////////////////////////
+				{
+					"type": "header",
+					"content": "2 banner item"
+				},
+				{
+					"type": "image_picker",
+					"id": "item_img_2",
+					"label": "Banner image"
+				},
+				{
+					"type": "text",
+					"id": "item_subtitle_2",
+					"label": "Caption subtitle",
+					"info": "Only in 'Telling' style"
+				},
+				{
+					"type": "text",
+					"id": "item_title_2",
+					"label": "Caption title",
+					"info": "Only in 'Telling' style"
+				},
+				
+				{
+					"type": "text",
+					"id": "item_text_2",
+					"label": "Caption text",
+					"info": "Only in 'Minimal' style"
+				},
+				{
+					"type": "checkbox",
+					"id": "item_inverted_2",
+					"label": "Inverted style",
+					"default": false
+				},
+				{
+					"type": "url",
+					"id": "item_link_2",
+					"label": "Link",
+					"info": "Optional"
+				},
+				{
+					"type": "text",
+					"id": "button_text_2",
+					"label": "Button text",
+					"info": "Only in 'Telling' style"
+				},
+				{
+					"type": "url",
+					"id": "item_2_link_2",
+					"label": "Button 2 Link",
+					"info": "Only in 'Telling' style"
+				},
+				{
+					"type": "text",
+					"id": "button_2_text_2",
+					"label": "Button 2 text",
+					"info": "Only in 'Telling' style"
+				}
+
+			]
+		},
+
+
+		// BANNER 33% ====================================================================================
+		{
+			"type": "banner_33",
+			"name": "Banner (33%)",
+			"limit": 3,
+			"settings": [
+				{
+					"type": "select",
+					"id": "banner_style",
+					"label": "Banner style",
+					"default": "minimal",
+					"options": [
+						{
+							"label": "Minimal",
+							"value": "minimal"
+						},
+						{
+							"label": "Telling",
+							"value": "telling"
+						},
+						{
+							"label": "Relative",
+							"value": "relative"
+						}
+					]
+				},
+				{
+					"type": "checkbox",
+					"id": "revert",
+					"label": "Reverted banner style",
+					"default": false
+				},
+				{
+					"type": "image_picker",
+					"id": "item_img",
+					"label": "Banner image"
+				},
+				{
+					"type": "text",
+					"id": "item_subtitle",
+					"label": "Caption subtitle",
+					"info": "Only in 'Telling' style"
+				},
+				{
+					"type": "text",
+					"id": "item_title",
+					"label": "Caption title",
+					"info": "Only in 'Telling' style"
+				},
+				
+				{
+					"type": "text",
+					"id": "item_text",
+					"label": "Caption text",
+					"info": "Only in 'Minimal' style"
+				},
+				{
+					"type": "checkbox",
+					"id": "inverted",
+					"label": "Inverted style",
+					"default": false
+				},
+				{
+					"type": "checkbox",
+					"id": "position_bottom",
+					"label": "Position caption style",
+					"default": false
+				},
+				{
+					"type": "url",
+					"id": "item_link",
+					"label": "Link",
+					"info": "Optional"
+				},
+				{
+					"type": "text",
+					"id": "button_text",
+					"label": "Button text",
+					"info": "Only in 'Telling' style"
+				},
+				{
+					"type": "url",
+					"id": "item_2_link",
+					"label": "Button 2 Link",
+					"info": "Only in 'Telling' style"
+				},
+				{
+					"type": "text",
+					"id": "button_2_text",
+					"label": "Button 2 text",
+					"info": "Only in 'Telling' style"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Banners",
+			"category": "Image",
+			"blocks": [
+				{
+					"type": "banner_50"
+				},
+				{
+					"type": "banner_50"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

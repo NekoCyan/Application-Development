@@ -1,0 +1,42 @@
+<div class="header_search">
+	<span class="search_toggle">
+		{% unless style == 'type_2' %}		    
+			<span class="link_text">{{ 'layout.header.search' | t }}</span>
+		{% endunless %}
+		<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+			<path d="M20 18.5787L16.2437 14.8223C17.4619 13.2995 18.2741 11.269 18.2741 9.13706C18.2741 4.06091 14.2132 0 9.13706 0C4.06091 0 0 4.06091 0 9.13706C0 14.2132 4.06091 18.2741 9.13706 18.2741C11.269 18.2741 13.2995 17.5635 14.8223 16.2437L18.5787 20L20 18.5787ZM2.03046 9.13706C2.03046 5.17766 5.17766 2.03046 9.13706 2.03046C13.0964 2.03046 16.2437 5.17766 16.2437 9.13706C16.2437 13.0964 13.0964 16.2437 9.13706 16.2437C5.17766 16.2437 2.03046 13.0964 2.03046 9.13706Z"/>
+		</svg>
+		
+	</span>
+	<div class="search_form_wrap">
+		<form action="/search" method="get" role="search" class="search_form">
+			<span class="header_serch_caption">{{ 'layout.header.search_caption' | t }}</span>
+			<input type="search" name="q" placeholder="{{ 'layout.header.search' | t }}" aria-label="{{ 'layout.header.search' | t }}">
+			<label for="header_search_submit">
+				<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+					<path d="M20 18.5787L16.2437 14.8223C17.4619 13.2995 18.2741 11.269 18.2741 9.13706C18.2741 4.06091 14.2132 0 9.13706 0C4.06091 0 0 4.06091 0 9.13706C0 14.2132 4.06091 18.2741 9.13706 18.2741C11.269 18.2741 13.2995 17.5635 14.8223 16.2437L18.5787 20L20 18.5787ZM2.03046 9.13706C2.03046 5.17766 5.17766 2.03046 9.13706 2.03046C13.0964 2.03046 16.2437 5.17766 16.2437 9.13706C16.2437 13.0964 13.0964 16.2437 9.13706 16.2437C5.17766 16.2437 2.03046 13.0964 2.03046 9.13706Z"/>
+				</svg>
+			</label>
+			<input type="submit" id="header_search_submit">
+			<span class="search_form_close">
+				<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M13.7156 5L15 6.14286L10.993 10L15 13.8571L13.7156 15L9.95417 11.2857L6.28442 15L5 13.8571L8.9342 10L5 6.14286L6.28442 5L9.95417 8.71429L13.7156 5Z" fill="#E4E4E4"/>
+				</svg>
+			</span>
+		</form>
+
+		{% if ajax %}
+			<script>
+				theme.searchAjaxOn = true;
+			</script>
+
+			<div id="search_result_container"></div>
+		{% else %}
+			<script>
+				theme.searchAjaxOn = false;
+			</script>
+		{% endif %}
+
+		<div class="search_form_cover"></div>
+	</div>
+</div>

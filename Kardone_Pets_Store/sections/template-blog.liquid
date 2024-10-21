@@ -1,0 +1,175 @@
+{% paginate blog.articles by section.settings.pagination_count %}
+	
+		<div class="container">
+	
+
+		<div class="blog_listing__main blog_listing__{{ section.settings.size }} {% if settings.sidebar_toggle %}sidebar_layout{% else %}nosidebar_layout{% endif %}">
+			<div class="row">
+				{% for article in blog.articles %}
+					{% case section.settings.size %}
+						{% when 'big' %}
+							<div class="article_wrap">
+								<article class="article_item">
+									<h4 class="article_title">
+										<a href="{{ article.url }}">{{ article.title | truncate: 50 }}</a>
+									</h4>
+									<p class="article_info">
+										<span>By {{ article.author }}</span><span> on <time class="article_time" datetime="{{ article.published_at | date: '%Y-%m-%dT%H:%M' }}">{{ article.published_at | date: '%B %d, %Y' }}</time></span>
+									</p>
+
+									<div class="article_image">
+										<a href="{{ article.url }}">
+										{% if article.image %}
+											{% if settings.sidebar_toggle %}
+												<img class="blur-up lazyload" style="width: 100%;" src="{{ article.image.src | img_url: '100x100', crop: section.settings.img_alignment }}" data-src="{{ article.image.src | img_url: '880x545', crop: section.settings.img_alignment }}" alt="{{ article.image.alt }}">
+											{% else %}
+												<img class="blur-up lazyload" style="width: 100%;" src="{{ article.image.src | img_url: '100x100', crop: section.settings.img_alignment }}" data-src="{{ article.image.src | img_url: '980x545', crop: section.settings.img_alignment }}" alt="{{ article.image.alt }}">	
+											{% endif %}
+										{% else %}
+											<div class="img_placeholder__wrap">{{ 'image' | placeholder_svg_tag: 'img_placeholder'  }}</div>
+										{% endif %}
+										</a>
+									</div>
+
+									<div class="rte article_content">
+										{% if article.excerpt.size > 0 %}
+											{{ article.excerpt }}
+										{% else %}
+											{{ article.content | strip_html | truncatewords: 50 }}
+										{% endif %}
+									</div>
+
+									<a class="btn btn_inverted article_btn" href="{{ article.url }}">{{ 'blog.articles.read_more' | t }}</a>
+								</article>
+							</div>
+
+						{% when 'small' %}
+						 	<div class="{% if settings.sidebar_toggle %}col-sm-4{% else %}col-sm-2{% endif %}">
+							 	<article class="article_item">
+									<div class="article_image">
+										<a href="{{ article.url }}">
+										{% if article.image %}
+											{% if settings.sidebar_toggle %}
+												<img class="blur-up lazyload" style="width: 100%;" src="{{ article.image.src | img_url: '100x100', crop: section.settings.img_alignment }}" data-src="{{ article.image.src | img_url: '880x545', crop: section.settings.img_alignment }}" alt="{{ article.image.alt }}">
+											{% else %}
+												<img class="blur-up lazyload" style="width: 100%;" src="{{ article.image.src | img_url: '100x100', crop: section.settings.img_alignment }}" data-src="{{ article.image.src | img_url: '380x275', crop: section.settings.img_alignment }}" alt="{{ article.image.alt }}">	
+											{% endif %}
+										{% else %}
+											<div class="img_placeholder__wrap">{{ 'image' | placeholder_svg_tag: 'img_placeholder'  }}</div>
+										{% endif %}
+										</a>
+									</div>
+
+									<p class="article_info">
+										<span>By {{ article.author }}</span><span> on <time class="article_time" datetime="{{ article.published_at | date: '%Y-%m-%dT%H:%M' }}">{{ article.published_at | date: '%B %d, %Y' }}</time></span>
+									</p>
+									<h4 class="article_title">
+										<a href="{{ article.url }}">{{ article.title | truncate: 50 }}</a>
+									</h4>
+
+									<div class="rte article_content">
+										{% if article.excerpt.size > 0 %}
+											{{ article.excerpt }}
+										{% else %}
+											{{ article.content | strip_html | truncatewords: 20 }}
+										{% endif %}
+									</div>
+
+									<a class="btn btn_inverted article_btn" href="{{ article.url }}">{{ 'blog.articles.read_more' | t }}</a>
+								</article>
+						 	</div> 
+					{% endcase %}
+				{% endfor %}
+			</div>
+		</div>
+
+		<div id="pagination" class="pagination blog_pagination">
+			{% if paginate.pages > 1 %}
+				{% assign A = paginate.current_offset | plus:1 %}
+				{% assign B = paginate.items %}
+				{% assign C = paginate.current_offset | plus:paginate.page_size %}
+
+				{% if paginate.current_page == paginate.pages %}
+					{% if A == B %}
+						<p>Showing  {{ A }} off {{ pagination_items }} {{ paginate.items }}</p>
+					{% else %}
+						<p>Showing  {{ A }} – {{ B }} {{ pagination_items }} off {{ paginate.items }}</p>
+					{% endif %}
+				{% else %}
+					<p>Showing {{ A }} – {{ C }} {{ pagination_items }} off {{ paginate.items }}</p>
+				{% endif %}
+			{% endif %}
+			{{ paginate | default_pagination }}
+		</div>
+		
+	
+		</div>
+	
+{% endpaginate %}
+
+{% schema %}
+{
+	"name": "Blog page",
+	"class": "section_template section_template__blog",
+	"settings": [
+		{
+			"type": "select",
+			"id": "size",
+			"label": "Size",
+			"default": "small",
+			"options": [
+				{
+					"value": "small",
+					"label": "Small"
+				},
+				{
+					"value": "big",
+					"label": "Big"
+				}
+			]
+		},
+		{
+			"type": "select",
+			"id": "pagination_count",
+			"label": "Paginated by",
+			"options": [
+				{
+					"value": "3",
+					"label": "3"
+				},
+				{
+					"value": "6",
+					"label": "6"
+				},
+				{
+					"value": "9",
+					"label": "9"
+				},
+				{
+					"value": "12",
+					"label": "12"
+				}
+			]
+		},
+		{
+			"type": "select",
+			"id": "img_alignment",
+			"label": "Images alignment",
+			"options": [
+				{
+					"value": "top",
+					"label": "Top"
+				},
+				{
+					"value": "center",
+					"label": "Middle"
+				},
+				{
+					"value": "bottom",
+					"label": "Bottom"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

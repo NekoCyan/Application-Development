@@ -1,0 +1,455 @@
+html, body {
+	direction: rtl;
+	text-align: right;
+}
+
+body.rtl {
+
+// 4.11 ADD TO CART MESSAGE =========================================================================================================================
+#cart_added {
+	.cart_added__2 {
+		padding: 0 15px 0 0px;
+	}
+}
+
+// 6. COMMON THEME STYLES ===========================================================================================================================
+.tel_ltr {
+	direction: ltr;
+	unicode-bidi: embed;
+}
+
+.linklist_menu_title:after {
+	right: auto;
+	left: 5px;
+}
+@media (max-width: 767px){
+	.linklist_menu_title {
+		padding-right: 0;
+		padding-left: 15px;
+	}
+}
+
+
+
+// 6.3. MAIN PRODUCT LISTING ========================================================================================================================
+.product_listing__main {
+	.product_links {
+		.add_to_cart_form {
+			.btn {
+				margin-right: 50%;
+			}
+		}
+	}
+	.bade_wrap {
+		align-items: flex-end;
+	}
+} 
+.product_listing__list {
+	.product_info {
+		text-align: right;
+	}
+	.product_links {
+		padding-left: 0;
+		padding-right: 300px;
+		.add_to_cart_form {
+			margin: 0;
+			.btn {
+				margin-right: 0;
+			}
+		}
+		.wishlist_btn {
+			margin-left: 0;
+			margin-right: 10px;
+		}
+	}
+}
+
+
+@media (max-width: 991px){
+	.product_listing__main {
+		.product_item_wrap {
+			.product_links {
+				padding-left: 0;
+				padding-right:  calc(30% + 15px);
+			}
+			.product_item {
+				.product_info {
+					text-align: right;
+				}
+			}
+		}
+		.product_links {
+			.add_to_cart_form {
+				.btn {
+					margin-right: 0;
+					margin-left: 13px;
+				}
+			}
+		}
+		.wishlist_btn {margin-left: 8px;}
+	}
+	
+}
+
+@media (max-width: 767px){
+	.product_listing__main {
+		.product_links {
+			.btn_options,
+			.btn-cart {
+				svg {
+					margin-right: 0;
+					margin-left: 5px;
+				}
+			}
+		}
+	}
+}
+
+
+@media (max-width: 479px){
+	.product_listing__main {
+		.product_item_wrap .product_item {
+			.product_info {
+				text-align: center;
+			}
+			.product_links {
+				padding: 0;
+				justify-content: center;
+			}
+		}
+	}
+	
+}
+
+
+// 6.5. BREADCRUMBS =================================================================================================================================
+.breadcrumbs {
+	li {
+		padding: 21px 0 0 8px;
+	}
+	li ~ li:before {
+		margin: 0 0 0 10px;
+	}
+}
+
+
+// 6.7. PAGINATION ==================================================================================================================================
+.pagination {
+	.pagination_next, 
+	.pagination_prev {
+		transform: scale(-1,1);
+		padding: 0 0 0 6px; 
+	}
+}
+
+
+
+// 6.8. OTHER ELEMENTS ==============================================================================================================================
+
+// CURRENCY SELECTOR 
+#currency_active:after {
+	margin-right: 5px;
+}
+
+// 6.9. HEADER ======================================================================================================================================
+.header_search {
+	margin: 0 0px 0 12px;
+	.search_form {
+		text-align: right;
+	}
+	.search_form_close {
+		right: auto;
+		left: 0;
+	}
+	input {
+		padding: 5px 0 5px 35px;
+	}
+	label {
+		right: auto;
+		left: 10px;
+	}
+}
+
+.header_item_right {
+	text-align: left;
+	padding-right: 0;
+	padding-left: 10px;
+}
+.header_cart {
+	.cart_content_wrap {
+		right: auto;
+		left: 0;
+	}
+	.header_cart_items {
+		right: auto;
+		left: -18px;
+		border-radius: 5px 5px 0 5px;
+	}
+	#cart_content_box {
+		text-align: right;
+		.item_desc {
+			padding: 0 15px 0 0;
+		}
+		.item_remove_btn {
+			right: 10px;
+			
+		}
+		.box_footer {
+			flex-direction: row-reverse;
+		}
+		.cart_total {
+			display: flex;
+			b {
+				margin: 0 0 0 5px;
+			}
+		}
+	}
+}
+.header_account {
+	margin-right: 0px;
+	margin-left: 12px;
+}
+.header_wishlist {
+	margin-right: 0px;
+	margin-left: 12px;
+	.zemez_wishlist_total {
+		right: auto;
+		left: -19px;
+		border-radius: 5px 5px 0 5px;
+	}
+}
+
+.megamenu_desktop {
+	.level_2 {
+		.level_3 {
+			text-align: right;
+		}
+		.level_3_2_item {
+			padding: 10px 10px 0 0;
+		}
+	}
+	.level_2__small {
+		.level_3__item {
+			padding: 10px 10px 0 0;
+		}
+	}
+	.level_2__links {
+		.megamenu_linklist {
+			text-align: right;
+		}
+	}
+	.item_2link-3ban, .item_2link-2ban {
+		.megamenu_col__banner {
+			.megamenu_banner {
+				.caption_text {
+					right: 12%;
+					left: auto;
+				}
+			}
+		}
+	}
+	.item_3link-2ban {
+		#banner_catalog_2 {
+			.caption_text {
+				left: auto;
+				right: 7%;
+				text-align: right;
+			}
+		}
+	}
+	
+}
+
+
+@media (max-width: 991px){
+	.header_layout_3 {
+		.header_row_2 {
+			.header_search {
+				padding-right: 10px;
+			}
+		}
+	}
+}
+
+
+
+// 6.10. FOOTER =====================================================================================================================================
+footer .social_menu {
+	text-align: left;
+}
+.social_menu li:last-child {
+	margin-right: 10px;
+}
+@media (max-width: 767px){
+	.footer_type_1, 
+	.footer_type_2 {
+		text-align: right;
+	}
+}
+
+// 7.8. SLIDESHOW ===================================================================================================================================
+.section_slideshow {
+	.swiper_pagination {
+		margin: 0 auto;
+	}
+}
+.swiper-container-horizontal > .swiper-pagination-bullets.swiper-pagination-bullets-dynamic {
+	left: 0;
+	-webkit-transform: none;
+	-ms-transform: none;
+	transform: none;
+}
+
+
+// 7.10. GOOGLE MAP =================================================================================================================================
+.section_map {
+	.wrap_1 {
+		text-align: right;
+		justify-content: flex-end;
+	}
+}
+
+// 7.11. TESTIMONIALS ===============================================================================================================================
+.index_section_testimonials {
+	.testimonial_slide__item.style_type_2 {
+		text-align: right;
+	}
+}
+
+// 7.14. NEWSLETTER =================================================================================================================================
+.section_newsletter {
+	.btn {
+		margin-left: 0px;
+		margin-right: 10px;
+	}
+}
+
+// 8.2. COLLECTION TEMPLATE (PRODUCT LISTING) =======================================================================================================
+.section_template__collection {
+	.product_view {
+		text-align: left;
+		li ~ li {
+			margin-left: 0;
+			margin-right: 10px;
+		}
+	}
+}
+
+// 8.3. PRODUCT TEMPLATE ============================================================================================================================
+.section_template__product {
+	.single_product__quantity {
+		input {
+			margin-right: 0px;
+			margin-left: 10px;
+		}
+	}
+	.single_product__policy a svg {
+    	margin-right: 0px;
+    	margin-left: 5px;
+    }
+    .single_product__sku,
+	.single_product__availability,
+	.single_product__vendor,
+	.single_product__type,
+	.single_product__barcode,
+	.single_product__weight,
+	.single_product__tags,
+	.single_product__collections {
+        b {
+          float: right;
+          margin-left: 5px;
+        }
+    }
+}
+
+
+// 8.5. BLOG ARTICLE ================================================================================================================================
+.section_template__article {
+	.article_content {
+		p {
+			text-align: right;
+		}
+	}
+}
+
+// 8.6. USER ACCOUNT PAGES ==========================================================================================================================
+.account_section__register,
+.account_section__login,
+.account_section__reset {
+	h4 {
+		.link_close {
+			right: auto;
+			left: 0;
+		}
+	}
+}
+.file_eye_el{
+	&:before {
+		right: auto;
+		left: 10px;
+	}
+}
+.template_customer {
+	.page_heading {
+		a {
+			right: auto;
+			left: 0;
+		}
+	}
+	.account_section__info {
+		h4,
+		.block_title {
+			a {
+				float: left;
+			}
+		}
+	}
+}
+.template_customer__addresses {
+	h4 {
+		a {
+			right: auto;
+			left: 0;
+			&.link_edit,
+			&.link_close {
+				left: 30px;
+			}
+		}
+	}
+}
+.template_customer__account {
+	h4 {
+		.link_close {
+			right: auto;
+			left: 0;
+		}
+	}
+}
+
+// 8.12. ABOUT US PAGE ==============================================================================================================================
+.about_us_page {
+	.section_banners_about_2 {
+		.banner_33 {
+			.style_telling {
+				text-align: right;
+			}
+		}
+	}
+}
+
+
+// 9.2 SIDEBAR BLOG  ================================================================================================================================
+// BLOG SEARCH
+.sidebar_widget__search {
+	input {
+		margin-right: 0px;
+		margin-left: 10px;
+	}
+	.btn svg {
+		margin-right: 0px;
+	}
+}
+
+
+
+}

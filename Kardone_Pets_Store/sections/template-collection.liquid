@@ -1,0 +1,434 @@
+{%- assign product_img_alignment = section.settings.product_img_alignment -%}
+
+{% if settings.sidebar_toggle %}
+	{%- assign col_img_size = '980x250' -%}
+	{%- assign col_img_min_size = '196x50' -%}
+{% else %}
+	{%- assign col_img_size = '1200x450' -%}
+	{%- assign col_img_min_size = '240x90' -%}
+{% endif %}
+
+
+{%- case section.settings.img_size -%}
+	{%- when 'medium' -%}
+	{% if settings.sidebar_toggle %} 
+	{%- assign product_img_size = '470x470' -%}
+	{%- assign product_img_size_min = '150x150' -%}
+	{%- assign item_class = 'col-sm-4' -%}
+
+{% else %}
+	{% if section.settings.fullwidth_toggle %}
+		{%- assign product_img_size = '367x367' -%}
+		{%- assign product_img_size_min = '107x107' -%}
+		{%- assign item_class = 'col-2-5' -%}
+	{% else %}	
+		{%- assign product_img_size = '565x565' -%}
+		{%- assign product_img_size_min = '149x149' -%}
+		{%- assign item_class = 'col-sm-4' -%}
+	{% endif %}
+
+{% endif %}
+	{%- assign img_rate = 'medium' -%}
+	
+
+{%- when 'large'  -%}
+{% if settings.sidebar_toggle %} 
+	{%- assign product_img_size = '313x470' -%}
+	{%- assign product_img_size_min = '100x150' -%}
+	{%- assign item_class = 'col-sm-4' -%}
+
+{% else %}
+	{% if section.settings.fullwidth_toggle %}
+		{%- assign product_img_size = '343x367' -%}
+		{%- assign product_img_size_min = '100x107' -%}
+		{%- assign item_class = 'col-2-5' -%}
+	{% else %}	
+		{%- assign product_img_size = '380x565' -%}
+		{%- assign product_img_size_min = '100x149' -%}
+		{%- assign item_class = 'col-sm-4' -%}
+	{% endif %}
+
+{% endif %}
+{%- assign img_rate = 'large' -%}
+
+{%- endcase -%}
+
+{%- assign col_img = '' -%}
+{%- assign cap_inverted_style = false -%}
+
+{% for block in section.blocks %}
+	{% if block.settings.products_collection == collection.handle %}
+		{%- assign col_img = block.settings.image -%}
+
+		{% if block.settings.caption_inverted %}
+			{%- assign cap_inverted_style = true -%}
+		{% endif %}
+	{% endif %}
+{% endfor %}
+
+{% if col_img.size > 0 %}
+{% elsif collection.image %}
+	{%- assign col_img = collection.image -%}
+{% else %}
+	{%- assign col_img = collection.products.first.featured_image -%}
+{% endif %}
+
+
+{% unless settings.sidebar_toggle %}
+	<div class="container">
+{% endunless %}
+
+	<div class="collection_info">
+		<div class="collection_img">
+			<img style="max-width: 100%" class="lazyload" src="{{ col_img | img_url: col_img_min_size, crop: section.settings.collection_img_alignment }}" alt="{{ collection.title }}" data-src="{{ col_img | img_url: col_img_size, crop: section.settings.collection_img_alignment }}">
+		</div>
+
+		<div class="collection_text {% if cap_inverted_style %}inverted{% endif %}">
+			<div>
+				<h1 class="collection_title">{{ collection.title }}</h1>
+				{% if section.settings.collection_desc_toggle and collection.description.size > 0 %}
+					<div class="collection_desc rte">
+						{{ collection.description | truncatewords: 25 }}
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+
+{% unless settings.sidebar_toggle %}
+	</div>
+{% endunless %}
+
+
+
+{% unless settings.sidebar_toggle %}
+	{% if section.settings.fullwidth_toggle %}
+		<div class="container_big">
+	{% else %}	
+		<div class="container">
+	{% endif %}
+{% endunless %}
+
+
+	{% if section.settings.collection_tags_toggle and collection.all_tags.size > 0 %}
+		<div class="button_filters">
+			<ul>
+				{% if collection.url.size == 0 %}
+                <li{% unless current_tags %} class="active"{% endunless %}>
+                <a href="/collections/all">{{ 'layout.collection.all_tags' | t }}</a>
+                </li>
+                {% else %}
+                <li{% unless current_tags %} class="active"{% endunless %}>
+                <a href="{{ collection.url }}">{{ 'layout.collection.all_tags' | t }}</a>
+                </li>
+                {% endif %}
+                
+                {% for tag in collection.all_tags %}
+                <li {% if current_tags contains tag %}class="active"{% endif %}>{{ tag | link_to_tag: tag }}</li>
+                {% endfor %}
+			</ul>
+		</div>
+	{% endif %}
+
+	<div class="product_options">
+		<div class="product_options__sort">
+			<label for="sort_by_select">{{ 'layout.collection.sort_products' | t }}:</label>
+
+			<select id="sort_by_select">
+				<option value="manual">{{ 'layout.collection.featured' | t }}</option>
+				<option value="best-selling">{{ 'layout.collection.best_selling' | t }}</option>
+				<option value="title-ascending">{{ 'layout.collection.name_a_z' | t }}</option>
+				<option value="title-descending">{{ 'layout.collection.name_z_a' | t }}</option>
+				<option value="price-ascending">{{ 'layout.collection.price_low_high' | t }}</option>
+				<option value="price-descending">{{ 'layout.collection.price_high_low' | t }}</option>
+				<option value="created-ascending">{{ 'layout.collection.old_new' | t }}</option>
+				<option value="created-descending">{{ 'layout.collection.new_old' | t }}</option>
+			</select>
+		</div>
+
+		<div class="product_count">{{ collection.all_products_count }} {{ 'layout.product.items' | t }}</div>
+		
+		<ul class="product_view">
+			<li id="view_grid" data-view="grid" class="active">
+				<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<rect x="10.9091" width="4.09091" height="4.09091"/>
+					<rect x="10.9091" y="5.45459" width="4.09091" height="4.09091"/>
+					<rect x="10.9091" y="10.9092" width="4.09091" height="4.09091"/>
+					<rect x="5.45459" width="4.09091" height="4.09091"/>
+					<rect x="5.45459" y="5.45459" width="4.09091" height="4.09091"/>
+					<rect x="5.45459" y="10.9092" width="4.09091" height="4.09091"/>
+					<rect width="4.09091" height="4.09091"/>
+					<rect y="5.45459" width="4.09091" height="4.09091"/>
+					<rect y="10.9092" width="4.09091" height="4.09091"/>
+				</svg>
+			</li>
+			<li id="view_list" data-view="list">
+				<svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<rect x="6.09106" y="1.36353" width="9.54545" height="1.36364"/>
+					<rect x="6.09106" y="6.81812" width="9.54545" height="1.36364"/>
+					<rect x="6.09106" y="12.2727" width="9.54545" height="1.36364"/>
+					<rect x="0.636475" width="4.09091" height="4.09091"/>
+					<rect x="0.636475" y="5.45459" width="4.09091" height="4.09091"/>
+					<rect x="0.636475" y="10.9092" width="4.09091" height="4.09091"/>
+				</svg>
+			</li>
+		</ul>
+	</div>
+
+	
+	{% assign paginate_by = section.settings.items_per_page %}
+
+	{% paginate collection.products by paginate_by %}
+
+		<div class="row product_listing__main" id="product_listing__sorted">
+			{% for product in collection.products %}
+				<div class="{{ item_class }} product_item_wrap">
+					{% include 'product-listing-item' img_size: product_img_size, img_min_size: product_img_size_min, img_alignment: product_img_alignment, second_img: true %}
+				</div>
+			{% endfor %}
+		</div>
+		
+		{% assign pagination_items = 'layout.pagination.products' | t %}
+		{% include 'snippet-pagination' with pagination_items %}
+		
+	{% endpaginate %}
+
+{% unless settings.sidebar_toggle %}
+	</div>
+{% endunless %}
+
+
+
+{% schema %}
+{
+	"name": "Collection page",
+	"class": "section_template section_template__collection",
+	"settings": [
+		{
+			"type": "select",
+			"id": "items_per_page",
+			"label": "Items per page",
+			"default": "6",
+			"options": [
+				{
+					"value": "6",
+					"label": "6"
+				},
+				{
+					"value": "10",
+					"label": "10"
+				},
+				{
+					"value": "12",
+					"label": "12"
+				},
+				{
+					"value": "15",
+					"label": "15"
+				}
+			]
+		},
+		{
+			"type": "checkbox",
+			"id": "fullwidth_toggle",
+			"label": "Full Width Toggle",
+			"info": "Only for layout without sidebar",
+			"default": false
+		},
+
+
+		// COLLECTION SETTINGS ////////////////////////////////////////////////////////////////////////////
+		{
+			"type": "header",
+			"content": "Collection settings"
+		},
+		{
+			"type": "checkbox",
+			"id": "collection_desc_toggle",
+			"label": "Collection description"
+		},
+		{
+			"type": "checkbox",
+			"id": "collection_tags_toggle",
+			"label": "Show tags"
+		},
+
+		// PRODUCT LISTING ////////////////////////////////////////////////////////////////////////////////
+		{
+			"type": "header",
+			"content": "Product listing"
+		},
+		{
+			"type": "select",
+			"id": "product_img_alignment",
+			"label": "Product image alignment",
+			"default": "center",
+			"options": [
+				{
+					"value": "top",
+					"label": "Top"
+				},
+				{
+					"value": "center",
+					"label": "Middle"
+				},
+				{
+					"value": "bottom",
+					"label": "Bottom"
+				}
+			]
+		},
+
+		{
+			"type": "select",
+			"id": "img_size",
+			"label": "Image size",
+			"options": [
+				{
+					"value": "medium",
+					"label": "Medium"
+				},
+				{
+					"value": "large",
+					"label": "Large"
+				}
+			]
+		},
+
+
+		// COLLECTION IMAGE ///////////////////////////////////////////////////////////////////////////////
+		{
+			"type": "header",
+			"content": "Collection image"
+		},
+		{
+			"type": "select",
+			"id": "collection_img_alignment",
+			"label": "Collection image alignment",
+			"default": "center",
+			"options": [
+				{
+					"value": "top",
+					"label": "Top"
+				},
+				{
+					"value": "center",
+					"label": "Middle"
+				},
+				{
+					"value": "bottom",
+					"label": "Bottom"
+				}
+			]
+		}
+	],
+	"blocks": [
+		{
+			"type": "collection_image",
+			"name": "Collection custom image",
+			"settings": [
+				{
+					"type": "collection",
+					"id": "products_collection",
+					"label": "Collection"
+				},
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Collection Image",
+					"info": "The image should be more than 1200px"
+				},
+				{
+					"type": "checkbox",
+					"id": "caption_inverted",
+					"label": "Inverted Caption Style",
+					"default": false
+				}
+			]
+		}
+	]
+}
+{% endschema %}
+
+{% javascript %}
+jQuery(document).ready(function($) {
+
+	// LOAD COLLECTION CONTENT         
+																		 // when loading a page, we compare the value from the cookie and load the content onto the page
+	if( theme.paginationTypeLoad && theme.collectionName.length > 0 ){   
+		var collectionUrlCookie = $.cookie(theme.collectionName);
+		if( collectionUrlCookie ){        								 // if there is a cookie, if there is a search in the URL and there is a page in the search 
+
+			if ( document.location.search.indexOf('page=') != -1 ){
+				var urlPage = document.location.search.match(/\?page=\d{1,3}/)[0];
+				var reloadUrl = document.location.href.replace(/\?page=\d{1,3}/, collectionUrlCookie);
+
+				if( urlPage != collectionUrlCookie ){
+																		// reloading to the page with the replacement of the page number by the number from the cookie
+					document.location.href = reloadUrl;
+				}
+			}
+
+		} 
+	}
+
+	// PRODUCTS VIEW GRID/LIST
+	if ( typeof $.cookie('productSortView') == 'undefined' ) {
+		$.cookie('productSortView', 'grid', {path: '/'});
+	}
+	else if ( $.cookie('productSortView') == 'list' ) {
+		$('#view_grid').removeClass('active');
+		$('#view_list').addClass('active');
+
+		$('#product_listing__sorted').addClass('product_listing__list');
+
+	};
+
+	$('#view_grid, #view_list').on('click', function() {
+		var thisView = $(this).data('view');
+
+		$('#view_grid, #view_list').removeClass('active');
+		$('#product_listing__sorted').removeClass('product_listing__list product_listing__grid');
+
+		$(this).addClass('active');
+
+		$.cookie('productSortView', thisView, {path: '/'});
+		$('#product_listing__sorted').addClass( 'product_listing__' + thisView );
+
+	});
+
+
+
+	// PRODUCTS SORTING
+	$('#sort_by_select option').each(function() {
+		if ( document.location.href.indexOf( $(this).attr('value') ) != -1 ) {
+			$(this).attr('selected', 'selected');
+		};
+
+	});
+
+	$('#sort_by_select').on('change', function() {
+		if ( document.location.pathname.indexOf('types') > 0 || document.location.pathname.indexOf('vendors') > 0 ) {
+			if ( document.location.search.indexOf('sort_by=') > 0 && document.location.search.indexOf('&view=') > 0 ) {
+				var locationSearch = document.location.search.replace(/&sort_by=(\w|\-)+/, '&sort_by=' + $(this).val()).replace(/\&view=\d{1,2}/, '&view=' + theme.productNumber);
+
+				var productSortQuery = document.location.origin + document.location.pathname + locationSearch;
+			} else {
+				var productSortQuery = document.location.origin + document.location.pathname + document.location.search + '&page=1&sort_by=' + $(this).val() + '&view=' + theme.productNumber;
+				
+			}
+
+		} else {
+
+
+			var productSortQuery = document.location.origin + document.location.pathname  + '?page=1&sort_by=' + $(this).val() + '&view=' + theme.productNumber;
+		}
+
+		document.location.href = productSortQuery;
+	});
+
+
+
+
+});
+{% endjavascript %}

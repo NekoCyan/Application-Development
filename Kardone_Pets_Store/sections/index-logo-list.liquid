@@ -1,0 +1,308 @@
+{% case section.settings.img_size %}
+	{% when 'xsmall' %}{%- assign img_size = '162x58' -%}
+	{% when 'small'  %}{%- assign img_size = '200x130' -%}
+	{% when 'medium' %}{%- assign img_size = '220x150' -%}
+	{% when 'large' %}{%- assign img_size = '162x200' -%}
+{% endcase %}
+
+{%- assign icon_snippet = false -%}
+{% for block in section.blocks %}
+	{% if block.type contains 'icon' %}
+		{%- assign icon_snippet = true -%}
+	{% endif %}
+{% endfor %}
+
+{% if icon_snippet %}
+	{% include 'svg-icon-logo' %}
+{% endif %}
+
+
+{% if section.settings.section_layout == 'boxed' %}
+	<div class="container">
+{% else %}
+	<div class="full_width_container">
+{% endif %}
+	{% if section.settings.title.size > 0 %}
+		<h4 class="section_heading"><span>{{ section.settings.title | escape }}</span></h4>
+	{% endif %}
+
+	<div class="row">
+
+		{% for block in section.blocks %}
+			{% case block.type %}
+				{% when 'logo_image' %}
+					<div class="col-xs-4 col-sm-2">
+						<div class="logo_item item_image">
+							{% if block.settings.link.size > 0 %}
+								<a href="{{ block.settings.link }}" class="logo-bar__link">
+							{% endif %}
+
+							{% if block.settings.image.size > 0 %}
+								<img src="{{ block.settings.image | img_url: img_size, crop: section.settings.img_alignment }}" alt="{{ section.settings.image.alt }}">
+							{% else %}
+								<div class="img_placeholder__wrap img_placeholder__{{ section.settings.img_size }}">
+									{{ 'logo' | placeholder_svg_tag: 'img_placeholder' }}
+								</div>
+							{% endif %}
+
+							{% if block.settings.link.size > 0 %}
+								</a>
+							{% endif %}
+						</div>
+					</div>
+				{% when 'icon' %} 
+					<div class="col-xs-4 col-sm-2 px-md-0">
+						<div class="logo_item item_icon {% if section.settings.inline %}inline{% endif %}"> 
+						
+								{% if block.settings.link.size > 0 %}
+									<a href="{{ block.settings.link }}" class="logo-bar__link logo_wrap">
+								{% else %}
+									<div class="logo_wrap">
+								{% endif %}
+										
+								{% capture icon_svg %}{{ block.settings.icon }}{% endcapture %} 
+								<div class="icon">
+									{% if icon_svg == 'icon_medicine' %}
+										{{ icon_medicine }}
+									{% elsif icon_svg == 'icon_leash' %}
+										{{ icon_leash }}
+									{% elsif icon_svg == 'icon_pillow' %}
+										{{ icon_pillow }}
+									{% elsif icon_svg == 'icon_poop' %}
+										{{ icon_poop }}
+									{% elsif icon_svg == 'icon_spray' %}
+										{{ icon_spray }}
+									{% elsif icon_svg == 'icon_dog' %}
+										{{ icon_dog }}
+									{% elsif icon_svg == 'icon_brush' %}
+										{{ icon_brush }}
+									{% elsif icon_svg == 'icon_pet-food' %}
+										{{ icon_pet-food }}
+									{% endif %}
+								</div> 
+
+								{% if block.settings.text.size > 0 %}
+									<p>{{ block.settings.text }}</p>
+								{% endif %}
+									
+								{% if block.settings.link.size > 0 %}
+									</a>
+								{% else %}
+									</div>
+								{% endif %}
+							
+						</div>
+					</div>
+			{% endcase %}
+		{% endfor %}
+	</div>
+</div>
+
+{% if section.settings.section_bg_color.size > 0 or section.settings.item_color.size > 0 %}
+<style>
+	{% if section.settings.section_bg_color.size > 0 and section.settings.section_bg_color != 'rgba(0,0,0,0)' %}
+		#shopify-section-{{ section.id }} {background-color: {{ section.settings.section_bg_color }};}
+	{% endif %}
+
+	{% if section.settings.item_color.size > 0 and section.settings.item_color != 'rgba(0,0,0,0)' %}
+		#shopify-section-{{ section.id }} .item_icon svg {fill: {{ section.settings.item_color }};}
+		#shopify-section-{{ section.id }} .item_icon p {color: {{ section.settings.item_color }};}
+	    #shopify-section-{{ section.id }} .item_icon:hover p{color: {{ settings.color_3 }};}
+	{% endif %}
+</style>
+{% endif %}
+
+{% schema %}
+{
+	"name": "Logo list",
+	"class": "section section_homepage section_logo-list",
+	"max_blocks": 12,
+	"settings": [
+		{
+			"type": "text",
+			"id": "title",
+			"label": "Heading",
+			"default": "Logo list"
+		},
+		{
+			"type": "select",
+			"id": "section_layout",
+			"label": "Section layout",
+			"options": [
+				{
+					"value": "boxed",
+					"label": "Boxed"
+				},
+				{
+					"value": "full_w",
+					"label": "Full width"
+				}
+			]
+		},
+		{
+			"type": "select",
+			"id": "img_size",
+			"label": "Image size",
+			"options": [
+				{
+					"value": "xsmall",
+					"label": "Extra Small (162x58)"
+				},
+				{
+					"value": "small",
+					"label": "Small (220x130)"
+				},
+				{
+					"value": "medium",
+					"label": "Medium (220x150)"
+				},
+				{
+					"value": "large",
+					"label": "Large (220x200)"
+				}
+			]
+		},
+		{
+			"type": "select",
+			"id": "img_alignment",
+			"label": "Image alignment",
+			"options": [
+				{
+					"value": "top",
+					"label": "Top"
+				},
+				{
+					"value": "center",
+					"label": "Middle"
+				},
+				{
+					"value": "bottom",
+					"label": "Bottom"
+				}
+			]
+		},
+		{
+			"type": "color",
+			"id": "section_bg_color",
+			"label": "Background color"
+		},
+		
+		{
+			"type": "checkbox",
+			"id": "inline",
+			"label": "Inscription in a row",
+			"default": false,
+			"info": "Only for icon type"
+		},
+		{
+			"type": "color",
+			"id": "item_color",
+			"label": "Item text color",
+			"info": "Only for icon type"
+		}
+	],
+	"blocks": [
+		{
+			"type": "logo_image",
+			"name": "Logo",
+			"settings": [
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image"
+				},
+				{
+					"type": "url",
+					"id": "link",
+					"label": "Link",
+					"info": "Optional"
+				}
+			]
+		},
+		{
+			"type": "icon",
+			"name": "Icon",
+			"settings": [
+				{
+					"type": "select",
+					"id": "icon",
+					"label": "Icon",
+					"options": [
+						{
+							"value": "icon_medicine",
+							"label": "Medicine"
+						},
+						{
+							"value": "icon_leash",
+							"label": "Leash"
+						},
+						{
+							"value": "icon_pillow",
+							"label": "Pillow"
+						},
+						{
+							"value": "icon_poop",
+							"label": "Poop"
+						},
+						{
+							"value": "icon_spray",
+							"label": "Spray"
+						},
+						{
+							"value": "icon_dog",
+							"label": "Dog"
+						},
+						{
+							"value": "icon_brush",
+							"label": "Brush"
+						},
+						{
+							"value": "icon_pet-food",
+							"label": "Pet-food"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"id": "text",
+					"label": "Text"
+				},
+				{
+					"type": "url",
+					"id": "link",
+					"label": "Link",
+					"info": "Optional"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Logo list",
+			"category": "Image",
+			"blocks": [
+				{
+					"type": "logo_image"
+				},
+				{
+					"type": "logo_image"
+				},
+				{
+					"type": "logo_image"
+				},
+				{
+					"type": "logo_image"
+				},
+				{
+					"type": "logo_image"
+				},
+				{
+					"type": "logo_image"
+				}
+			]
+		}
+	]
+}
+{% endschema %}
+
+

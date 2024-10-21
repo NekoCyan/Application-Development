@@ -1,0 +1,196 @@
+{% case section.settings.section_blog_limit %}
+	{% when '1'  %}{%- assign img_size = '970x545' -%}{%- assign item_class = 'col-10' -%}
+	{% when '2' %}{%- assign img_size = '580x420' -%}{%- assign item_class = 'col-sm-6' -%}
+	{% when '3'  %}{%- assign img_size = '370x275' -%}{%- assign item_class = 'col-sm-4' -%}
+{% endcase %}
+
+<div class="container"> 
+	{% if section.settings.section_title.size > 0 %}
+		<h4 class="section_heading">{{ section.settings.section_title | escape }}</h4>
+	{% endif %}
+
+	{%- assign section_blog = blogs[section.settings.section_blog] -%}
+
+	{% unless section_blog.empty? %}
+		<div class="row">
+			{% for article in section_blog.articles limit: section.settings.section_blog_limit %}
+				<div class="{{ item_class }}">
+					<div class="article_item article_item__{{ section.settings.text_position }}">
+
+						{% comment %} ELEMENTS {% endcomment %}
+						{% capture article_image %}
+							<div class="article_image">
+								{% if article.image %}
+									<img class="blur-up lazyload" style="width: 100%;" src="{{ article.image.src | img_url: '100x100', crop: section.settings.img_alignment }}" data-src="{{ article.image.src | img_url: img_size, crop: section.settings.img_alignment }}" alt="{{ article.image.alt }}">
+								{% else %}
+									<div class="img_placeholder__wrap">{{ 'image' | placeholder_svg_tag: 'img_placeholder'  }}</div>
+								{% endif %}
+							</div>
+						{% endcapture %}
+
+						{% capture article_info_v1 %}
+							{% if section.settings.blog_author %}
+								<p class="article_info">
+									<span>By {{ article.author }}</span><span> on <time class="article_time" datetime="{{ article.published_at | date: '%Y-%m-%dT%H:%M' }}">{{ article.published_at | date: '%B %d, %Y' }}</time></span>
+								</p>
+							{% endif %}
+						{% endcapture %}
+
+						{% capture article_info_v2 %}
+							{% if section.settings.blog_author %}
+								<p class="article_info">
+									<span><time class="article_time" datetime="{{ article.published_at | date: '%Y-%m-%dT%H:%M' }}">{{ article.published_at | date: '%B %d, %Y' }}</time></span>
+								</p>
+							{% endif %}
+						{% endcapture %}
+
+						{% capture article_title %}
+							<h4 class="article_title">{{ article.title | truncatewords: 8 }}</h4>
+						{% endcapture %}
+						
+						{% capture article_content %}
+							<p class="article_content">{{ article.content | strip_html | truncatewords: 25 }}</p>
+						{% endcapture %}
+
+						{% capture article_btn %}
+							<a class="btn article_btn btn_inverted" href="{{ article.url }}">{{ 'blog.articles.read_more' | t }}</a>
+						{% endcapture %}
+						
+
+						{% comment %} LAYOUT {% endcomment %}
+						{% if section.settings.section_blog_limit == '1' and section.settings.text_position == 'normal' %}
+							<div class="article_caption">
+								{{ article_title }}
+								{{ article_info_v1 }}
+							</div>
+							{{ article_image }}
+							<div class="article_caption">
+								{{ article_content }}
+								{{ article_btn }}
+							</div>
+
+						{% elsif section.settings.section_blog_limit == '1' and section.settings.text_position == 'overlay' %}
+							{{ article_image }}
+							<div class="article_caption">
+								{{ article_title }}
+								{{ article_info_v1 }}
+								{{ article_content }}
+								{{ article_btn }}
+							</div>
+
+						{% elsif section.settings.text_position == 'normal' %}
+							{{ article_image }}
+							<div class="article_caption">
+								{{ article_info_v2 }}
+								{{ article_title }}
+								{{ article_content }}
+								{{ article_btn }}
+							</div>
+
+						{% else %}
+							{{ article_image }}
+							<a class="article_caption" href="{{ article.url }}">
+								{{ article_info_v1 }}
+								{{ article_title }}
+								{% unless section.settings.section_blog_limit == '3' %}
+								    {{ article_content }}
+								{% endunless %}
+							</a>
+						{% endif %}
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	{% endunless %}
+
+</div>
+
+{% schema %}
+{
+	"name": "Blog articles",
+	"class": "section section_homepage index_section_blog-articles",
+	"settings": [
+		{
+			"type": "text",
+			"id": "section_title",
+			"label": "Heading",
+			"default": "Blog"
+		},
+		{
+			"type": "blog",
+			"id": "section_blog",
+			"label": "Blog"
+		},
+		{
+			"type": "select",
+			"id": "section_blog_limit",
+			"label": "Show posts",
+			"default": "2",
+			"options": [
+				{
+					"value": "1",
+					"label": "1"
+				},
+				{
+					"value": "2",
+					"label": "2"
+				},
+				{
+					"value": "3",
+					"label": "3"
+				}
+			]
+		},
+		{
+			"type": "select",
+			"id": "img_alignment",
+			"label": "Images alignment",
+			"options": [
+				{
+					"value": "top",
+					"label": "Top"
+				},
+				{
+					"value": "center",
+					"label": "Middle"
+				},
+				{
+					"value": "bottom",
+					"label": "Bottom"
+				}
+			]
+		},
+		{
+			"type": "select",
+			"id": "text_position",
+			"label": "Text position",
+			"options": [
+				{
+					"value": "normal",
+					"label": "Normal"
+				},
+				{
+					"value": "overlay",
+					"label": "Overlay"
+				}
+			]
+		},
+		{
+			"type": "checkbox",
+			"id": "blog_author",
+			"label": "Show article info"
+		}
+	],
+	"presets": [
+		{
+			"name": "Blog articles",
+			"category": "Blog",
+			"settings": {
+				"section_blog": "News",
+				"section_blog_limit": "3"
+			}
+		}
+	]
+}
+{% endschema %}
+
