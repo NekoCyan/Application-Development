@@ -1,0 +1,32 @@
+.rainbow {
+  --angle: 0deg;
+  border: 5px solid;
+  border-image: conic-gradient(from var(--angle), red, yellow, lime, aqua, blue, magenta, red) 1;
+  animation: 10s rotate linear infinite;
+  border-radius: 10px;
+}
+
+.rainbow>u>a {
+  font-weight: bold;
+}
+
+.warning {
+  width: 100%;
+  background-color: white;
+  margin: 0;
+  padding: 10px 3px;
+  z-index: 999;
+  font-weight: 'bold',
+}
+
+@keyframes rotate {
+  to {
+    --angle: 360deg;
+  }
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}

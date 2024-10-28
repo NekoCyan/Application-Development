@@ -1,0 +1,5 @@
+{
+    "title": "Ocean Interior",
+    "mainMatcher": "api|_next/static|_next/image|favicon.ico",
+    "antiRedirectMatcher": "assets/.*"
+}
