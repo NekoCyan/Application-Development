@@ -1,5 +1,5 @@
 import { Document, HydratedDocument, Model } from 'mongoose';
-import { IModels } from './';
+import { IModels } from '.';
 import { DocumentResult } from './ExternalDocument';
 
 export interface CounterData {

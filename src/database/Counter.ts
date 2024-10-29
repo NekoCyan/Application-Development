@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { ICounter, ICounterMethods, ICounterModel, IModels } from './models';
+import { ICounter, ICounterMethods, ICounterModel, IModels } from './interfaces';
 
 const CounterSchema = new mongoose.Schema<
 	ICounter,

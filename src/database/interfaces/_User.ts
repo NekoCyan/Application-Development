@@ -2,7 +2,6 @@ import { Document, HydratedDocument, Model } from 'mongoose';
 import { DocumentResult } from './ExternalDocument';
 
 export interface BasicUserData {
-	username: string;
 	password: string;
 }
 export interface EmailUserData {
@@ -27,6 +26,7 @@ export interface CommonUserData {
 	 * Profile picture.
 	 */
 	image: string;
+	keySession: string;
 
 	createdAt: Date;
 	updatedAt: Date;
@@ -37,7 +37,32 @@ export type UserData = BasicUserData &
 	InformationUserData &
 	CommonUserData;
 export interface IUser extends UserData, DocumentResult<UserData>, Document {}
-export interface IUserMethods {}
-export interface IUserModel extends Model<IUser, {}, IUserMethods> {}
+export interface IUserMethods {
+	generateKeySession: () => string;
+	comparePassword: (password: string) => Promise<boolean>;
+}
+export interface IUserStatics {
+	findUserByCredentials: (
+		this: IUserModel,
+		email: string,
+		password: string,
+	) => Promise<UserDataForCredentials>;
+	createUser: (
+		this: IUserModel,
+		data: Partial<UserData>,
+	) => Promise<UserHydratedDocument>;
+	isValidKeySession: (
+		this: IUserModel,
+		userId: number,
+		keySession: string,
+	) => Promise<boolean>;
+	isAdmin: (this: IUserModel, userId: number) => Promise<boolean>;
+}
+export interface IUserModel
+	extends Model<IUser, {}, IUserMethods>,
+		IUserStatics {}
 export type UserHydratedDocument = HydratedDocument<IUser, IUserMethods>;
-
+export type UserDataForCredentials = Pick<
+	UserData,
+	'userId' | 'fullName' | 'email' | 'phone' | 'keySession' | 'role'
+>;

@@ -14,7 +14,7 @@ export default function HeaderLogo(
 	logoNavHref = logoNavHref ?? '/';
 
 	return (
-		<div className='col-md-3'>
+		<div className='col-md-12 col-lg-3 self-center'>
 			{!isDisabled && (
 				<Link href={logoNavHref}>
 					<Image

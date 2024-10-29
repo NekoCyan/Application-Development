@@ -78,19 +78,19 @@ export default function HeaderSearch({
 	};
 
 	return (
-		<div className='col-md-6'>
+		<div className='col-md-12 col-lg-3'>
 			{!isDisabled && (
-				<div className={''}>
+				<div className={'relative'}>
 					<form
 						onSubmit={onSubmit}
-						className='w-full max-w-xl relative flex'
+						className='w-full min-w-full relative flex'
 					>
 						<input
 							autoComplete='off'
 							type='text'
 							name='search'
 							className={
-								'w-full border border-primary border-r-0 pl-12 py-3 pr-3 rounded-l-md focus:outline-none hidden md:flex'
+								'w-full border border-primary border-r-0 pl-12 py-3 pr-3 rounded-l-md focus:outline-none'
 							}
 							placeholder='Search here...'
 							onChange={handleChange}
@@ -98,7 +98,7 @@ export default function HeaderSearch({
 						/>
 						<button
 							className={
-								'bg-primary border border-primary text-white px-8 rounded-r-md hover:bg-transparent hover:text-primary hidden md:flex'
+								'bg-primary border border-primary text-white px-6 rounded-r-md hover:bg-transparent hover:text-primary'
 							}
 						>
 							Search
