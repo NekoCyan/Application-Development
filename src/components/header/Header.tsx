@@ -1,7 +1,7 @@
 import { Container } from 'react-bootstrap';
 import HeaderLogo from './headerComponents/HeaderLogo';
-import HeaderSearch from './headerComponents/HeaderSearch';
 import HeaderMisc from './headerComponents/HeaderMisc';
+import HeaderSearch from './headerComponents/HeaderSearch';
 
 type HeaderProps = {
 	excluded?: Array<'logo' | 'search' | 'misc'>;
