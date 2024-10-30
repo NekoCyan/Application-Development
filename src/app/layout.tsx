@@ -1,18 +1,16 @@
 import store from '@/redux/store';
-import { MultiStyles, ROUTES } from '@/utils';
 import NextAuthProvider from '@/utils/nextAuth/NextAuthProvider';
 import ReduxProvider from '@/utils/redux/ReduxProvider';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import type { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import { Montserrat } from 'next/font/google';
-import Link from 'next/link';
 import React from 'react';
 import { Bounce, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './globals.css';
-import styles from './layout.module.css';
 import LinkClickPreventer from './LinkClickPreventer';
+import WarningEducational from '@/components/WarningEducational';
 
 export const metadata: Metadata = {
 	title: 'Ocean Interior',
@@ -61,24 +59,11 @@ export default async function RootLayout({
 			</head>
 
 			<body className={montserrat.className}>
-				<h5
-					className={MultiStyles(
-						styles.warning,
-						styles.rainbow,
-						'text-center text-black',
-					)}
-				>
-					Frequently reminder: This website is just using for{' '}
-					<u>
-						<Link href={ROUTES.Educational}>
-							EDUCATIONAL PURPOSE
-						</Link>
-					</u>
-					, not for Commercial.
-				</h5>
 				<ReduxProvider store={store}>
 					<NextAuthProvider session={session}>
+						<WarningEducational />
 						{children}
+						<WarningEducational />
 					</NextAuthProvider>
 					<ToastContainer
 						position='top-right'
