@@ -122,7 +122,7 @@ export const HTTPStatusCode = {
 export const PATTERN = {
 	USERNAME: /[a-zA-Z0-9_.]+/, // DEPRECATED.
 	EMAIL: /^[a-zA-Z0-9_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-	PASSWORD: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*[^a-zA-Z0-9]).{8,}$/,
+	PASSWORD: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
 };
 
 export const SYMBOLS = {
