@@ -7,7 +7,11 @@ const adminRoutePrefix = '/admin';
 const adminAccess = [''];
 
 const originsToAppend = [
-	...new Set(['http://localhost:3000', 'http://localhost:19006']),
+	...new Set([
+		'http://localhost:3000',
+		'http://interior.nekoharu.com',
+		'https://ocean-interior.vercel.app',
+	]),
 ];
 
 export async function middleware(req: NextRequest) {
