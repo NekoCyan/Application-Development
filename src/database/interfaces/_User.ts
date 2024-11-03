@@ -17,7 +17,7 @@ export interface InformationUserData {
 	address: string;
 	country: string;
 	city: string;
-	zip: string;
+	zip: string
 }
 export interface CommonUserData {
 	userId: number;
