@@ -1,3 +1,4 @@
+import WarningEducational from '@/components/educational/WarningEducational';
 import store from '@/redux/store';
 import NextAuthProvider from '@/utils/nextAuth/NextAuthProvider';
 import ReduxProvider from '@/utils/redux/ReduxProvider';
@@ -10,7 +11,6 @@ import { Bounce, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './globals.css';
 import LinkClickPreventer from './LinkClickPreventer';
-import WarningEducational from '@/components/WarningEducational';
 
 export const metadata: Metadata = {
 	title: 'Ocean Interior',
