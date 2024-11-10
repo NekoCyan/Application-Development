@@ -90,7 +90,7 @@ export default function HeaderSearch({
 							type='text'
 							name='search'
 							className={
-								'w-full border border-primary border-r-0 pl-12 py-3 pr-3 rounded-l-md focus:outline-none'
+								'lg:w-96 md:w-64 w-full border border-primary border-r-0 pl-12 py-3 pr-3 rounded-l-md focus:outline-none'
 							}
 							placeholder='Search here...'
 							onChange={handleChange}
