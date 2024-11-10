@@ -1,5 +1,6 @@
 import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
+import Navbar from '@/components/navbar/Navbar';
 import { WEBSITE } from '@/utils';
 import { Metadata } from 'next';
 import Image from 'next/image';
@@ -14,6 +15,7 @@ export default function NotFound() {
 	return (
 		<div>
 			<Header />
+			<Navbar />
 			<Container className='flex flex-col text-center items-center gap-2 py-5'>
 				<h2>404 - Not Found</h2>
 				<Image
