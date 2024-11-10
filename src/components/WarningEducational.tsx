@@ -8,7 +8,7 @@ export default function WarningEducational() {
 			className={MultiStyles(
 				styles.warning,
 				styles.rainbow,
-				'text-center text-black',
+				'text-center text-black font-bold',
 			)}
 		>
 			Frequently reminder: This website is just using for{' '}
