@@ -1,12 +1,13 @@
-import HomeBanner from "@/components/banner/HomeBanner";
-import Features from "@/components/features/Features";
+import HomeBanner from '@/components/banner/HomeBanner';
+import HomeCategories from '@/components/categories/HomeCategories';
+import Features from '@/components/features/Features';
 
 export default function Page() {
 	return (
 		<div>
 			<HomeBanner />
 			<Features />
-			Hello World!
+			<HomeCategories />
 		</div>
 	);
 }
