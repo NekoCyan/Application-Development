@@ -111,6 +111,18 @@ a {
   text-decoration: inherit;
 }
 
+.link {
+  color: var(--link);
+  text-decoration: inherit;
+  transition: ease-in 0.15s;
+}
+
+.link:hover {
+  color: var(--primary);
+  text-decoration: none;
+  transition: ease-out 0.15s;
+}
+
 /*
 Add the correct font weight in Edge and Safari.
 */
@@ -1803,16 +1815,6 @@ h6 {
 
 .group:hover .group-hover\:opacity-100 {
   opacity: 1;
-}
-
-.link {
-  color: var(--link);
-  transition: ease-out 0.1s;
-}
-
-.link:hover {
-  color: var(--primary);
-  transition: ease-in 0.1s;
 }
 
 @media (min-width: 768px) {

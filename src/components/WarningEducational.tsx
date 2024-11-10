@@ -13,7 +13,7 @@ export default function WarningEducational() {
 		>
 			Frequently reminder: This website is just using for{' '}
 			<u>
-				<Link href={ROUTES.Educational}>EDUCATIONAL PURPOSE</Link>
+				<Link className='link' href={ROUTES.Educational}>EDUCATIONAL PURPOSE</Link>
 			</u>
 			, not for Commercial.
 		</h5>
