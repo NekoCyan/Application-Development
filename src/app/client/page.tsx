@@ -1,3 +1,4 @@
+import HomeAds from '@/components/advertise/HomeAds';
 import HomeBanner from '@/components/banner/HomeBanner';
 import HomeCategories from '@/components/categories/HomeCategories';
 import Features from '@/components/features/Features';
@@ -8,6 +9,7 @@ export default function Page() {
 			<HomeBanner />
 			<Features />
 			<HomeCategories />
+			<HomeAds />
 		</div>
 	);
 }
