@@ -4,7 +4,7 @@ import styles from './WarningEducational.module.css';
 
 export default function WarningEducational() {
 	return (
-		<h5
+		<h6
 			className={MultiStyles(
 				styles.warning,
 				styles.rainbow,
@@ -16,6 +16,6 @@ export default function WarningEducational() {
 				<Link className='link' href={ROUTES.Educational}>EDUCATIONAL PURPOSE</Link>
 			</u>
 			, not for Commercial.
-		</h5>
+		</h6>
 	);
 }
