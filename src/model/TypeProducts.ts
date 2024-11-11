@@ -45,3 +45,5 @@ export interface IProductModel extends Model<IProduct, {}, IProductMethods> {}
 
 // Hydrated document type
 export type ProductHydratedDocument = HydratedDocument<IProduct, IProductMethods>;
+
+
