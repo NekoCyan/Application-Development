@@ -10,7 +10,7 @@ export interface OrderData {
 	userId: number;
 	products: (Pick<
 		ProductData,
-		'productId' | 'name' | 'price' | 'salePercentage' | 'images'
+		'productId' | 'name' | 'price' | 'salePercentage' | 'imageUrls'
 	> & {
 		quantity: number;
 	})[];

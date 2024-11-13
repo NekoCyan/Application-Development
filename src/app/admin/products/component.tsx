@@ -1,6 +1,6 @@
 'use client';
 
-import { ProductData } from '@/app/models/interfaces';
+import { ProductData } from '@/database/interfaces';
 import { SearchInput } from '@/components/boostrap';
 import ToolTip from '@/components/tooltip/ToolTip';
 import { PageProps } from '@/types';

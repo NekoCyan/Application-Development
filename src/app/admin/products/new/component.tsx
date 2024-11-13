@@ -1,9 +1,9 @@
 'use client';
 
-import { CategoryData, ProductData } from '@/app/models/interfaces';
-import { DocumentList } from '@/app/models/interfaces/ExternalDocument';
 import { DragDrop, TextInput } from '@/components/boostrap';
 import Modal from '@/components/modal/Modal';
+import { CategoryData, ProductData } from '@/database/interfaces';
+import { PageList } from '@/database/interfaces/ExternalDocument';
 import { APIResponse, PageProps } from '@/types';
 import {
 	API,
@@ -61,7 +61,6 @@ export default function Component({
 					price: productData.price,
 					stock: productData.stock,
 					sale_percentage: productData.salePercentage,
-					is_new_product: productData.isNewProduct,
 					publish: productData.status,
 			  }
 			: ({} as any),
@@ -218,7 +217,7 @@ export default function Component({
 				const data = x.data as APIResponse;
 				if (!data.success) throw new Error(data.message);
 
-				const transformer = (list: DocumentList<CategoryData>) => {
+				const transformer = (list: PageList<CategoryData>) => {
 					return list.list.map((x) => {
 						return {
 							id: x.categoryId.toString(),
