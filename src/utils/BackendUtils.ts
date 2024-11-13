@@ -1,3 +1,4 @@
+import { PageList } from '@/database/interfaces/ExternalDocument';
 import dbConnect from '@/lib/dbConnect';
 import { Session } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
@@ -69,4 +70,16 @@ export function ValidateForList(
 	limit > 100 && (limit = 100);
 
 	return { limit, page };
+}
+
+export function List<T>(
+	data: T[],
+	currentPage: number,
+	totalPage: number,
+): PageList<T> {
+	return {
+		list: data,
+		currentPage,
+		totalPage,
+	};
 }
