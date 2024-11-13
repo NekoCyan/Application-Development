@@ -1,4 +1,4 @@
-import ProductDetails from '@/components/product/productDetails/ProductDetails';
+// import ProductDetails from '@/components/product/productDetails/ProductDetails';
 import { PageProps } from '@/types';
 import { API } from '@/utils';
 import getUrl from '@/utils/getUrl';
@@ -32,11 +32,11 @@ export default async function Page(
 		return (
 			<Fragment>
 				<Component productData={product} />
-				<ProductDetails
+				{/* <ProductDetails
 					productData={product}
 					isPreview={true}
 					categoriesList={categories.list}
-				/>
+				/> */}
 			</Fragment>
 		);
 	} else {
