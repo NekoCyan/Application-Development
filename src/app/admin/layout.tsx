@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 
 import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
+import Navbar from '@/components/navbar/Navbar';
 import { WEBSITE } from '@/utils';
 import { MultiStyles } from '@/utils/ComponentUtils';
 import Link from 'next/link';
@@ -19,6 +20,7 @@ export default function RootLayout({
 	return (
 		<div>
 			<Header />
+			<Navbar />
 			<p className={MultiStyles(styles.text, 'text-center')}>
 				You are viewing in Admin Page.
 				<br />
