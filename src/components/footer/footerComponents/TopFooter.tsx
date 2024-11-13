@@ -8,7 +8,7 @@ export default function TopFooter() {
 			<Container className='grid grid-cols-1'>
 				<div className='col-span-1 space-y-1 pb-3'>
 					<Image
-						src='assets/img/logo.svg'
+						src='/assets/img/logo.svg'
 						alt='logo'
 						className='w-30'
 						width={169}

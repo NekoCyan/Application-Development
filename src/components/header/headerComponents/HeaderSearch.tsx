@@ -27,23 +27,23 @@ export default function HeaderSearch({
 		if (!isSearching) setIsSearching(true);
 		const fetchData = debounce(async () => {
 			// Fetch search results from the server or an API
-			// GET(API.ProductsList, {
-			// 	params: {
-			// 		name: searchTerm,
-			// 	},
-			// })
-			// 	.then((x) => {
-			// 		const data = x.data as NekoResponse<any>;
-			// 		if (!data.success) throw new Error(data.message);
-			// 		console.log(data);
-			// 		setSearchResults(data.data.list);
-			// 	})
-			// 	.catch((err) => {
-			// 		setSearchResults([]);
-			// 	})
-			// 	.finally(() => {
-			// 		setIsSearching(false);
-			// 	});
+			GET(API.ProductsList, {
+				params: {
+					name: searchTerm,
+				},
+			})
+				.then((x) => {
+					const data = x.data as NekoResponse<any>;
+					if (!data.success) throw new Error(data.message);
+					console.log(data);
+					setSearchResults(data.data.list);
+				})
+				.catch((err) => {
+					setSearchResults([]);
+				})
+				.finally(() => {
+					setIsSearching(false);
+				});
 			setSearchResults([]);
 			setIsSearching(false);
 		}, 500);

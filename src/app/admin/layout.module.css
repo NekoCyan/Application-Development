@@ -1,0 +1,15 @@
+.text {
+    margin: 0px;
+    padding: 10px 0px;
+    font-weight: bold;
+}
+
+.link {
+    color: var(--link);
+}
+
+.link:hover {
+    color: var(--link);
+    transition: font-weight 3s ease-in-out;
+    font-weight: bold;
+}

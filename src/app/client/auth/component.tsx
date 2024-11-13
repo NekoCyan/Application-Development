@@ -149,28 +149,6 @@ export default function Component({ callbackUrl, isRefresh }: Readonly<Props>) {
 			else if (inputFields.password !== inputFields.repeatpassword)
 				setCBError('Passwords do not match.');
 			else {
-				// const fetched = fetch('/api/register', {
-				// 	method: 'POST',
-				// 	headers: {
-				// 		'Content-Type': 'application/json',
-				// 	},
-				// 	body: JSON.stringify({
-				// 		fullName: inputFields.fullName,
-				// 		email: inputFields.email,
-				// 		password: inputFields.password,
-				// 		repeatpassword: inputFields.repeatpassword,
-				// 	}),
-				// });
-				// fetched
-				// 	.then((x: any) => {
-				// 		const data = x as APIResponse;
-				// 		if (!data.success) throw new Error(data.message);
-
-				// 		console.log('isRequesting', isRequesting);
-				// 		setRoute('login');
-				// 		return;
-				// 	})
-				// 	.catch((err) => setCBError(err.message));
 				POST(
 					'/api/register',
 					{

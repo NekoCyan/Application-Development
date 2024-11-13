@@ -18,7 +18,7 @@ export default function HeaderLogo(
 			{!isDisabled && (
 				<Link href={logoNavHref}>
 					<Image
-						src='assets/img/logo.svg'
+						src='/assets/img/logo.svg'
 						alt='logo'
 						width={169}
 						height={70}

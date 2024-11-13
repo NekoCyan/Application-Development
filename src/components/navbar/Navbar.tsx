@@ -3,10 +3,12 @@
 import { ROUTES } from '@/utils';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Container } from 'react-bootstrap';
 
 export default function Navbar() {
 	const { data, status } = useSession();
+	const path = usePathname();
 
 	return (
 		<nav className='bg-gray-800'>
@@ -25,7 +27,7 @@ export default function Navbar() {
 						Shop
 					</Link>
 					<Link
-						href='#'
+						href={ROUTES.Educational}
 						className='text-gray-200 hover:text-white transition py-5 block'
 					>
 						About us

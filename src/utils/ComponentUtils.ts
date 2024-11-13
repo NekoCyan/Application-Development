@@ -43,6 +43,14 @@ export function TransformAdminPath(path: string, lastSlash: boolean = false) {
 	return path + (lastSlash ? '/' : '');
 }
 
+export function IsClientPath(path: string): boolean {
+	return path.startsWith('/client');
+}
+
+export function IsAdminPath(path: string): boolean {
+	return path.startsWith('/admin');
+}
+
 export async function MiddlewareSession(
 	req: NextRequest,
 ): Promise<Session | null> {
