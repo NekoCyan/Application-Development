@@ -310,7 +310,7 @@ export default function Component({
 			</div>
 			<hr />
 			<div className='flex md:flex-row flex-col pt-5 md:gap-10 gap-2'>
-				<div className='col-md-6 col-sm-12 p-0'>
+				<div className='col-md-6 col-sm-12 p-0 md:w-[50%] w-[100%]'>
 					<div className='form-group flex flex-col'>
 						<label htmlFor='name'>
 							Name*
@@ -548,7 +548,7 @@ export default function Component({
 						</div>
 					</div>
 				</div>
-				<div className='col-md-6 col-sm-12 p-0'>
+				<div className='col-md-6 col-sm-12 p-0 md:w-[40%] w-[100%]'>
 					<div className='flex flex-row justify-between lg:justify-evenly'>
 						<div className='form-group flex flex-col'>
 							<label htmlFor='price'>

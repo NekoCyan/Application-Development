@@ -14,7 +14,7 @@ export default function Navbar() {
 		arr.push(
 			{
 				name: 'Orders',
-				href: '/',
+				href: ROUTES.AdminOrders,
 			},
 			{
 				name: 'Users',

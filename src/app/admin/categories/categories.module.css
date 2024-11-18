@@ -1,23 +1,25 @@
 .row {
-    display: flex;
-    align-items: center;
-    padding-bottom: 10px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	padding-bottom: 10px;
 }
 
 .row div h3 {
-    margin: 0px;
+	margin: 0px;
 }
 
 .row div a {
-    float: right;
+	float: right;
 }
 
 .table {
-    width: 100%;
+	width: 100%;
 }
 
 .table tbody tr td:last-child {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
+	display: flex;
+	flex-direction: row;
+	gap: 20px;
 }

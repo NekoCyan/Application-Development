@@ -31,11 +31,11 @@ export default function Component({
 
 	return (
 		<Container className='h-auto'>
-			<Row className='flex-1 flex-row items-baseline align-baseline justify-between pb-2'>
+			<Row className='md:flex flex-1 flex-row items-center justify-between pb-2'>
 				<div className='col-md-6 col-sm-12'>
 					<h3>Products Management</h3>
 				</div>
-				<div className='col-md-6 col-sm-12 flex flex-row justify-end gap-3'>
+				<div className='col-md-6 col-sm-12 flex flex-row justify-end gap-3 items-center'>
 					<SearchInput
 						id='search'
 						placeholder='Search a product...'
@@ -45,7 +45,7 @@ export default function Component({
 					/>
 					<Link
 						href={ROUTES.AdminProductsNew}
-						className='btn btn-primary'
+						className='btn btn-primary text-center'
 					>
 						Add Product
 					</Link>
@@ -57,16 +57,16 @@ export default function Component({
 					<thead>
 						<tr>
 							<th className='text-center'>#</th>
-							<th>Product Name</th>
+							<th className='text-left'>Product Name</th>
 							<th>Published?</th>
 							<th className='text-center'>Action</th>
 						</tr>
 					</thead>
 					<tbody>
 						{exportProductFilter.map((data, index) => (
-							<tr key={data.productId}>
-								<td width={'1%'}>{index + 1}</td>
-								<td className='min-w-[200px] sm:w-full'>
+							<tr key={data.productId} className='hover:bg-red-100'>
+								<td className='text-center'>{index + 1}</td>
+								<td className='min-w-[250px]'>
 									<p className='line-clamp-3'>{data.name}</p>
 								</td>
 								<td className='text-center'>
@@ -78,7 +78,7 @@ export default function Component({
 										readOnly={true}
 									/>
 								</td>
-								<td className='flex flex-row gap-5'>
+								<td className='flex flex-row gap-5 justify-center items-center'>
 									<ToolTip text='Edit'>
 										<Link
 											href={ROUTES.AdminProductsEdit(

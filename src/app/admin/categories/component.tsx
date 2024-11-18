@@ -137,19 +137,20 @@ export default function Component({
 						<thead>
 							<tr>
 								<th>#</th>
-								<th>Category Name</th>
-								<th>Description</th>
-								<th>Action</th>
+								<th className='text-left'>Category Name</th>
+								<th className='text-left'>Description</th>
+								<th className='text-left'>Action</th>
 							</tr>
 						</thead>
 						<tbody>
 							{categories.list.map((data, index) => (
-								<tr key={data.categoryId}>
-									<td>{index + 1}</td>
+								<tr
+									key={data.categoryId}
+									className='hover:bg-red-100'
+								>
+									<td className='text-center'>{index + 1}</td>
 									<td>{data.name}</td>
-									<td className='w-full'>
-										{data.description}
-									</td>
+									<td>{data.description}</td>
 									<td>
 										<Link
 											href='#'

@@ -53,6 +53,7 @@ export const ROUTES = {
 		`/product-details/${id}` + (withBreakcrumb ? `#breadcrumb` : ''),
 	// Admin.
 	Admin: '/admin',
+	AdminOrders: '/admin',
 	AdminUsers: '/admin/users',
 	AdminCategories: '/admin/categories',
 	AdminProducts: '/admin/products',

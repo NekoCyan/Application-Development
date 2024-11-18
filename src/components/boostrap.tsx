@@ -149,7 +149,7 @@ export function SearchInput({
 				id={id}
 				name={name}
 				placeholder={placeholder}
-				className='focus:outline-none w-full'
+				className='focus:outline-none w-[90%] border-none'
 				value={searchInput}
 				onChange={handleSearchInput}
 				onFocus={onFocus}
@@ -157,7 +157,7 @@ export function SearchInput({
 			{searchInput && (
 				<Link
 					href='#'
-					className='fa fa-times cursor-pointer text-2xl'
+					className='fa fa-times cursor-pointer text-1xl'
 					onClick={(e) => {
 						e.preventDefault();
 						setSearchInput('');
