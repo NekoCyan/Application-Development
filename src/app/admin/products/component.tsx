@@ -64,7 +64,7 @@ export default function Component({
 					</thead>
 					<tbody>
 						{exportProductFilter.map((data, index) => (
-							<tr key={data.productId} className='hover:bg-red-100'>
+							<tr key={data.productId}>
 								<td className='text-center'>{index + 1}</td>
 								<td className='min-w-[250px]'>
 									<p className='line-clamp-3'>{data.name}</p>

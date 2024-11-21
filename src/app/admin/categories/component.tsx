@@ -146,7 +146,6 @@ export default function Component({
 							{categories.list.map((data, index) => (
 								<tr
 									key={data.categoryId}
-									className='hover:bg-red-100'
 								>
 									<td className='text-center'>{index + 1}</td>
 									<td>{data.name}</td>

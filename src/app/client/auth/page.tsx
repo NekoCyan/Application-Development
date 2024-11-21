@@ -1,10 +1,10 @@
 import { PageProps } from '@/types';
-import { ROUTES } from '@/utils';
+import { ROUTES, WEBSITE } from '@/utils';
 import { Metadata } from 'next';
 import Component from './component';
 
 export const metadata: Metadata = {
-	title: 'Ocean Electro | Credentials',
+	title: WEBSITE.title('Credentials'),
 };
 
 export default function Page({
