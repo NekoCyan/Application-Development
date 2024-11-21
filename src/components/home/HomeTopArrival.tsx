@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import ProductBox from '../product/ProductBox';
 
-export default async function HomeTopArrival() {
+export default function HomeTopArrival() {
 	const [isFetching, setIsFetching] = useState(true);
 	const [topArrival, setTopArrival] = useState<ProductData[]>([]);
 

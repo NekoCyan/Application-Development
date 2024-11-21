@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import ProductBox from '../product/ProductBox';
 
-export default async function HomeRecommended() {
+export default function HomeRecommended() {
 	const [isFetching, setIsFetching] = useState(true);
 	const [recommended, setRecommended] = useState<ProductData[]>([]);
 
