@@ -44,8 +44,6 @@ export default function HeaderSearch({
 				.finally(() => {
 					setIsSearching(false);
 				});
-			setSearchResults([]);
-			setIsSearching(false);
 		}, 500);
 
 		if (searchTerm) fetchData();
@@ -140,7 +138,7 @@ export default function HeaderSearch({
 										href={ROUTES.ProductDetails(
 											product.productId.toString(),
 										)}
-										className='text-black'
+										className='text-black line-clamp-4'
 									>
 										{product.name}
 									</a>
