@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { Container } from 'react-bootstrap';
 
-export default function Features() {
+export default function HomeFeatures() {
 	return (
 		<Container className='py-12'>
 			<div className='w-10/12 grid grid-cols-1 md:grid-cols-3 gap-6 mx-auto justify-center'>

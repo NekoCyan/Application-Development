@@ -165,6 +165,8 @@ ProductSchema.static(
 				to: number;
 			};
 			inStock?: boolean;
+			newest?: boolean;
+			shuffle?: boolean;
 			category?: {
 				Ids: number[];
 				Type: 'AND' | 'OR';
@@ -230,17 +232,26 @@ ProductSchema.static(
 		if (totalPage === -1 || page <= totalPage) {
 			const _getProductList = this.aggregate().project({ _id: 0 });
 
-			// #region Populate Products.
-			if (Object.keys(matcher).length > 0) _getProductList.match(matcher);
+			if (filter?.newest === true)
+				_getProductList.sort({ createdAt: -1 });
 
-			if (limit !== -1) {
-				// Skip and Limit will works like the following:
-				// Get array from {skipFromPage} to {limitNext}.
-				const limitNext = page * limit;
-				const skipFromPage = limitNext - limit;
-				_getProductList.limit(limitNext).skip(skipFromPage);
+			if (filter?.shuffle === true) {
+				// Shuffle the products.
+				_getProductList.sample(limit);
+			} else {
+				// #region Populate Products.
+				if (Object.keys(matcher).length > 0)
+					_getProductList.match(matcher);
+
+				if (limit !== -1) {
+					// Skip and Limit will works like the following:
+					// Get array from {skipFromPage} to {limitNext}.
+					const limitNext = page * limit;
+					const skipFromPage = limitNext - limit;
+					_getProductList.limit(limitNext).skip(skipFromPage);
+				}
+				// #endregion
 			}
-			// #endregion
 
 			const getProductList = await _getProductList.exec();
 			listProducts = getProductList;

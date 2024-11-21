@@ -19,18 +19,17 @@ export default function HeaderWishlist() {
 	const dispatch: RootDispatch = useDispatch();
 
 	useEffect(() => {
-		// if (status === 'authenticated') {
-		// 	GET(API.Wishlist)
-		// 		.then((x) => {
-		// 			const data = x.data as NekoResponse<{ data: number[] }>;
+		if (status === 'authenticated') {
+			GET(API.Wishlist)
+				.then((x) => {
+					const data = x.data as NekoResponse<{ data: number[] }>;
 
-		// 			dispatch(wishlistAction.set(data.data.data));
-		// 		})
-		// 		.catch((err) => {
-		// 			console.error(err);
-		// 		});
-		// }
-		dispatch(wishlistAction.set([]));
+					dispatch(wishlistAction.set(data.data.data));
+				})
+				.catch((err) => {
+					console.error(err);
+				});
+		}
 	}, [status]);
 
 	return (

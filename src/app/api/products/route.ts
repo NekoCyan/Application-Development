@@ -19,18 +19,31 @@ export async function GET(req: NextRequest) {
 			name,
 			price,
 			inStock,
+			newest,
+			shuffle,
 			limit,
 			page,
 			filterByCategories,
 			filterByCategoriesType,
 			status,
 		} = SearchParamsToObject<{
+			// Product name
 			name: string;
+			// Price range (from-to format)
 			price: string;
+			// Is stock in stock (Just pass any value to enable this filter)
 			inStock: string;
+			// Filter to get newest products (Just pass any value to enable this filter)
+			newest: string;
+			// Random/Shuffle products (Just pass any value to enable this filter)
+			shuffle: string;
+			// Limit of products to get (Pass -1 to get all products)
 			limit: string;
+			// Page number
 			page: string;
+			// Filter by categories (Comma separated category ids)
 			filterByCategories: string;
+			// Filter by categories type (like AND for included or OR)
 			filterByCategoriesType: string;
 			status: string;
 		}>(req.nextUrl.searchParams);
@@ -54,6 +67,12 @@ export async function GET(req: NextRequest) {
 		}
 		if (!IsNullOrUndefined(inStock)) {
 			filter.inStock = true;
+		}
+		if (!IsNullOrUndefined(newest)) {
+			filter.newest = true;
+		}
+		if (!IsNullOrUndefined(shuffle)) {
+			filter.shuffle = true;
 		}
 		if (filterByCategories) {
 			const validateCategoriesNumber = filterByCategories
