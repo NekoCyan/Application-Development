@@ -46,7 +46,7 @@ export default function HomeRecommended() {
 	return (
 		<Container className='pb-16'>
 			<h2 className='text-2xl font-medium text-gray-800 uppercase mb-6'>
-				recomended for you
+				recommended for you
 			</h2>
 			{isFetching && <Loading />}
 			{!isFetching && recommended.length === 0 && (
