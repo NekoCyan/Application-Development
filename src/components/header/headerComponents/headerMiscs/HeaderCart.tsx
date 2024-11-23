@@ -20,22 +20,21 @@ export default function HeaderCart() {
 	const dispatch: RootDispatch = useDispatch();
 
 	useEffect(() => {
-		// if (status === 'authenticated') {
-		// 	GET(API.CartCount)
-		// 		.then((x) => {
-		// 			const data = x.data as NekoResponse<{ count: number }>;
+		if (status === 'authenticated') {
+			GET(API.CartCount)
+				.then((x) => {
+					const data = x.data as NekoResponse<{ count: number }>;
 
-		// 			dispatch(cartCountAction.set(data.data.count));
-		// 		})
-		// 		.catch((err) => {
-		// 			console.error(err);
-		// 		});
-		// } else {
-		// 	const cartStorage = new CartStorage(localStorage);
+					dispatch(cartCountAction.set(data.data.count));
+				})
+				.catch((err) => {
+					console.error(err);
+				});
+		} else {
+			const cartStorage = new CartStorage(localStorage);
 
-		// 	dispatch(cartCountAction.set(cartStorage.getCartCount()));
-		// }
-		dispatch(cartCountAction.set(0));
+			dispatch(cartCountAction.set(cartStorage.getCartCount()));
+		}
 	}, [status]);
 
 	return (
