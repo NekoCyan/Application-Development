@@ -100,7 +100,7 @@ export default function Component() {
 							{products.map((data, index) => {
 								return (
 									<tr key={data.productId}>
-										<td className='align-middle'>
+										<td className='align-middle min-w-[50px]'>
 											<div className='flex flex-col justify-center items-center'>
 												{index + 1}
 												<Link

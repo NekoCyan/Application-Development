@@ -1,7 +1,7 @@
 'use client';
 
 import { ProductData } from '@/database/interfaces';
-import { FormatCurrency } from '@/utils';
+import { FormatCurrency, ROUTES } from '@/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Fragment } from 'react';
@@ -30,7 +30,7 @@ export default function ProductBox({ product }: Readonly<ProductBoxProps>) {
                     justify-center gap-2 opacity-0 group-hover:opacity-100 transition'
 				>
 					<Link
-						href='#'
+						href={ROUTES.ProductDetails(product.productId)}
 						className='text-white text-lg w-9 h-8 rounded-full bg-primary flex items-center justify-center hover:bg-gray-800 transition'
 						title='view product'
 					>
@@ -40,7 +40,7 @@ export default function ProductBox({ product }: Readonly<ProductBoxProps>) {
 				</div>
 			</div>
 			<div className='pt-4 pb-3 px-4'>
-				<Link href='#'>
+				<Link href={ROUTES.ProductDetails(product.productId)}>
 					<h4 className='uppercase min-h-[85px] font-medium text-xl mb-2 text-gray-800 hover:text-primary transition line-clamp-3'>
 						{product.name}
 					</h4>

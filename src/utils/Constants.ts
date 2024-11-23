@@ -49,8 +49,7 @@ export const ROUTES = {
 	 * @param withBreakcrumb Default is true
 	 * @returns
 	 */
-	ProductDetails: (id: string | number, withBreakcrumb: boolean = true) =>
-		`/product-details/${id}` + (withBreakcrumb ? `#breadcrumb` : ''),
+	ProductDetails: (id: string | number) => `/product-details/${id}`,
 	// Admin.
 	Admin: '/admin',
 	AdminOrders: '/admin',
