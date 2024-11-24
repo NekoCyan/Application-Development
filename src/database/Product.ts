@@ -252,23 +252,21 @@ ProductSchema.static(
 			if (filter?.newest === true)
 				_getProductList.sort({ createdAt: -1 });
 
-			if (filter?.shuffle === true) {
+			if (filter?.shuffle === true)
 				// Shuffle the products.
 				_getProductList.sample(limit);
-			} else {
-				// #region Populate Products.
-				if (Object.keys(matcher).length > 0)
-					_getProductList.match(matcher);
 
-				if (limit !== -1) {
-					// Skip and Limit will works like the following:
-					// Get array from {skipFromPage} to {limitNext}.
-					const limitNext = page * limit;
-					const skipFromPage = limitNext - limit;
-					_getProductList.limit(limitNext).skip(skipFromPage);
-				}
-				// #endregion
+			// #region Populate Products.
+			if (Object.keys(matcher).length > 0) _getProductList.match(matcher);
+
+			if (limit !== -1 && filter?.shuffle !== true) {
+				// Skip and Limit will works like the following:
+				// Get array from {skipFromPage} to {limitNext}.
+				const limitNext = page * limit;
+				const skipFromPage = limitNext - limit;
+				_getProductList.limit(limitNext).skip(skipFromPage);
 			}
+			// #endregion
 
 			const getProductList = await _getProductList.exec();
 			listProducts = getProductList;
