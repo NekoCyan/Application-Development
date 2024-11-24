@@ -159,6 +159,15 @@ a {
   transition: ease-out 0.15s;
 }
 
+.slick-slide img {
+  width: 100%;
+  /* Ensures the image stretches to fit its container */
+  height: 100%;
+  /* Uniform height for all images */
+  object-fit: cover;
+  /* Crop the image if necessary to maintain aspect ratio */
+}
+
 /*
 Add the correct font weight in Edge and Safari.
 */

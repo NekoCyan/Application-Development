@@ -25,18 +25,25 @@
 		"react-beautiful-dnd": "^13.1.1",
 		"react-bootstrap": "2.10.5",
 		"react-dom": "18.3.1",
+		"react-markdown": "^9.0.1",
 		"react-redux": "9.1.2",
-		"react-toastify": "10.0.6"
+		"react-slick": "^0.30.2",
+		"react-toastify": "10.0.6",
+		"remark-breaks": "^4.0.0",
+		"remark-gfm": "^4.0.0",
+		"slick-carousel": "^1.8.1"
 	},
 	"devDependencies": {
 		"@tailwindcss/forms": "0.5.9",
 		"@types/bcrypt": "^5.0.2",
+		"@types/jquery": "^3.5.32",
 		"@types/lodash.debounce": "4.0.9",
 		"@types/ms": "^0.7.34",
 		"@types/node": "^20.16.11",
 		"@types/react": "^18.3.11",
 		"@types/react-beautiful-dnd": "^13.1.8",
 		"@types/react-dom": "18.3.0",
+		"@types/react-slick": "^0.23.13",
 		"postcss": "^8.4.47",
 		"tailwindcss": "^3.4.13",
 		"typescript": "^5.6.3"

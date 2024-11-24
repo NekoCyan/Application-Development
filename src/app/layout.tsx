@@ -54,6 +54,8 @@ export default async function RootLayout({
 				<link rel='stylesheet' href='/assets/css/main.css' />
 
 				<script src='/assets/js/jquery.min.js'></script>
+				<script src='/assets/js/jquery.zoom.min.js'></script>
+				<script src='/assets/js/nouislider.min.js'></script>
 				<script src='/assets/js/bootstrap.min.js'></script>
 				<script src='/assets/js/main.js'></script>
 			</head>
