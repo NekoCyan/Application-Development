@@ -5,6 +5,7 @@ import {
 	ErrorResponse,
 	InvalidResponse,
 	IsNullOrUndefined,
+	ProductIdsValidationFailedResponse,
 	RequiredResponse,
 	Response,
 	SearchParamsToObject,
@@ -25,6 +26,7 @@ export async function GET(req: NextRequest) {
 			page,
 			filterByCategories,
 			filterByCategoriesType,
+			excludeProductIds,
 			status,
 		} = SearchParamsToObject<{
 			// Product name
@@ -45,6 +47,8 @@ export async function GET(req: NextRequest) {
 			filterByCategories: string;
 			// Filter by categories type (like AND for included or OR)
 			filterByCategoriesType: string;
+			// Exclude product ids (Comma separated product ids)
+			excludeProductIds: string;
 			status: string;
 		}>(req.nextUrl.searchParams);
 
@@ -94,6 +98,23 @@ export async function GET(req: NextRequest) {
 					.map((v) => parseInt(v.trim())),
 				Type: filterByCategoriesType as 'AND' | 'OR',
 			};
+		}
+
+		if (excludeProductIds) {
+			const validateProductIdsNumber = excludeProductIds
+				?.split(',')
+				.map((v) => v.trim())
+				.every(
+					(v) =>
+						!isNaN(parseInt(v)) && // Check if the value is a number.
+						!v.includes('.'), // Check if the value is not a float number.
+				);
+			if (!validateProductIdsNumber)
+				return ProductIdsValidationFailedResponse();
+
+			filter.excludeProductIds = excludeProductIds
+				.split(',')
+				.map((v) => parseInt(v.trim()));
 		}
 		if (status) {
 			// Block user to get inactive products.

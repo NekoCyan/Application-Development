@@ -171,6 +171,7 @@ ProductSchema.static(
 				Ids: number[];
 				Type: 'AND' | 'OR';
 			};
+			excludeProductIds?: number[];
 			status?: -1 | 0 | 1;
 		},
 	): Promise<ReturnType<IProductModel['getProductList']>> {
@@ -188,6 +189,17 @@ ProductSchema.static(
 			]; // remove duplicated.
 			if (filter.category.Type !== 'AND' && filter.category.Type !== 'OR')
 				filter.category.Type = 'AND';
+		}
+		if (filter?.excludeProductIds) {
+			if (!Array.isArray(filter.excludeProductIds))
+				filter.excludeProductIds = [];
+			if (filter.excludeProductIds.some((x) => isNaN(x)))
+				throw new Error(ResponseText.ProductIdsValidationFailed);
+			filter.excludeProductIds = [
+				...new Set(
+					filter.excludeProductIds.map((x) => Math.floor(Number(x))),
+				),
+			]; // remove duplicated.
 		}
 
 		// Matching.
@@ -219,6 +231,11 @@ ProductSchema.static(
 					$in: filter.category.Ids,
 				};
 			}
+		}
+		if (filter?.excludeProductIds && filter.excludeProductIds.length > 0) {
+			matcher['productId'] = {
+				$nin: filter.excludeProductIds,
+			};
 		}
 		if (filter?.status !== undefined && [0, 1].includes(filter.status)) {
 			matcher['status'] = !!filter.status;

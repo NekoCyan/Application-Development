@@ -70,6 +70,7 @@ export interface IProductModel extends Model<IProduct, {}, IProductMethods> {
 				Ids: number[];
 				Type: 'AND' | 'OR';
 			};
+			excludeProductIds?: number[];
 			/**
 			 * * -1: All.
 			 * * 0: Inactive.
