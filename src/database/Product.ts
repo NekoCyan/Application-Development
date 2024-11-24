@@ -166,7 +166,11 @@ ProductSchema.static(
 			};
 			inStock?: boolean;
 			newest?: boolean;
-			shuffle?: boolean;
+			/**
+			 * * '': Shuffle before matching aggregate.
+			 * * 'after': Shuffle after matching aggregate.
+			 */
+			shuffle?: '' | 'after';
 			category?: {
 				Ids: number[];
 				Type: 'AND' | 'OR';
@@ -252,14 +256,14 @@ ProductSchema.static(
 			if (filter?.newest === true)
 				_getProductList.sort({ createdAt: -1 });
 
-			if (filter?.shuffle === true)
+			if (filter?.shuffle === '')
 				// Shuffle the products.
 				_getProductList.sample(limit);
 
 			// #region Populate Products.
 			if (Object.keys(matcher).length > 0) _getProductList.match(matcher);
 
-			if (limit !== -1 && filter?.shuffle !== true) {
+			if (limit !== -1 && typeof filter?.shuffle !== 'string') {
 				// Skip and Limit will works like the following:
 				// Get array from {skipFromPage} to {limitNext}.
 				const limitNext = page * limit;
@@ -267,6 +271,10 @@ ProductSchema.static(
 				_getProductList.limit(limitNext).skip(skipFromPage);
 			}
 			// #endregion
+
+			if (filter?.shuffle === 'after')
+				// Shuffle the products.
+				_getProductList.sample(limit);
 
 			const getProductList = await _getProductList.exec();
 			listProducts = getProductList;

@@ -66,6 +66,12 @@ export interface IProductModel extends Model<IProduct, {}, IProductMethods> {
 				to: number;
 			};
 			inStock?: boolean;
+			newest?: boolean;
+			/**
+			 * * '': Shuffle before matching aggregate.
+			 * * 'after': Shuffle after matching aggregate.
+			 */
+			shuffle?: '' | 'after';
 			category?: {
 				Ids: number[];
 				Type: 'AND' | 'OR';

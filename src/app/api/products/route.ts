@@ -76,7 +76,8 @@ export async function GET(req: NextRequest) {
 			filter.newest = true;
 		}
 		if (!IsNullOrUndefined(shuffle)) {
-			filter.shuffle = true;
+			if (shuffle === 'after') filter.shuffle = 'after';
+			else filter.shuffle = '';
 		}
 		if (filterByCategories) {
 			const validateCategoriesNumber = filterByCategories
