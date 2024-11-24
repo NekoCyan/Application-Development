@@ -63,6 +63,9 @@ export function UnauthorizedResponse() {
 export function CategoriesValidationFailedResponse() {
 	return ErrorResponse(new Error(ResponseText.CategoriesValidationFailed));
 }
+export function ProductIdsValidationFailedResponse() {
+	return ErrorResponse(new Error(ResponseText.ProductIdsValidationFailed));
+}
 export function SomethingWentWrongResponse() {
 	return ErrorResponse(new Error(ResponseText.SomethingWentWrong));
 }

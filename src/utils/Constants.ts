@@ -230,5 +230,6 @@ export const ResponseText = {
 
 	// Custom
 	CategoriesValidationFailed: `Categories validation failed, please refresh categories for new data.`,
+	ProductIdsValidationFailed: `Product ids validation failed, please refresh products for new data.`,
 	SomethingWentWrong: `Something went wrong... Please try again or contact website owner for more informations.`,
 };
