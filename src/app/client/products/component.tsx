@@ -499,7 +499,7 @@ export default function Component({
 				</h4>
 			) : products && products?.length > 0 ? (
 				<Fragment>
-					<div className='mb-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+					<div className='my-5 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
 						{products.map((product) => (
 							<ProductBox
 								key={product.productId}

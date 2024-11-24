@@ -50,6 +50,7 @@ export const ROUTES = {
 	 * @returns
 	 */
 	ProductDetails: (id: string | number) => `/product-details/${id}`,
+	ProductFindByCategories: (category: string[]) => `/products?filterByCategories=${category.join(',')}`,
 	// Admin.
 	Admin: '/admin',
 	AdminOrders: '/admin',

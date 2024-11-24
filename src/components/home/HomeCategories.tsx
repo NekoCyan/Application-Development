@@ -1,3 +1,4 @@
+import { ROUTES } from '@/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Container } from 'react-bootstrap';
@@ -18,7 +19,7 @@ export default function HomeCategories() {
 						height={400}
 					/>
 					<Link
-						href='#'
+						href={ROUTES.ProductFindByCategories(['1'])}
 						className='absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center text-xl text-white font-roboto font-medium group-hover:bg-opacity-60 transition'
 					>
 						Bedroom
@@ -33,7 +34,7 @@ export default function HomeCategories() {
 						height={400}
 					/>
 					<Link
-						href='#'
+						href={ROUTES.ProductFindByCategories(['2'])}
 						className='absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center text-xl text-white font-roboto font-medium group-hover:bg-opacity-60 transition'
 					>
 						Mattrass
@@ -48,7 +49,7 @@ export default function HomeCategories() {
 						height={400}
 					/>
 					<Link
-						href='#'
+						href={ROUTES.ProductFindByCategories(['3'])}
 						className='absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center text-xl text-white font-roboto font-medium group-hover:bg-opacity-60 transition'
 					>
 						Outdoor
@@ -63,7 +64,7 @@ export default function HomeCategories() {
 						height={400}
 					/>
 					<Link
-						href='#'
+						href={ROUTES.ProductFindByCategories(['4'])}
 						className='absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center text-xl text-white font-roboto font-medium group-hover:bg-opacity-60 transition'
 					>
 						Sofa
@@ -78,7 +79,7 @@ export default function HomeCategories() {
 						height={400}
 					/>
 					<Link
-						href='#'
+						href={ROUTES.ProductFindByCategories(['5'])}
 						className='absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center text-xl text-white font-roboto font-medium group-hover:bg-opacity-60 transition'
 					>
 						Living Room
@@ -93,7 +94,7 @@ export default function HomeCategories() {
 						height={400}
 					/>
 					<Link
-						href='#'
+						href={ROUTES.ProductFindByCategories(['6'])}
 						className='absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center text-xl text-white font-roboto font-medium group-hover:bg-opacity-60 transition'
 					>
 						Kitchen
