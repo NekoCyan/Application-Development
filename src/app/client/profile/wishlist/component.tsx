@@ -85,6 +85,10 @@ export default function Component() {
 
 	return (
 		<Container>
+			<div className='py-5'>
+				<h2 className='uppercase bold m-0'>Wishlist</h2>
+			</div>
+
 			{products && products.length > 0 && (
 				<div className='overflow-x-auto mb-2 sm:mb-0'>
 					<Table className='table-auto' cellPadding={2}>
