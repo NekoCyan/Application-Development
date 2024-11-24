@@ -6,6 +6,7 @@ import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { Fragment } from 'react';
 import Component from './component';
+import ProductDetails from '@/components/product/ProductDetails';
 
 export default async function Page(
 	props: Readonly<PageProps<{ id: string }, {}>>,
@@ -32,11 +33,11 @@ export default async function Page(
 		return (
 			<Fragment>
 				<Component productData={product} />
-				{/* <ProductDetails
+				<ProductDetails
 					productData={product}
 					isPreview={true}
 					categoriesList={categories.list}
-				/> */}
+				/>
 			</Fragment>
 		);
 	} else {

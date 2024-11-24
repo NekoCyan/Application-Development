@@ -7,9 +7,11 @@ import ProductDetailsRelated from './productDetailsComponents/ProductDetailsRela
 
 export default function ProductDetails({
 	productData,
+	isPreview,
 	categoriesList,
 }: Readonly<{
 	productData: ProductData;
+	isPreview?: boolean;
 	categoriesList: CategoryData[];
 }>) {
 	return (
@@ -27,7 +29,7 @@ export default function ProductDetails({
 				</div>
 			</div>
 			<ProductDetailsInfo props={productData} />
-			<ProductDetailsRelated productData={productData} />
+			{!isPreview && <ProductDetailsRelated productData={productData} />}
 		</Container>
 	);
 }
