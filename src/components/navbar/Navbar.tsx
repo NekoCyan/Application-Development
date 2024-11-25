@@ -41,12 +41,12 @@ export default function Navbar() {
 				href: ROUTES.Products,
 			},
 			{
-				name: 'About us',
-				href: ROUTES.Educational,
+				name: 'Orders',
+				href: ROUTES.Orders,
 			},
 			{
-				name: 'Contact us',
-				href: '#',
+				name: 'About us',
+				href: ROUTES.Educational,
 			},
 		);
 	}
