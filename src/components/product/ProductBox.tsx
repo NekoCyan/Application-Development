@@ -54,6 +54,9 @@ export default function ProductBox({ product }: Readonly<ProductBoxProps>) {
 							<p className='text-sm text-gray-400 line-through'>
 								{FormatCurrency(product.price)}
 							</p>
+							<p className='text-sm text-primary font-semibold'>
+								({product.salePercentage}% off)
+							</p>
 						</Fragment>
 					) : (
 						<p className='text-xl text-gray-400 font-semibold'>
