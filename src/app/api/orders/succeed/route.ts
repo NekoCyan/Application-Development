@@ -1,4 +1,4 @@
-import Order from '@/app/models/Order';
+import Order from '@/database/Order';
 import { ErrorResponse, NotFoundResponse, Response } from '@/utils';
 import { BEHandler } from '@/utils/BackendUtils';
 import { NextRequest } from 'next/server';
