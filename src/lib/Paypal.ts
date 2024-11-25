@@ -107,7 +107,7 @@ export async function createOrder(orderData: OrderData): Promise<{
 			),
 			shipping_preference: 'NO_SHIPPING',
 			user_action: 'PAY_NOW',
-			brand_name: 'Ocean Electro',
+			brand_name: 'Ocean Interior',
 			payment_method: {
 				payee_preferred: 'IMMEDIATE_PAYMENT_REQUIRED',
 			},
