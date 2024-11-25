@@ -14,10 +14,9 @@ export default function HomeBanner() {
 					best collection for <br /> home decoration
 				</h2>
 				<p>
-					Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-					Aperiam <br />
-					accusantium perspiciatis, sapiente magni eos dolorum ex quos
-					dolores odio
+					Discover furniture that redefines comfort and sophistication
+					<br />
+					Create the perfect home with timeless designs, crafted for modern living
 				</p>
 				<div className='mt-12'>
 					<Link
