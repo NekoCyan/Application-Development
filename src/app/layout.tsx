@@ -11,6 +11,8 @@ import { Bounce, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './globals.css';
 import LinkClickPreventer from './LinkClickPreventer';
+import PopupButton from '@/components/popup/PopupButton';
+import FacebookButton from '@/components/popup/Buttons/Facebook';
 
 export const metadata: Metadata = {
 	title: 'Ocean Interior',
@@ -76,6 +78,9 @@ export default async function RootLayout({
 						className='w-[200px] sm:w-[250px] lg:w-[300px] left-auto right-0 z-30'
 						stacked={true}
 					/>
+					<PopupButton>
+						<FacebookButton />
+					</PopupButton>
 				</ReduxProvider>
 				<LinkClickPreventer />
 			</body>
